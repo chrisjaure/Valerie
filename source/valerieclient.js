@@ -7,27 +7,9 @@
 //	valerieclient.js
 //------------------------------------------------------------------------------
 
-/*
-  Class: ValerieClient
-  Used for validating form data.
-*/
 var ValerieClient = new Class({
     
     Implements: [Events, Options],
-    
-    /*
-      Options:
-        onInitialize - event to fire when instantiation is initialized
-        onFormValidate - event to fire when form is validated
-        onFormInvalidate - event to fire when form is invalidated
-        onFieldValidate - event to fire when an individual field is validated
-        onFieldInvalidate - event to fire when an individual field is invalidated
-        onError - event to fire when an error occurs
-        onBeforeSubmit - event to fire when form is submitted but before any validation occurs
-        onSubmitted - event to fire when form has been submitted and results are returned
-        validateOnKeyUp - validate while user types
-        ERROR - the only message not in the PHP localization file
-    */
     
     options: {
       onInitialize: function (obj) {
@@ -75,17 +57,6 @@ var ValerieClient = new Class({
       ERROR: "An error has occurred."
     },
     
-    /*
-      Constructor: initialize
-      
-      Initializes the validator class.
-      
-      Parameters:
-        form - form id or object
-        options - object that contains options
-        
-      Returns: Validator instance
-    */
     initialize: function (form, options) {
       this.setOptions(options);
       this.form = $(form);
