@@ -8,11 +8,7 @@
 //	valerieserver.php
 //------------------------------------------------------------------------------
 
-/*
-  Class: ValerieServer
-  Validate form data based on rules in the name attribute.
-  Example: <input type="text" name="my_date:required|date" id="my_date" />
-*/
+
 class ValerieServer {
   
   var $values;
@@ -22,17 +18,6 @@ class ValerieServer {
   var $periodical;
   var $patterns;
 
-  /*
-    Constructor: ValerieServer
-    
-    Initilizes the class.
-    
-    Parameters:
-      $data - POST data.
-      $lang - Localization file. Default is 'en.php'.
-    
-    Returns: Class object
-  */
   function ValerieServer($data, $lang = 'en.php'){
     
     if (isset($data['_ajax'])) {
@@ -86,13 +71,6 @@ class ValerieServer {
     }
   }
   
-  /*
-    Function: validate
-    
-    Validate the POST data.
-    
-    Returns: Array - POST data with cleaned names.
-  */
   function validate(){
     
     if (!$this->ajax) unset($_SESSION['validator']);
@@ -149,136 +127,36 @@ class ValerieServer {
     return $this->values;
   }
   
-  /*
-    Function: register
-    
-    Adds new rules to validate data by.
-    
-    Parameters: $patterns - Array of new rules.
-    
-    Example: 
-      $validatorInstance->register(array(
-        'rule_name' => array('regex', 'Error message.'),
-        'another_rule' => array('function_name', 'Another error message.')
-      ));
-      
-      function function_name($val, $args, $err) {
-        return (bool);
-      }
-  */
   function register($patterns) {
     $this->patterns = array_merge($this->patterns, $patterns);
   }
   
-  /*
-    Function: back
-    
-    Redirects browser back to form.
-    
-    Parameters: $bool - Boolean value indicating whether ajax is used or not
-    
-    Example:
-      Valerie::back($ajax);
-      // OR
-      $validatorInstance->back();
-  */
   function back($bool = null) {
     if (!isset($bool)) $bool = $this->ajax;
     if (!$bool) headers("Location: {$_SESSION['referer']}");
   }
   
-  /*
-    Function: is_ajax
-    
-    Returns whether ajax was used or not.
-    
-    Returns: Boolean
-  */
   function is_ajax() {
     return $this->ajax;
   }
   
-  /* 
-    Function: get_name_label
-    
-    If you've got a rule with an optional second parameter that is used for a label,
-    use this to return an array if you're not sure whether is was passed or not. 
-    
-    Parameters: $text - String or Array
-    
-    Returns: Array
-    
-    Example:
-      list($name, $label) = Valerie::get_name_label($args);
-  
-  */
   function get_name_label($text) {
     if (is_array($text)) return array($text[0], str_replace('_', ' ', $text[1]));
     else return array($text, $text);
   }
   
-  /*
-    Function: get_value
-    
-    Return the value of a field.
-    
-    Parameters: $id - the id of the field
-    
-    Returns: String
-  */
-  
   function get_value($id) {
     return $this->values[$id];
   }
-  
-  /*
-    Function: get_rule
-    
-    Return the rule of a field.
-    
-    Parameters: $id - the id of the field
-    
-    Returns: Array
-  
-  */
   
   function get_rule($id) {
     return $this->rules[$id];
   }
   
-  /*
-    Function: is_empty
-    
-    Determines whether the value is empty
-    
-    Parameters: $val - the value to test
-    
-    Returns: Bool
-  */
-  
   function is_empty($val) {
     return ($val == '' || $val == null);
   }
   
-  /*
-    Function: format
-    
-    Simple string interpolation method.
-    It will replace {n} tokens depending on how many values were passed.
-    
-    Parameters:
-      $template - String with tokens, eg {1}.
-      $values - Array or String of values to replace tokens with.
-    
-    Returns: String
-    
-    Example:
-      $message = "The value {1} doesn't equal {2}.";
-      $args = array(2, 5);
-      $message = Validator::format($message);
-      
-      // $message now contains "The value 2 doesn't equal 5."
-  */
   function format($template, $values) {
     if (is_array($values)) {
       $replace = array();
