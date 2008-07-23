@@ -18,12 +18,12 @@ var default_mootools = {
         obj.message.set('text', message);
     },
     onFieldInvalidate: function(response, obj) {
-        try {
-            $(response.id).getNext('.validator_error').destroy();
-        } catch(e){}
+        var next = $(response.id).getNext();
+        if (next.hasClass('validator_error')) { next.destroy(); }
         new Element('span', {'class':'validator_error', text: response.message}).inject(response.id, 'after');
     },
     onFieldValidate: function(id, obj) {
-        $(id).getNext('.validator_error').destroy();
+        var next = $(id).getNext(); 
+        if (next.hasClass('validator_error')) { next.destroy(); }
     }
 }
