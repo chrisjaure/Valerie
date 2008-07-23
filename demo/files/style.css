@@ -1,0 +1,26 @@
+body {
+  background-color:#e0e0e0;
+}
+label {
+  display:block;
+}
+input {
+  margin-bottom:1em;
+}
+input[type=submit] {
+  display:block;
+}
+div.content {
+  margin:0 auto;
+  width:500px;
+  background-color:#fff;
+  padding:1em;
+  border:solid #bbb;
+  border-width:0 1px;
+}
+div.content h2 {
+  font-style:italic;
+  font-size:1em;
+  font-weight:normal;
+  color:#777;
+}
