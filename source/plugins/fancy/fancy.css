@@ -1,0 +1,22 @@
+.validator_message {
+
+}
+.validator_error {
+    width:245px;
+    background:url(top.gif) no-repeat top;
+    padding-top:6px;
+    position:absolute;
+    font-size:0.8em;
+}
+.validator_error .bottom {
+    width:245px;
+    height:6px;
+    background:url(bottom.gif) no-repeat;
+}
+.validator_error .content {
+    background:url(middle.gif) repeat-y;
+    color:#fff;
+    margin:0;
+    padding:0 10px;
+    line-height:1.2em;
+}
