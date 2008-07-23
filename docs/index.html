@@ -49,7 +49,7 @@
       </div>
       <div id="right">
       <h2><a name="intro">Introduction</a></h2>
-      <p class="desc">First let's take a look at how to set up Valerie 0.4. It's really not too difficult. Then we'll go through the customization options to make Valerie do what you want. Finally, you can take your time and look through the documentation.</p>
+      <p class="desc">First let's take a look at how to set up Valerie 0.5. It's really not too difficult. Then we'll go through the customization options to make Valerie do what you want. Finally, you can take your time and look through the documentation.</p>
       <h2><a name="usage">Usage</a></h2>
       <pre class="required">This code indicates a required step.</pre><pre class="optional">This code indicates steps used to enable non-javascript usability.</pre>
       <ul>
@@ -58,8 +58,9 @@
 session_start();
 $_SESSION['referer'] = $_SERVER['PHP_SELF'];
 ?&gt;</pre></li>
-      <li><p>Include a couple scripts and initialize Valerie in the head:</p>
-      <pre class="required">&lt;script type="text/javascript" src="path/to/mootools.js"&gt;&lt;/script&gt;
+      <li><p>Include a couple scripts and initialize Valerie in the head. A javascript library is needed for Valerie to work. Currently there are adapters for Mootools 1.2 and jQuery 1.2.6.</p>
+      <pre class="required">&lt;script type="text/javascript" src="path/to/javascript-library.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="path/to/js-library-adapter.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" src="path/to/valerieclient.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 window.addEvent('load', function(){
