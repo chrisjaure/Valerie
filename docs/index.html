@@ -70,7 +70,7 @@ window.addEvent('load', function(){
       </li>
       <li><p>Construct your form like this:</p>
       <pre>&lt;form id="form_id" method="post" action="validation_page.php"&gt;
-<span class="optional">&lt;?php echo $_SESSION['validator']['message'] ?&gt;</span>
+<span class="optional">&lt;?php echo $_SESSION['validator']['message']; ?&gt;</span>
 &lt;input type="text" name="<span class="required">field_1:rule1|rule2(arg1,arg2)</span>" id="<span class="required">field_1</span>" value="<span class="optional">&lt;?php echo $_SESSION['validator']['field_1']; ?&gt;</span>" /&gt; <span class="optional">&lt;?php echo $_SESSION['validator']['field_1_error']; ?&gt;</span>
 &lt;/form&gt;</pre>            
       </li>
@@ -348,16 +348,18 @@ $message = ValerieServer::format($message, $content);
       <h4>Function: Constructor</h4>
       <p class="desc">Creates a new instance of ValerieClient.</p>
       <h5>Syntax</h5>
-      <pre>new ValerieClient(form[, options])</pre>
+      <pre>new ValerieClient(form[, options[, plugin]])</pre>
       <h5>Arguments</h5>
       <ol>
         <li>form - (<span class="type">mixed</span>) Id or reference to the form to be validated.</li>
         <li>options (<span class="type">object</span>, optional) Options and events to set.</li>
+        <li>plugin (<span class="type">object</span>, optional) Use a plugin to display errors.</li>
       </ol>
       <h5>Options</h5>
       <ul>
-        <li>validateOnKeyUp - (<span class="type">bool</span>) Validate while the user types.</li>
+        <li>validateField - (<span class="type">bool</span>) Validate individual fields while the user types.</li>
         <li>ERROR - (<span class="type">string</span>) The message to display when there's an error.</li>
+        <li>LOADING - (<span class="type">string</span>) The text to display in the submit button when the form is being processed.</li>
       </ul>
       <h4><a name="cevents">Events: ValerieClient</a></h4>
       <p class="desc">Events that can be attached to an instance of ValerieClient.</p>
