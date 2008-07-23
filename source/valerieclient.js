@@ -22,13 +22,13 @@ var ValerieClient = function(){
         ERROR: "An error has occurred.",
         LOADING: "Loading..."
     };
-    this.initialize(arguments[0], arguments[1]);
+    this.initialize(arguments[0], arguments[1], arguments[2]);
 }
 ValerieClient.prototype = {
     
-    initialize: function(form, options){
+    initialize: function(form, options, plugin){
         var self = this;
-        adapter.setOptions(this, options);
+        adapter.setOptions(this, options, plugin);
         this.form = document.getElementById(form);
         this.submitBtn = adapter.getElement(this.form, 'input[type=submit]');
         this.submitBtn.orgVal = this.submitBtn.value;
@@ -91,7 +91,6 @@ ValerieClient.prototype = {
                     self.typing.time = new Date().getTime();
                     setTimeout(function(){
                         var time = new Date().getTime() - self.typing.time;
-                        jQuery('#blah').append(time + '<br />');
                         if (time >= 790 && !self.typing.sent) {
                             self.typing.sent = true;
                             adapter.sendAjax(self.periodical, self.form, '&_periodical=' + target.id);
@@ -110,7 +109,7 @@ ValerieClient.prototype = {
     },
     
     formInvalidate: function(data){
-        return adapter.fireEvent(this, 'onFormInvalidate', [data.content, this]);
+        return adapter.fireEvent(this, 'onFormInvalidate', [data.content, data.message, this]);
     },
     
     fieldValidate: function(data){

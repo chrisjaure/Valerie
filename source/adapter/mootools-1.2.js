@@ -8,38 +8,54 @@
 //------------------------------------------------------------------------------
 
 var adapter = {
-    
-    init: function(obj) {
-        obj.extended = new new Class({Implements: [Options, Events]});
+
+    init: function(obj){
+        obj.extended = new new Class({
+            Implements: [Options, Events]
+        });
     },
     
-    setOptions: function(obj, options) {
-        obj.options = $merge(obj.options, options);
+    setOptions: function(obj, options, plugin){
+        obj.options = $merge(obj.options, plugin ||
+        {}, options);
         obj.extended.setOptions(obj.options);
     },
     
-    getElement: function(el, selector) {
+    getElement: function(el, selector){
         return $(el).getElement(selector);
     },
     
-    addEvent: function(obj, type, fn) {
+    addEvent: function(obj, type, fn){
         try {
             obj.extended.addEvent(type, fn);
-        } catch(e){
+        } 
+        catch (e) {
             obj.addEvent(type, fn);
         }
     },
     
-    fireEvent: function(obj, type, args) {
+    fireEvent: function(obj, type, args){
         obj.extended.fireEvent(type, args);
     },
     
-    ajax: function(options) {
+    ajax: function(options){
         return new Request.JSON(options);
     },
     
-    sendAjax: function(ajax, form, string) {
-        ajax.options.data = $(form).toQueryString() + string; 
+    sendAjax: function(ajax, form, string){
+        var queryString = [];
+        form.getElements('input, select, textarea').each(function(el){
+            if (!el.name || el.disabled) return;
+            var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
+                return opt.value;
+            }) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
+            $splat(value).each(function(val){
+                if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
+            });
+        });
+        queryString = queryString.join('&');
+        
+        ajax.options.data = queryString + string;
         ajax.post();
     }
 }

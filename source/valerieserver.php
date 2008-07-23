@@ -89,7 +89,7 @@ class ValerieServer {
           foreach ($this->errors as $key => $error) {
             $arr[] = '{"id": "' . $key. '", "message": "' . $error . '"}';
           }
-          echo '{"type": 100, "content": [' . implode(', ', $arr) . ']}';
+          echo '{"type": 100, "content": [' . implode(', ', $arr) . '], "message": "' . VAL_INVALIDATE . '"}';
           die();
         } else {
           foreach($this->errors as $key => $error) {

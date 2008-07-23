@@ -13,8 +13,8 @@ var adapter = {
         obj.extended = jQuery('<div></div>');
     },
     
-    setOptions: function(obj, options) {
-        jQuery.extend(obj.options, options);
+    setOptions: function(obj, options, plugin) {
+        jQuery.extend(obj.options, plugin || {}, options);
         jQuery.each(obj.options, function(name){
             if (typeof this == 'function') {
                 obj.extended.bind(name, this);
