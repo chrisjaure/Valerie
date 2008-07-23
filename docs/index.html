@@ -70,11 +70,12 @@ window.addEvent('load', function(){
       </li>
       <li><p>Construct your form like this:</p>
       <pre>&lt;form id="form_id" method="post" action="validation_page.php"&gt;
-&lt;input type="text" name="<span class="required">field_1:rule1|rule2(arg1,arg2)</span>" id="<span class="required">field_1</span>" value="<span class="optional">&lt;?php echo $_SESSION['valerie']['field_1']; ?&gt;</span>" /&gt; <span class="optional">&lt;?php echo $_SESSION['valerie']['field_1_error']; ?&gt;</span>
+&lt;?php echo $_SESSION['validator']['message'] ?&gt;
+&lt;input type="text" name="<span class="required">field_1:rule1|rule2(arg1,arg2)</span>" id="<span class="required">field_1</span>" value="<span class="optional">&lt;?php echo $_SESSION['validator']['field_1']; ?&gt;</span>" /&gt; <span class="optional">&lt;?php echo $_SESSION['validator']['field_1_error']; ?&gt;</span>
 &lt;/form&gt;</pre>            
       </li>
       <li><p>In the form action page place the following:</p>
-      <pre><span class="required">require_once('path/to/valerie.php');
+      <pre><span class="required">require_once('path/to/valerieserver.php');
 $myValidator = new ValerieServer($_POST);
 $data = $myValidator->validate();</span>
 
@@ -98,7 +99,7 @@ $data = $myValidator->validate();</span>
     alert("Your form has been successfully submitted.");
   },
   'onFormInvalidate': function (response) {
-    var count = response.content.length;
+    var count = response.length;
     alert("Your form has " + count + " errors, but you have to guess what they are.");
   }
 }</pre>
