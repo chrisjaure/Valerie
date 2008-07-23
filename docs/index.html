@@ -66,6 +66,10 @@ $_SESSION['referer'] = $_SERVER['PHP_SELF'];
 window.addEvent('load', function(){
   new ValerieClient('form_id'); 
 });
+// or
+$(document).ready(function(){
+  new ValerieClient('form_id');
+});
 &lt;/script&gt;
 </pre>            
       </li>
@@ -88,18 +92,18 @@ $data = $myValidator->validate();</span>
       <h3><a name="localize">Localization</a></h3>
       <p>To change the language pack, simply pass in the filename upon instantiation of Valerie server-side.</p>
       <pre>$myValidator = new ValerieServer($_POST, 'en.php');</pre>
-      <p>There is also one message client-side that must be passed in upon instantiation:</p>
-      <pre>new ValerieClient('form_id', {'ERROR': 'Error message in your language.'});</pre>
+      <p>There are also two messages client-side that must be passed in upon instantiation:</p>
+      <pre>new ValerieClient('form_id', {ERROR: 'Error message in your language.', LOADING: 'Loading...'});</pre>
       <p>If you really wanted to, you could just add that message to your language pack and include that in the form page so you could then do this:
       <pre>new ValerieClient('form_id', {'ERROR': '&lt;?php echo VAL_ERROR; ?&gt;'});</pre>
       <p>To make your own language pack, just copy localization/en.php and translate it to your own language. Be sure to keep it in the localization directory.
       <h3><a name="events">Defining Events</a></h3>
       <p>You'll probably want to change the way certain events are handled, like how the error messages are displayed. To do that, just pass in an object with the events you want to overwrite. Events include onInitialize, onFormValidate, onFormInvalidate, onFieldValidate, onFieldInvalidate, onBeforeSubmit, onSubmitted, and onError.</p>
       <pre>new ValerieClient('form_id', {
-  'onFormValidate': function () {
+  onFormValidate: function () {
     alert("Your form has been successfully submitted.");
   },
-  'onFormInvalidate': function (response) {
+  onFormInvalidate: function (response) {
     var count = response.length;
     alert("Your form has " + count + " errors, but you have to guess what they are.");
   }
@@ -383,6 +387,7 @@ $message = ValerieServer::format($message, $content);
           <h6>Arguments</h6>
           <ol>
             <li>(<span class="type">array</span>) Array of objects with members 'id' and 'message'.</li>
+            <li>(<span class="type">string</span>) Invalid message.</li>
             <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
           </ol>
         </li><li>

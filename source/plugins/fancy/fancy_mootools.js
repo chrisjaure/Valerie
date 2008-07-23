@@ -19,7 +19,7 @@ var fancy_mootools = {
         $each(response, function(el){
             var coords = $(el.id).getCoordinates();
             obj.error_message.clone().inject(el.id, 'after').setStyles({
-                top: coords.top -2,
+                top: coords.top - 2,
                 left: coords.right + 10,
                 opacity:0
             }).fade('in').getElement('.content').set('text', el.message);

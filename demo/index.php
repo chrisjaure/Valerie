@@ -7,18 +7,18 @@ $_SESSION['referer'] = $_SERVER['PHP_SELF'];
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
   <title>Valerie Demo</title>
-    <script type="text/javascript" src="files/mootools-1.2-core-yc.js"></script>
-    <script type="text/javascript" src="../source/adapter/mootools-1.2.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+    <script type="text/javascript" src="../source/adapter/jquery-1.2.6.js"></script>
     <script type="text/javascript" src="../source/valerieclient.js"></script>
-    <script type="text/javascript" src="../source/plugins/fancy/fancy_mootools.js"></script>
+    <script type="text/javascript" src="../source/plugins/fancy/fancy_jquery.js"></script>
     <link rel="stylesheet" type="text/css" href="files/reset.css" />
     <link rel="stylesheet" type="text/css" href="files/generic.css" />
     <link rel="stylesheet" type="text/css" href="files/style.css" />
     <link rel="stylesheet" type="text/css" href="../source/plugins/fancy/fancy.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="text/javascript">
-    window.addEvent('load', function() {
-      new ValerieClient('frm', {'validateField':true}, fancy_mootools);
+    $(function() {
+      new ValerieClient('frm', {'validateField':true}, fancy_jquery);
     });
     </script>
   </head>
