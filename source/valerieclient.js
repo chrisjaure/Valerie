@@ -7,146 +7,134 @@
 //	valerieclient.js
 //------------------------------------------------------------------------------
 
-var ValerieClient = new Class({
+var ValerieClient = function(){
+    adapter.init(this);
+    this.options = {
+        onInitialize: function(){},
+        onFormValidate: function(){},
+        onFormInvalidate: function(){},
+        onFieldValidate: function(){},
+        onFieldInvalidate: function(){},
+        onError: function(){},
+        onBeforeSubmit: function(){},
+        onSubmitted: function(){},
+        validateField: false,
+        ERROR: "An error has occurred.",
+        LOADING: "Loading..."
+    };
+    this.initialize(arguments[0], arguments[1]);
+}
+ValerieClient.prototype = {
     
-    Implements: [Events, Options],
-    
-    options: {
-      onInitialize: function (obj) {
-        obj.fieldMessage = new Hash(); 
-        obj.form.getElements('input[type=text], input[type=password], textarea').each(function(el){
-          var coordinates = el.getCoordinates();
-          var newEl = new Element('div', {
-            'class': 'error',
-            'styles': {
-              'left': coordinates.right + 10,
-              'top': coordinates.top,
-              'opacity': 0
+    initialize: function(form, options){
+        var self = this;
+        adapter.setOptions(this, options);
+        this.form = document.getElementById(form);
+        this.submitBtn = adapter.getElement(this.form, 'input[type=submit]');
+        this.submitBtn.orgVal = this.submitBtn.value;
+        this.typing = {
+            time: null,
+            sent: false
+        };
+        this.req = adapter.ajax({
+            url: this.form.action,
+            onRequest: function(){
+                self.beforeSubmit();
+            },
+            onComplete: function(){
+                self.submitted();
+            },
+            onSuccess: function(response){
+                if (response) {
+                    if (parseInt(response.type) > 1) {
+                        self.formInvalidate(response);
+                    }
+                    else {
+                        self.formValidate(response);
+                    }
+                }
+                else {
+                    self.error();
+                }
+            },
+            onFailure: function(){
+                self.error();
             }
-          }).inject(el, 'after');
-          obj.fieldMessage.set(el.get('id'), newEl);
         });
-      }, 
-      onFormValidate: function (message, obj) {
-        obj.message.set('class', 'message').set('text', message);
-        window.scrollTo(0, obj.message.getPosition().y);
-      },
-      onFormInvalidate: function (errors, obj) {
-        var position = $(errors[0].id).getPrevious().getPosition();
-        window.scrollTo(0, position.y);
-        errors.each(function(error) {
-          obj.fieldMessage.get(error.id).set('text', error.message).fade('in');
-        });
-      },
-      onFieldInvalidate: function (error, obj) {
-        obj.fieldMessage.get(error.id).set('text', error.message).fade('in');
-      },
-      onFieldValidate: function (id, obj) {
-        obj.fieldMessage.get(id).fade('out');
-      },
-      onError: function (obj) {
-        obj.message.set('class', 'error').set('text', obj.options.ERROR);
-      },
-      onSubmitted: function (obj) {
-        obj.message.empty();
-        obj.fieldMessage.each(function(el){
-          el.fade('hide');
-        });
-      },
-      validateField: false,
-      ERROR: "An error has occurred."
-    },
-    
-    initialize: function (form, options) {
-      this.setOptions(options);
-      this.form = $(form);
-      this.message = new Element('p', {'class':'error'}).inject(form, 'before');
-      this.submitBtn = this.form.getElement('input[type=submit]');
-      this.submitBtn.orgVal = this.submitBtn.value;
-      this.typing = false;
-      this.req = new Request({
-        url: this.form.get('action'),
-        onRequest: this.onBeforeSubmit.bind(this),
-        onComplete: this.onSubmitted.bind(this),
-        onSuccess: function (text) {
-          var response = JSON.decode.attempt(text);
-          if (response) {
-            if (response.type.toInt() > 1) {
-              this.onFormInvalidate(response);
-            } else {
-              this.onFormValidate(response);
+        
+        this.periodical = adapter.ajax({
+            url: this.form.action,
+            onSuccess: function(response){
+                if (response) {
+                    if (parseInt(response.type) > 1) {
+                        self.fieldInvalidate(response);
+                    }
+                    else {
+                        self.fieldValidate(response);
+                    }
+                }
+            },
+            onComplete: function() {
+                self.typing.sent = false;
             }
-          } else this.onError();
-        }.bind(this),
-        onFailure: this.onError.bind(this)
-      });
-      
-      this.periodical = new Request({
-        url: this.form.get('action'),
-        onSuccess: function (text) {
-          var response = JSON.decode.attempt(text);
-          if (response) {
-            if (response.type.toInt() > 1) {
-              this.onFieldInvalidate(response);
-            } else {
-              this.onFieldValidate(response);
-            }
-          }
-        }.bind(this)
-      });
-      
-      this.form.addEvent('submit', function(){
-        this.req.send(this.form.toQueryString() + '&_ajax=1');
-        return false;
-      }.bind(this));
-      
-      if (this.options.validateOnKeyUp) {
-        this.form.addEvent('keyup', function(event) {
-          var target = $(event.target);
-          var type = target.get('type');
-          if ((type == 'text' || type == 'password' || target.get('tag') == 'textarea') && event.code != 9) {
-            this.typing = $time();
-            (function(){
-              if ($time() - this.typing >= 750) {
-                this.periodical.send(this.form.toQueryString() + '&_periodical=' + target.get('id'));
-              }
-            }).delay(800, this);
-          }
-        }.bind(this));
-      }
-      
-      this.fireEvent('onInitialize', this);
+        });
+        
+        adapter.addEvent(this.form, 'submit', function(){
+            adapter.sendAjax(self.req, self.form, '&_ajax=1');
+            return false;
+        });
+        
+        if (this.options.validateField) {
+            adapter.addEvent(this.form, 'keyup', function(event){
+                var target = event.target, type = target.type, key = event.code || event.which;
+                if ((type == 'text' || type == 'password' || target.tagName.toLowerCase() == 'textarea') && key != 9) {
+                    self.typing.time = new Date().getTime();
+                    setTimeout(function(){
+                        var time = new Date().getTime() - self.typing.time;
+                        jQuery('#blah').append(time + '<br />');
+                        if (time >= 790 && !self.typing.sent) {
+                            self.typing.sent = true;
+                            adapter.sendAjax(self.periodical, self.form, '&_periodical=' + target.id);
+                        }
+                    }, 800);
+                }
+            });
+        }
+        
+        adapter.fireEvent(this, 'onInitialize', this);
     },
     
-    onFormValidate: function (data) {
-      this.form.reset();
-      return this.fireEvent('onFormValidate', [data.content.message, this]);
+    formValidate: function(data){
+        this.form.reset();
+        return adapter.fireEvent(this, 'onFormValidate', [data.content.message, this]);
     },
     
-    onFormInvalidate: function (data) {
-      return this.fireEvent('onFormInvalidate', [data.content, this]);
+    formInvalidate: function(data){
+        return adapter.fireEvent(this, 'onFormInvalidate', [data.content, this]);
     },
     
-    onFieldValidate: function (data) {
-      return this.fireEvent('onFieldValidate', [data.content.id, this]);
+    fieldValidate: function(data){
+        return adapter.fireEvent(this, 'onFieldValidate', [data.content.id, this]);
     },
     
-    onFieldInvalidate: function (data) {
-      return this.fireEvent('onFieldInvalidate', [data.content, this]);
+    fieldInvalidate: function(data){
+        return adapter.fireEvent(this, 'onFieldInvalidate', [data.content, this]);
     },
     
-    onError: function () {
-      return this.fireEvent('onError', this);
+    error: function(){
+        return adapter.fireEvent(this, 'onError', this);
     },
     
-    onBeforeSubmit: function () {
-      this.submitBtn.set({value: 'Loading...', disabled: true});
-      return this.fireEvent('onBeforeSubmit', this);
+    beforeSubmit: function(){
+        this.submitBtn.value = this.options.LOADING;
+        this.submitBtn.disabled = true;
+        return adapter.fireEvent(this, 'onBeforeSubmit', this);
     },
     
-    onSubmitted: function () {
-      this.submitBtn.set({value: this.submitBtn.orgVal, disabled: false});
-      return this.fireEvent('onSubmitted', this);
+    submitted: function(){
+        this.submitBtn.value = this.submitBtn.orgVal;
+        this.submitBtn.disabled = false;
+        return adapter.fireEvent(this, 'onSubmitted', this);
     }
     
-});
+}

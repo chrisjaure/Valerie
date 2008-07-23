@@ -133,7 +133,7 @@ class ValerieServer {
   
   function back($bool = null) {
     if (!isset($bool)) $bool = $this->ajax;
-    if (!$bool) headers("Location: {$_SESSION['referer']}");
+    if (!$bool) header("Location: {$_SESSION['referer']}");
   }
   
   function is_ajax() {
