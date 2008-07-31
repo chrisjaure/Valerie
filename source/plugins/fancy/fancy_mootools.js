@@ -13,7 +13,7 @@ var fancy_mootools = (function(){
             obj.message = new Element('div', {
                 'class': 'validator_message'
             }).inject(obj.form, 'top');
-            obj.error_message = new Element('div', {
+            obj.error_message = new Element('span', {
                 'class': 'validator_error',
                 html: '<p class="content"></p><div class="bottom"></div>'
             }); 

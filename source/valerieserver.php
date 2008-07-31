@@ -1,6 +1,6 @@
 <?php
 //------------------------------------------------------------------------------
-//	Valerie v0.4
+//	Valerie v0.5
 //	(c) 2008 Chris Jaure
 //	license: MIT License
 //	website: http://www.chromasynthetic.com/
@@ -93,20 +93,21 @@ class ValerieServer {
           die();
         } else {
           foreach($this->errors as $key => $error) {
-              $_SESSION['validator'][$key . '_error'] = "<span class=\"error\">$error</span>";
+              $_SESSION['validator'][$key . '_error'] = $error;
           }
           foreach($this->values as $key => $value) {
             $_SESSION['validator'][$key] = $value;
           }
-          $_SESSION['validator']['message'] = '<p class="error">' . VAL_INVALIDATE . '</p>';
-          header("Location: {$_SESSION['referer']}");
-          die();
+          $_SESSION['validator']['message'] = VAL_INVALIDATE;
+          $_SESSION['validator']['message_type'] = 'error';
+          $this->back();
         }
       } else {
         if ($this->ajax) {
           echo '{"type": 1, "content": {"message": "' . VAL_VALIDATE . '"}}';
         } else {
-          $_SESSION['validator']['message'] = '<p class="success">' . VAL_VALIDATE . '</p>';
+          $_SESSION['validator']['message'] = VAL_VALIDATE;
+          $_SESSION['validator']['message_type'] = 'success';
         }
       }
     } else {
@@ -133,7 +134,10 @@ class ValerieServer {
   
   function back($bool = null) {
     if (!isset($bool)) $bool = $this->ajax;
-    if (!$bool) header("Location: {$_SESSION['referer']}");
+    if (!$bool) {
+        header("Location: {$_SESSION['referer']}");
+        exit();
+    }
   }
   
   function is_ajax() {
