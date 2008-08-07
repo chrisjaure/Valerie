@@ -127,6 +127,20 @@ function is_less_than($val, $arg, $err) {
       <p>Let me explain the function is_less_than() a little bit. First, you'll notice that it automatically receives the field value, any arguments you may have passed in the html, and the error message. You have the option of returning the result plus the error message with substituted values. If you don't want to change the message, just return the boolean result. Here's how you'd use it in the html:</p>
       <pre>&lt;input type="text" name="field_id:less_than(5)" id="field_id" /&gt;</pre>
       <p>Secondly, you'll notice I used a couple tokens in the error message that I replaced with Valerie::format(). I included a few helper methods that I'll explain next.</p>
+      <p>If you don't like the way Valerie validates, you can use any other validator. Let's take the Zend framework validator for example:</p>
+      <pre>$myValidator = new ValerieServer($_POST);
+$myValidator->register(array(
+  'email' => array('zend_email', "{1} is not a valid email address");
+));
+
+$data = $myValidator->validate();
+
+require_once 'Zend/Validate.php';
+
+function zend_email($val, $arg, $err) {
+  $err = ValerieServer::format($err, $val);
+  return array(Zend_Validate::is($val, 'EmailAddress'), $err);
+}</pre>
       <h3><a name="helper">Need Help?</a></h3>
       <p>Lets take a look at some helper methods in action:</p>
       <pre>$iHeartValerie = new ValerieServer($_POST);
