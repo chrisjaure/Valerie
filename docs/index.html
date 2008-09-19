@@ -1,65 +1,115 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
-	<title>Valerie - Simple Server-side Ajax Form Validation</title>
-    <link rel="stylesheet" type="text/css" href="files/reset.css" />
-		<link rel="stylesheet" type="text/css" href="files/generic.css" />
-    <link rel="stylesheet" type="text/css" href="files/style.css" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	</head>
-	<body>
-		<div id="container" class="content">
-      <h1 id="header"><div class="text">Simple Server-side Ajax Form Validation</div></h1>
-      <div id="left">
-        <h2>Contents</h2>
-        <ul>
-          <li><a href="#intro">Introduction</a></li>
-          <li><a href="#usage">Usage</a></li>
-          <li><a href="#customize">Customizations</a>
-            <ul>
-              <li><a href="#localize">Localization</a></li>
-              <li><a href="#rules">Defining Rules</a></li>
-              <li><a href="#events">Defining Events</a></li>
-              <li><a href="#helper">Need Help?</a></li>
-            </ul>
-          </li>
-          <li><a href="#document">Documentation</a>
-            <ul>
-              <li><a href="#valserver">ValerieServer</a>
+    <head>
+        <title>Valerie - Simple Server-side Ajax Form Validation</title>
+        <link href="files/tripoli.simple.css" type="text/css" rel="stylesheet">
+        <!--[if IE]><link rel="stylesheet" type="text/css" href="files/tripoli.simple.ie.css"><![endif]-->
+        <link rel="stylesheet" type="text/css" href="files/style.css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+        <div id="container" class="content">
+            <h1 id="header">
+                <div class="text">
+                    Simple Server-side Ajax Form Validation
+                </div>
+            </h1>
+            <div id="left">
+                <h2>Contents</h2>
                 <ul>
-                  <li><a href="#fvalidate">validate</a></li>
-                  <li><a href="#fregister">register</a></li>
-                  <li><a href="#fback">back</a></li>
-                  <li><a href="#fnamelabel">get_name_label</a></li>
-                  <li><a href="#fgetval">get_value</a></li>
-                  <li><a href="#fgetrule">get_rule</a></li>
-                  <li><a href="#fempty">is_empty</a></li>
-                  <li><a href="#fformat">format</a></li>
-                  <li><a href="#srules">Rules</a></li>
+                    <li>
+                        <a href="#intro">Introduction</a>
+                    </li>
+                    <li>
+                        <a href="#usage">Usage</a>
+                    </li>
+                    <li>
+                        <a href="#customize">Customizations</a>
+                        <ul>
+                            <li>
+                                <a href="#localize">Localization</a>
+                            </li>
+                            <li>
+                                <a href="#rules">Defining Rules</a>
+                            </li>
+                            <li>
+                                <a href="#events">Defining Events</a>
+                            </li>
+                            <li>
+                                <a href="#helper">Need Help?</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#document">Documentation</a>
+                        <ul>
+                            <li>
+                                <a href="#valserver">ValerieServer</a>
+                                <ul>
+                                    <li>
+                                        <a href="#fvalidate">validate</a>
+                                    </li>
+                                    <li>
+                                        <a href="#fregister">register</a>
+                                    </li>
+                                    <li>
+                                        <a href="#fback">back</a>
+                                    </li>
+                                    <li>
+                                        <a href="#fnamelabel">get_name_label</a>
+                                    </li>
+                                    <li>
+                                        <a href="#fgetval">get_value</a>
+                                    </li>
+                                    <li>
+                                        <a href="#fgetrule">get_rule</a>
+                                    </li>
+                                    <li>
+                                        <a href="#fempty">is_empty</a>
+                                    </li>
+                                    <li>
+                                        <a href="#fformat">format</a>
+                                    </li>
+                                    <li>
+                                        <a href="#srules">Rules</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#valclient">ValerieClient</a>
+                                <ul>
+                                    <li>
+                                        <a href="#cevents">Events</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
-              </li>
-              <li><a href="#valclient">ValerieClient</a>
+            </div>
+            <div id="right">
+                <h2><a name="intro">Introduction</a></h2>
+                <p class="desc">
+                    First let's take a look at how to set up Valerie 0.5. It's really not too difficult. Then we'll go through the customization options to make Valerie do what you want. Finally, you can take your time and look through the documentation.
+                </p>
+                <h2><a name="usage">Usage</a></h2>
+                <pre class="required">This code indicates a required step.</pre>
+                <pre class="optional">This code indicates steps used to enable non-javascript usability.</pre>
                 <ul>
-                  <li><a href="#cevents">Events</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div id="right">
-      <h2><a name="intro">Introduction</a></h2>
-      <p class="desc">First let's take a look at how to set up Valerie 0.5. It's really not too difficult. Then we'll go through the customization options to make Valerie do what you want. Finally, you can take your time and look through the documentation.</p>
-      <h2><a name="usage">Usage</a></h2>
-      <pre class="required">This code indicates a required step.</pre><pre class="optional">This code indicates steps used to enable non-javascript usability.</pre>
-      <ul>
-      <li><p>Place this at the top of your form page:</p>
-      <pre class="optional">&lt;?php
-session_start();
-$_SESSION['referer'] = $_SERVER['PHP_SELF'];
-?&gt;</pre></li>
-      <li><p>Include a couple scripts and initialize Valerie in the head. A javascript library is needed for Valerie to work. Currently there are adapters for Mootools 1.2 and jQuery 1.2.6.</p>
-      <pre class="required">&lt;script type="text/javascript" src="path/to/javascript-library.js"&gt;&lt;/script&gt;
+                    <li>
+                        <p>
+                            Place this at the top of your form page:
+                        </p>
+                        <pre class="optional">&lt;?php
+include('../source/valeriehelper.php');
+$helper = new ValerieHelper('&lt;span class="validator_error_wrapper"&gt;&lt;span class="validator_error"&gt;&lt;p class="content"&gt;{message}&lt;/p&gt;&lt;div class="bottom"&gt;&lt;/div&gt;&lt;/span&gt;&lt;/span&gt;');
+?&gt;</pre>
+                    </li>
+                    <li>
+                        <p>
+                            Include a couple scripts and initialize Valerie in the head. A javascript library is needed for Valerie to work. Currently there are adapters for Mootools 1.2 and jQuery 1.2.6.
+                        </p>
+                        <pre class="required">&lt;script type="text/javascript" src="path/to/javascript-library.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" src="path/to/js-library-adapter.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" src="path/to/valerieclient.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
@@ -71,35 +121,52 @@ $(document).ready(function(){
   new ValerieClient('form_id');
 });
 &lt;/script&gt;
-</pre>            
-      </li>
-      <li><p>Construct your form like this:</p>
-      <pre>&lt;form id="form_id" method="post" action="validation_page.php"&gt;
-<span class="optional">&lt;?php echo $_SESSION['validator']['message']; ?&gt;</span>
-&lt;input type="text" name="<span class="required">field_1:rule1|rule2(arg1,arg2)</span>" id="<span class="required">field_1</span>" value="<span class="optional">&lt;?php echo $_SESSION['validator']['field_1']; ?&gt;</span>" /&gt; <span class="optional">&lt;?php echo $_SESSION['validator']['field_1_error']; ?&gt;</span>
-&lt;/form&gt;</pre>            
-      </li>
-      <li><p>In the form action page place the following:</p>
-      <pre><span class="required">require_once('path/to/valerieserver.php');
+</pre>
+                    </li>
+                    <li>
+                        <p>
+                            Construct your form like this:
+                        </p>
+                        <pre>&lt;form id="form_id" method="post" action="validation_page.php"&gt;
+<span class="optional">&lt;?php $helper-&gt;printMessage('&lt;p class="{type}"&gt;{message}&lt;/p&gt;'); ?&gt;</span>
+&lt;input type="text" name="<span class="required">field_1:rule1|rule2(arg1,arg2)</span>" id="<span class="required">field_1</span>" value="<span class="optional">&lt;?php $helper->printValue('field_1'); ?&gt;</span>" /&gt; <span class="optional">&lt;?php $helper->printError('field_1'); ?&gt;</span>
+&lt;/form&gt;</pre>
+                    </li>
+                    <li>
+                        <p>
+                            In the form action page place the following:
+                        </p>
+                        <pre><span class="required">require_once('path/to/valerieserver.php');
 $myValidator = new ValerieServer($_POST);
 $data = $myValidator->validate();</span>
 
 // process $data ...
 
 <span class="optional">$myValidator->back();</span></pre>
-      </ul>
-      <h2><a name="customize">Customizations</a></h2>
-      <h3><a name="localize">Localization</a></h3>
-      <p>To change the language pack, simply pass in the filename upon instantiation of Valerie server-side.</p>
-      <pre>$myValidator = new ValerieServer($_POST, 'en.php');</pre>
-      <p>There are also two messages client-side that must be passed in upon instantiation:</p>
-      <pre>new ValerieClient('form_id', {ERROR: 'Error message in your language.', LOADING: 'Loading...'});</pre>
-      <p>If you really wanted to, you could just add that message to your language pack and include that in the form page so you could then do this:
-      <pre>new ValerieClient('form_id', {'ERROR': '&lt;?php echo VAL_ERROR; ?&gt;'});</pre>
-      <p>To make your own language pack, just copy localization/en.php and translate it to your own language. Be sure to keep it in the localization directory.
-      <h3><a name="events">Defining Events</a></h3>
-      <p>You'll probably want to change the way certain events are handled, like how the error messages are displayed. To do that, just pass in an object with the events you want to overwrite. Events include onInitialize, onFormValidate, onFormInvalidate, onFieldValidate, onFieldInvalidate, onBeforeSubmit, onSubmitted, and onError.</p>
-      <pre>new ValerieClient('form_id', {
+                    </li>
+                </ul>
+                <h2><a name="customize">Customizations</a></h2>
+                <h3><a name="localize">Localization</a></h3>
+                <p>
+                    To change the language pack, simply pass in the filename upon instantiation of Valerie server-side.
+                </p>
+                <pre>$myValidator = new ValerieServer($_POST, 'en.php');</pre>
+                <p>
+                    There are also two messages client-side that must be passed in upon instantiation:
+                </p>
+                <pre>new ValerieClient('form_id', {ERROR: 'Error message in your language.', LOADING: 'Loading...'});</pre>
+                <p>
+                    If you really wanted to, you could just add those messages to your language pack and include that in the form page so you could then do this:
+                </p>
+                <pre>new ValerieClient('form_id', {'ERROR': '&lt;?php echo VAL_ERROR; ?&gt;', 'LOADING': '&lt;?php echo VAL_LOADING; ?&gt;'} );</pre>
+                <p>
+                    To make your own language pack, just copy localization/en.php and translate it to your own language. Be sure to keep it in the localization directory.
+                </p>
+                <h3><a name="events">Defining Events</a></h3>
+                <p>
+                    You'll probably want to change the way certain events are handled, like how the error messages are displayed. To do that, just pass in an object with the events you want to overwrite. Events include onInitialize, onFormValidate, onFormInvalidate, onFieldValidate, onFieldInvalidate, onBeforeSubmit, onSubmitted, and onError.
+                </p>
+                <pre>new ValerieClient('form_id', {
   onFormValidate: function () {
     alert("Your form has been successfully submitted.");
   },
@@ -108,10 +175,14 @@ $data = $myValidator->validate();</span>
     alert("Your form has " + count + " errors, but you have to guess what they are.");
   }
 }</pre>
-      <p>You can look in the class at the default events to get an idea how to write your own. Every event is automatically passed the instance of Valerie. Additionally, onFormValidate, onFormInvalidate, onFieldValidate, and onFieldInvalidate receive the parsed JSON response from the server.</p>
-      <h3><a name="rules">Defining Rules</a></h3>
-      <p>It's pretty easy to define your own validation rules. You have the choice to use a regular expression or a function. Before you validate the data, just register your new rules.</p>
-      <pre>$myValidator = new ValerieServer($_POST);
+                <p>
+                    You can look in the class at the default events to get an idea how to write your own. Every event is automatically passed the instance of Valerie. Additionally, onFormValidate, onFormInvalidate, onFieldValidate, and onFieldInvalidate receive the parsed JSON response from the server.
+                </p>
+                <h3><a name="rules">Defining Rules</a></h3>
+                <p>
+                    It's pretty easy to define your own validation rules. You have the choice to use a regular expression or a function. Before you validate the data, just register your new rules.
+                </p>
+                <pre>$myValidator = new ValerieServer($_POST);
 $myValidator->register(array(
   'rule_name' => array('regex or function name', "Error message."),
   'digit' => array('/^\d$/', "This field must contain a single numerical character."),
@@ -124,11 +195,17 @@ function is_less_than($val, $arg, $err) {
   $err = ValerieServer::format($err, array($val, $arg));
   return array((float) $val &lt; (float) $arg, $err);
 }</pre>
-      <p>Let me explain the function is_less_than() a little bit. First, you'll notice that it automatically receives the field value, any arguments you may have passed in the html, and the error message. You have the option of returning the result plus the error message with substituted values. If you don't want to change the message, just return the boolean result. Here's how you'd use it in the html:</p>
-      <pre>&lt;input type="text" name="field_id:less_than(5)" id="field_id" /&gt;</pre>
-      <p>Secondly, you'll notice I used a couple tokens in the error message that I replaced with Valerie::format(). I included a few helper methods that I'll explain next.</p>
-      <p>If you don't like the way Valerie validates, you can use any other validator. Let's take the Zend framework validator for example:</p>
-      <pre>$myValidator = new ValerieServer($_POST);
+                <p>
+                    Let me explain the function is_less_than() a little bit. First, you'll notice that it automatically receives the field value, any arguments you may have passed in the html, and the error message. You have the option of returning the result plus the error message with substituted values. If you don't want to change the message, just return the boolean result. Here's how you'd use it in the html:
+                </p>
+                <pre>&lt;input type="text" name="field_id:less_than(5)" id="field_id" /&gt;</pre>
+                <p>
+                    Secondly, you'll notice I used a couple tokens in the error message that I replaced with Valerie::format(). I included a few helper methods that I'll explain next.
+                </p>
+                <p>
+                    If you don't like the way Valerie validates, you can use any other validator. Let's take the Zend framework validator for example:
+                </p>
+                <pre>$myValidator = new ValerieServer($_POST);
 $myValidator->register(array(
   'email' => array('zend_email', "{1} is not a valid email address");
 ));
@@ -141,9 +218,11 @@ function zend_email($val, $arg, $err) {
   $err = ValerieServer::format($err, $val);
   return array(Zend_Validate::is($val, 'EmailAddress'), $err);
 }</pre>
-      <h3><a name="helper">Need Help?</a></h3>
-      <p>Lets take a look at some helper methods in action:</p>
-      <pre>$iHeartValerie = new ValerieServer($_POST);
+                <h3><a name="helper">Need Help?</a></h3>
+                <p>
+                    Lets take a look at some helper methods in action:
+                </p>
+                <pre>$iHeartValerie = new ValerieServer($_POST);
 $ajax = <strong>$iHeartValerie->is_ajax()</strong>;
 
 $iHeartValerie->register(array(
@@ -165,49 +244,67 @@ function is_less_than_field($val, $args, $err) {
 }
 
 <strong>ValerieServer::back($ajax)</strong>;</pre>
-      <p>And this is how we'd use our new rule:</p>
-      <pre>&lt;label for="age"&gt;Your Age&lt;label&gt;
+                <p>
+                    And this is how we'd use our new rule:
+                </p>
+                <pre>&lt;label for="age"&gt;Your Age&lt;label&gt;
 &lt;input type="text" name="age:int" id="age" /&gt;
 
 &lt;label for="ch_age"&gt;Your Child's Age&lt;label&gt;
 &lt;input type="text" name="ch_age:less_than_field(age,Your_Age)" id="ch_age" /&gt;</pre>
-      <h2><a name="document">Documentation</a></h2>
-      <h3><a name="valserver">Class: ValerieServer</a></h3>
-      <h4>Function: Constructor</h4>
-      <p class="desc">Creates a new instance of ValerieServer.</p>
-      <h5>Syntax</h5>
-      <pre>new ValerieServer($data[, $lang])</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>$data - (<span class="type">array</span>) Post data to be validated.</li>
-        <li>$lang - (<span class="type">string</span>, optional: defaults to 'en.php') Language pack to use.</li>
-      </ol>
-      <h5>Returns</h5>
-      <ul>
-        <li>(<span class="type">object</span>) A new ValerieServer instance.</li>
-      </ul>
-      <h5>Example</h5>
-      <pre>$myValidator = new ValerieServer($_POST);</pre>
-      <h4><a name="fvalidate">Function: validate</a></h4>
-      <p class="desc">Validates data stored in ValerieServer instance.</p>
-      <h5>Syntax</h5>
-      <pre>ValerieServer->validate()</pre>
-      <h5>Returns</h5>
-      <ul>
-        <li>(<span class="type">array</span>) An array of validated POST data.</li>
-      </ul>
-      <h5>Example</h5>
-      <pre>$data = $myValidator->validate();</pre>
-      <h4><a name="fregister">Function: register</a></h4>
-      <p class="desc">Adds new rules to check fields against.</p>
-      <h5>Syntax</h5>
-      <pre>ValerieServer->register($patterns)</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>$patterns - (<span class="type">array</span>) Array of new rules.</li>
-      </ol>
-      <h5>Example</h5>
-      <pre>$myValidator->register(array(
+                <h2><a name="document">Documentation</a></h2>
+                <h3><a name="valserver">Class: ValerieServer</a></h3>
+                <h4>Function: Constructor</h4>
+                <p class="desc">
+                    Creates a new instance of ValerieServer.
+                </p>
+                <h5>Syntax</h5>
+                <pre>new ValerieServer($data[, $lang])</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        $data - (<span class="type">array</span>) Post data to be validated.
+                    </li>
+                    <li>
+                        $lang - (<span class="type">string</span>, optional: defaults to 'en.php') Language pack to use.
+                    </li>
+                </ol>
+                <h5>Returns</h5>
+                <ul>
+                    <li>
+                        (<span class="type">object</span>) A new ValerieServer instance.
+                    </li>
+                </ul>
+                <h5>Example</h5>
+                <pre>$myValidator = new ValerieServer($_POST);</pre>
+                <h4><a name="fvalidate">Function: validate</a></h4>
+                <p class="desc">
+                    Validates data stored in ValerieServer instance.
+                </p>
+                <h5>Syntax</h5>
+                <pre>ValerieServer->validate()</pre>
+                <h5>Returns</h5>
+                <ul>
+                    <li>
+                        (<span class="type">array</span>) An array of validated POST data.
+                    </li>
+                </ul>
+                <h5>Example</h5>
+                <pre>$data = $myValidator->validate();</pre>
+                <h4><a name="fregister">Function: register</a></h4>
+                <p class="desc">
+                    Adds new rules to check fields against.
+                </p>
+                <h5>Syntax</h5>
+                <pre>ValerieServer->register($patterns)</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        $patterns - (<span class="type">array</span>) Array of new rules.
+                    </li>
+                </ol>
+                <h5>Example</h5>
+                <pre>$myValidator->register(array(
   'available' => array('is_available', "This username is not available. Please choose another.");
 ));
 
@@ -215,32 +312,42 @@ function is_available($val) {
   // check the database to see is username is available
   return $result;
 }</pre>
-      <h4><a name="fback">Function: back</a></h4>
-      <p class="desc">Redirects user back to form if the request is not ajax.</p>
-      <h5>Syntax</h5>
-      <pre>ValerieServer->back([$ajax])</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>$ajax - (<span class="type">bool</span>, optional) Indicates if the request is ajax.</li>
-      </ol>
-      <h5>Example</h5>
-      <pre>$myValidator->back();
+                <h4><a name="fback">Function: back</a></h4>
+                <p class="desc">
+                    Redirects user back to form if the request is not ajax.
+                </p>
+                <h5>Syntax</h5>
+                <pre>ValerieServer->back([$ajax])</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        $ajax - (<span class="type">bool</span>, optional) Indicates if the request is ajax.
+                    </li>
+                </ol>
+                <h5>Example</h5>
+                <pre>$myValidator->back();
 // OR
 ValerieServer::back($is_ajax);</pre>
-      <h4><a name="fnamelabel">Function: get_name_label</a></h4>
-      <p class="desc">Returns an array with the second element filtered (underscores are replace with spaces).</p>
-      <h5>Syntaxt</h5>
-      <pre>ValerieServer::get_name_label($args)</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>$args - (<span class="type">mixed</span>) A string or array containing a name and label.</li>
-      </ol>
-      <h5>Returns</h5>
-      <ul>
-        <li>(<span class="type">array</span>) An array with a length of 2 containing a name and label (if it exists).</li>
-      </ul>
-      <h5>Example</h5>
-      <pre>$name = 'field_1';
+                <h4><a name="fnamelabel">Function: get_name_label</a></h4>
+                <p class="desc">
+                    Returns an array with the second element filtered (underscores are replace with spaces).
+                </p>
+                <h5>Syntaxt</h5>
+                <pre>ValerieServer::get_name_label($args)</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        $args - (<span class="type">mixed</span>) A string or array containing a name and label.
+                    </li>
+                </ol>
+                <h5>Returns</h5>
+                <ul>
+                    <li>
+                        (<span class="type">array</span>) An array with a length of 2 containing a name and label (if it exists).
+                    </li>
+                </ul>
+                <h5>Example</h5>
+                <pre>$name = 'field_1';
 $nameLabel = array('field_1', 'Field_Label');
 
 $field = ValerieServer::get_name_label($name);
@@ -248,197 +355,409 @@ $field = ValerieServer::get_name_label($name);
 
 $field = ValerieServer::get_name_label($nameLabel);
 // $field contains: array('field_1', 'Field Label');</pre>
-      <h4><a name="fgetval">Function: get_value</a></h4>
-      <p class="desc">Gets the value of a field.</p>
-      <h5>Syntax</h5>
-      <pre>ValerieServer->get_value($id);</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>$id - (<span class="type">string</span>) Name of the field.</li>
-      </ol>
-      <h5>Returns</h5>
-      <ul>
-        <li>(<span class="type">string</span>) The value of the field.</li>
-      </ul>
-      <h5>Example</h5>
-      <pre>$myValidator->get_value('field_1');</pre>
-      <h4><a name="fgetrule">Function: get_rule</a></h4>
-      <p class="desc">Gets the rule of a field.</p>
-      <h5>Syntax</h5>
-      <pre>ValerieServer->get_rule($id)</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>$id - (<span class="type">string</span>) Name of the field.</li>
-      </ol>
-      <h5>Returns</h5>
-      <ul>
-        <li>(<span class="type">array</span>) The rule(s) that the field is validated against.</li>
-      </ul>
-      <h5>Example</h5>
-      <pre>$myValidator->get_rule('field_1');</pre>
-      <h4><a name="fempty">Function: is_empty</a></h4>
-      <p class="desc">Checks if a field is empty.</p>
-      <h5>Syntax</h5>
-      <pre>ValerieServer::is_empty($val)</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>$val - (<span class="type">string</span>) The value to test.</li>
-      </ol>
-      <h5>Returns</h5>
-      <ul>
-        <li>(<span class="type">bool</span>) Indicates if the value is empty.</li>
-      </ul>
-      <h5>Example</h5>
-      <pre>ValerieServer::is_empty($myValidator->get_value('field_1'));</pre>
-      <h4><a name="fformat">Function: format</a></h4>
-      <p class="desc">Replaces tokens ({1}, {2}, ... {n}) with the values passed in.</p>
-      <h5>Syntax</h5>
-      <pre>ValerieServer::format($template, $values)</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>$template - (<span class="type">string</span>) A string that contains tokens.</li>
-        <li>$values - (<span class="type">mixed</span>) A string or array with values.</li>
-      </ol>
-      <h5>Returns</h5>
-      <ul>
-        <li>(<span class="type">string</span>) A string with tokens replaced with values.</li>
-      </ul>
-      <h5>Example</h5>
-      <pre>$message = 'Hello, {1}. How are you {2}?';
+                <h4><a name="fgetval">Function: get_value</a></h4>
+                <p class="desc">
+                    Gets the value of a field.
+                </p>
+                <h5>Syntax</h5>
+                <pre>ValerieServer->get_value($id);</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        $id - (<span class="type">string</span>) Name of the field.
+                    </li>
+                </ol>
+                <h5>Returns</h5>
+                <ul>
+                    <li>
+                        (<span class="type">string</span>) The value of the field.
+                    </li>
+                </ul>
+                <h5>Example</h5>
+                <pre>$myValidator->get_value('field_1');</pre>
+                <h4><a name="fgetrule">Function: get_rule</a></h4>
+                <p class="desc">
+                    Gets the rule of a field.
+                </p>
+                <h5>Syntax</h5>
+                <pre>ValerieServer->get_rule($id)</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        $id - (<span class="type">string</span>) Name of the field.
+                    </li>
+                </ol>
+                <h5>Returns</h5>
+                <ul>
+                    <li>
+                        (<span class="type">array</span>) The rule(s) that the field is validated against.
+                    </li>
+                </ul>
+                <h5>Example</h5>
+                <pre>$myValidator->get_rule('field_1');</pre>
+                <h4><a name="fempty">Function: is_empty</a></h4>
+                <p class="desc">
+                    Checks if a field is empty.
+                </p>
+                <h5>Syntax</h5>
+                <pre>ValerieServer::is_empty($val)</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        $val - (<span class="type">string</span>) The value to test.
+                    </li>
+                </ol>
+                <h5>Returns</h5>
+                <ul>
+                    <li>
+                        (<span class="type">bool</span>) Indicates if the value is empty.
+                    </li>
+                </ul>
+                <h5>Example</h5>
+                <pre>ValerieServer::is_empty($myValidator->get_value('field_1'));</pre>
+                <h4><a name="fformat">Function: format</a></h4>
+                <p class="desc">
+                    Replaces tokens ({1}, {2}, ... {n}) with the values passed in.
+                </p>
+                <h5>Syntax</h5>
+                <pre>ValerieServer::format($template, $values)</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        $template - (<span class="type">string</span>) A string that contains tokens.
+                    </li>
+                    <li>
+                        $values - (<span class="type">mixed</span>) A string or array with values.
+                    </li>
+                </ol>
+                <h5>Returns</h5>
+                <ul>
+                    <li>
+                        (<span class="type">string</span>) A string with tokens replaced with values.
+                    </li>
+                </ul>
+                <h5>Example</h5>
+                <pre>$message = 'Hello, {1}. How are you {2}?';
 $content = array('Henry', 'today');
 
 $message = ValerieServer::format($message, $content);
 // $message contains: 'Hello, Henry. How are you today?.'</pre>
-      <h4><a name="srules">Rules: ValerieServer</a></h4>
-      <p class="desc">Rules that field values can be validated against.</p>
-      <h5>Syntax</h5>
-      <pre>field_id:rule1|rule2(arg1,arg2)</pre>
-      <ul>
-        <li><h5>required</h5><p class="desc">Checks if field contains a value.</p></li>
-        <li><h5>requiredif(id[, label])</h5><p class="desc">Checks if field contains a value only if the passed in field contains a value.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>id (<span class="type">string</span>) - Id of the field to check first.</li>
-            <li>label (<span class="type">string</span>, optional: defaults to id) - Label to use in error message.</li>
-          </ol>
-        </li>
-        <li><h5>confirm(id[, label])</h5><p class="desc">Checks if field contains same value as the field passed in.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>id (<span class="type">string</span>) - Id of the field to check first.</li>
-            <li>label (<span class="type">string</span>, optional: defaults to id) - Label to use in error message.</li>
-          </ol>
-        </li>
-        <li><h5>differ(id[, label])</h5><p class="desc">Checks if field contains a value different from the field passed in.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>id (<span class="type">string</span>) - Id of the field to check first.</li>
-            <li>label (<span class="type">string</span>, optional: defaults to id) - Label to use in error message.</li>
-          </ol>
-        </li>
-        <li><h5>maxlength(length)</h5><p class="desc">Checks if field contains a value not longer than length (inclusive).</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>length (<span class="type">int</span>) - The maximum length of the field.</li>
-          </ol>
-        </li>
-        <li><h5>minlength(length)</h5><p class="desc">Checks if field contains a value not shorter than length (inclusive).</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>length (<span class="type">int</span>) - The minimum length of the field.</li>
-          </ol>
-        </li>
-        <li><h5>int</h5><p class="desc">Checks if field contains an integer.</p></li>
-        <li><h5>alpha</h5><p class="desc">Checks if field contains only alphabetic characters.</p></li>
-        <li><h5>alphanumeric</h5><p class="desc">Checks if field contains only alphanumeric characters.</p></li>
-        <li><h5>currency</h5><p class="desc">Checks if field contains US currency.</p></li>
-        <li><h5>date</h5><p class="desc">Checks if field contains a date.</p></li>
-        <li><h5>time</h5><p class="desc">Checks if field contains a 12-hour time value.</p></li>
-        <li><h5>time24</h5><p class="desc">Checks if field contains a 24-hour time value.</p></li>
-        <li><h5>phone</h5><p class="desc">Checks if field contains a US telephone number.</p></li>
-        <li><h5>phoneintl</h5><p class="desc">Checks if field contains an international telephone.</p></li>
-        <li><h5>postal</h5><p class="desc">Checks if field contains a postal code.</p></li>
-        <li><h5>zip</h5><p class="desc">Checks if field contains a ZIP code.</p></li>
-        <li><h5>email</h5><p class="desc">Checks if field contains an email address.</p></li>
-        <li><h5>url</h5><p class="desc">Checks if field contains a URL.</p></li>
-        <li><h5>ip</h5><p class="desc">Checks if field contains an IP address.</p></li>
-      </ul>
-      <h3><a name="valclient">Class: ValerieClient</a></h3>
-      <h4>Function: Constructor</h4>
-      <p class="desc">Creates a new instance of ValerieClient.</p>
-      <h5>Syntax</h5>
-      <pre>new ValerieClient(form[, options[, plugin]])</pre>
-      <h5>Arguments</h5>
-      <ol>
-        <li>form - (<span class="type">mixed</span>) Id or reference to the form to be validated.</li>
-        <li>options (<span class="type">object</span>, optional) Options and events to set.</li>
-        <li>plugin (<span class="type">object</span>, optional) Use a plugin to display errors.</li>
-      </ol>
-      <h5>Options</h5>
-      <ul>
-        <li>validateField - (<span class="type">bool</span>) Validate individual fields while the user types.</li>
-        <li>ERROR - (<span class="type">string</span>) The message to display when there's an error.</li>
-        <li>LOADING - (<span class="type">string</span>) The text to display in the submit button when the form is being processed.</li>
-      </ul>
-      <h4><a name="cevents">Events: ValerieClient</a></h4>
-      <p class="desc">Events that can be attached to an instance of ValerieClient.</p>
-      <ul>
-        <li>
-          <h5>onInitialize</h5><p class="desc">(<span class="type">function</span>) Fires when the class is instantiated.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
-          </ol>
-        </li><li>
-          <h5>onFormValidate</h5><p class="desc">(<span class="type">function</span>) Fires when the form is validated.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>(<span class="type">string</span>) The validation success message.</li>
-            <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
-          </ol>
-        </li><li>
-          <h5>onFormInvalidate</h5><p class="desc">(<span class="type">function</span>) Fires when the form is invalidated.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>(<span class="type">array</span>) Array of objects with members 'id' and 'message'.</li>
-            <li>(<span class="type">string</span>) Invalid message.</li>
-            <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
-          </ol>
-        </li><li>
-          <h5>onBeforeSubmit</h5><p class="desc">(<span class="type">function</span>) Fires when user submits the form but before the form is sent.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
-          </ol>
-        </li><li>
-          <h5>onSubmitted</h5><p class="desc">(<span class="type">function</span>) Fires when form validation results are returned.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
-          </ol>
-        </li><li>
-          <h5>onError</h5><p class="desc">(<span class="type">function</span>) Fires when an error occurs with form submission.</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
-          </ol>
-        </li><li>
-          <h5>onFieldValidate</h5><p class="desc">(<span class="type">function</span>) Fires when a single field is validated (and validateOnKeyUp is true).</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>(<span class="type">string</span>) Id of the validated field.</li>
-            <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
-          </ol>
-        </li><li>
-          <h5>onFieldInvalidate</h5><p class="desc">(<span class="type">function</span>) Fires when a single field is invalidated (and validateOnKeyUp is true).</p>
-          <h6>Arguments</h6>
-          <ol>
-            <li>(<span class="type">object</span>) Object with members 'id' and 'message'.</li>
-            <li>(<span class="type">object</span>) Instance of ValerieClient.</li>
-          </ol>
-        </li>
-      </ul>
-      </div>
-    </div>
-	</body>
+                <h4><a name="srules">Rules: ValerieServer</a></h4>
+                <p class="desc">
+                    Rules that field values can be validated against.
+                </p>
+                <h5>Syntax</h5>
+                <pre>field_id:rule1|rule2(arg1,arg2)</pre>
+                <ul>
+                    <li>
+                        <h5>required</h5>
+                        <p class="desc">
+                            Checks if field contains a value.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>requiredif(id[, label])</h5>
+                        <p class="desc">
+                            Checks if field contains a value only if the passed in field contains a value.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                id (<span class="type">string</span>) - Id of the field to check first.
+                            </li>
+                            <li>
+                                label (<span class="type">string</span>, optional: defaults to id) - Label to use in error message.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>confirm(id[, label])</h5>
+                        <p class="desc">
+                            Checks if field contains same value as the field passed in.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                id (<span class="type">string</span>) - Id of the field to check first.
+                            </li>
+                            <li>
+                                label (<span class="type">string</span>, optional: defaults to id) - Label to use in error message.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>differ(id[, label])</h5>
+                        <p class="desc">
+                            Checks if field contains a value different from the field passed in.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                id (<span class="type">string</span>) - Id of the field to check first.
+                            </li>
+                            <li>
+                                label (<span class="type">string</span>, optional: defaults to id) - Label to use in error message.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>maxlength(length)</h5>
+                        <p class="desc">
+                            Checks if field contains a value not longer than length (inclusive).
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                length (<span class="type">int</span>) - The maximum length of the field.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>minlength(length)</h5>
+                        <p class="desc">
+                            Checks if field contains a value not shorter than length (inclusive).
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                length (<span class="type">int</span>) - The minimum length of the field.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>int</h5>
+                        <p class="desc">
+                            Checks if field contains an integer.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>alpha</h5>
+                        <p class="desc">
+                            Checks if field contains only alphabetic characters.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>alphanumeric</h5>
+                        <p class="desc">
+                            Checks if field contains only alphanumeric characters.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>currency</h5>
+                        <p class="desc">
+                            Checks if field contains US currency.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>date</h5>
+                        <p class="desc">
+                            Checks if field contains a date.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>time</h5>
+                        <p class="desc">
+                            Checks if field contains a 12-hour time value.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>time24</h5>
+                        <p class="desc">
+                            Checks if field contains a 24-hour time value.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>phone</h5>
+                        <p class="desc">
+                            Checks if field contains a US telephone number.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>phoneintl</h5>
+                        <p class="desc">
+                            Checks if field contains an international telephone.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>postal</h5>
+                        <p class="desc">
+                            Checks if field contains a postal code.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>zip</h5>
+                        <p class="desc">
+                            Checks if field contains a ZIP code.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>email</h5>
+                        <p class="desc">
+                            Checks if field contains an email address.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>url</h5>
+                        <p class="desc">
+                            Checks if field contains a URL.
+                        </p>
+                    </li>
+                    <li>
+                        <h5>ip</h5>
+                        <p class="desc">
+                            Checks if field contains an IP address.
+                        </p>
+                    </li>
+                </ul>
+                <h3><a name="valclient">Class: ValerieClient</a></h3>
+                <h4>Function: Constructor</h4>
+                <p class="desc">
+                    Creates a new instance of ValerieClient.
+                </p>
+                <h5>Syntax</h5>
+                <pre>new ValerieClient(form[, options[, plugin]])</pre>
+                <h5>Arguments</h5>
+                <ol>
+                    <li>
+                        form - (<span class="type">mixed</span>) Id or reference to the form to be validated.
+                    </li>
+                    <li>
+                        options (<span class="type">object</span>, optional) Options and events to set.
+                    </li>
+                    <li>
+                        plugin (<span class="type">object</span>, optional) Use a plugin to display errors.
+                    </li>
+                </ol>
+                <h5>Options</h5>
+                <ul>
+                    <li>
+                        validateField - (<span class="type">bool</span>) Validate individual fields while the user types.
+                    </li>
+                    <li>
+                        ERROR - (<span class="type">string</span>) The message to display when there's an error.
+                    </li>
+                    <li>
+                        LOADING - (<span class="type">string</span>) The text to display in the submit button when the form is being processed.
+                    </li>
+                </ul>
+                <h4><a name="cevents">Events: ValerieClient</a></h4>
+                <p class="desc">
+                    Events that can be attached to an instance of ValerieClient.
+                </p>
+                <ul>
+                    <li>
+                        <h5>onInitialize</h5>
+                        <p class="desc">
+                            (<span class="type">function</span>) Fires when the class is instantiated.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                (<span class="type">object</span>) Instance of ValerieClient.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>onFormValidate</h5>
+                        <p class="desc">
+                            (<span class="type">function</span>) Fires when the form is validated.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                (<span class="type">string</span>) The validation success message.
+                            </li>
+                            <li>
+                                (<span class="type">object</span>) Instance of ValerieClient.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>onFormInvalidate</h5>
+                        <p class="desc">
+                            (<span class="type">function</span>) Fires when the form is invalidated.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                (<span class="type">array</span>) Array of objects with members 'id' and 'message'.
+                            </li>
+                            <li>
+                                (<span class="type">string</span>) Invalid message.
+                            </li>
+                            <li>
+                                (<span class="type">object</span>) Instance of ValerieClient.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>onBeforeSubmit</h5>
+                        <p class="desc">
+                            (<span class="type">function</span>) Fires when user submits the form but before the form is sent.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                (<span class="type">object</span>) Instance of ValerieClient.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>onSubmitted</h5>
+                        <p class="desc">
+                            (<span class="type">function</span>) Fires when form validation results are returned.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                (<span class="type">object</span>) Instance of ValerieClient.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>onError</h5>
+                        <p class="desc">
+                            (<span class="type">function</span>) Fires when an error occurs with form submission.
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                (<span class="type">object</span>) Instance of ValerieClient.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>onFieldValidate</h5>
+                        <p class="desc">
+                            (<span class="type">function</span>) Fires when a single field is validated (and validateOnKeyUp is true).
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                (<span class="type">string</span>) Id of the validated field.
+                            </li>
+                            <li>
+                                (<span class="type">object</span>) Instance of ValerieClient.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <h5>onFieldInvalidate</h5>
+                        <p class="desc">
+                            (<span class="type">function</span>) Fires when a single field is invalidated (and validateOnKeyUp is true).
+                        </p>
+                        <h6>Arguments</h6>
+                        <ol>
+                            <li>
+                                (<span class="type">object</span>) Object with members 'id' and 'message'.
+                            </li>
+                            <li>
+                                (<span class="type">object</span>) Instance of ValerieClient.
+                            </li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
 </html>

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//	Valerie v0.4
+//	Valerie v0.5
 //	(c) 2008 Chris Jaure
 //	license: MIT License
 //	website: http://www.chromasynthetic.com/
