@@ -87,7 +87,7 @@ ValerieClient.prototype = {
         if (this.options.validateField) {
             adapter.addEvent(this.form, 'keyup', function(event){
                 var target = event.target, type = target.type, key = event.code || event.which;
-                if ((type == 'text' || type == 'password' || target.tagName.toLowerCase() == 'textarea') && key != 9) {
+                if ((type == 'text' || type == 'password' || target.tagName.toLowerCase() == 'textarea') && key != 9 && key != 13) {
                     self.typing.time = new Date().getTime();
                     setTimeout(function(){
                         var time = new Date().getTime() - self.typing.time;
