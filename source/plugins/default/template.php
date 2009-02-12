@@ -13,7 +13,7 @@ function default_form_message($args) {
   extract($args);
   ?>
   
-  <p class="<?php $type; ?>"><?php echo $message; ?></p>
+  <strong class="<?php $type; ?>"><?php echo $message; ?></strong>
   
   <?php
 }
@@ -22,13 +22,8 @@ function default_field_error($args) {
   extract($args);
   ?>
   
-  <span class="validator_error_wrapper">
-    <span class="validator_error">
-      <p class="content">
-        <?php echo $message; ?>
-      </p>
-      <div class="bottom"></div>
-    </span>
+  <span class="validator_error">
+    <?php echo $message; ?>
   </span>
   
   <?php
@@ -41,6 +36,7 @@ function default_checkbox($args) {
   <br />
   <input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" /> 
   <label for="<?php echo $id; ?>" class="checkbox"><?php echo $label; ?></label>
+  <?php echo $error; ?>
   
   <?php
 }
@@ -71,6 +67,7 @@ function default_text($args) {
   
   <label for="<?php echo $id; ?>"><?php echo $label; ?></label>
   <input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" />
+  <?php echo $error; ?>
   
   <?php
 }

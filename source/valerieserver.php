@@ -92,7 +92,7 @@ class ValerieServer {
       if (isset($this->errors)) {
         if ($this->ajax) {
           foreach ($this->errors as $key => $error) {
-            $arr[] = '{"id": "' . $key. '", "message": "' . $error . '"}';
+            $arr[] = '{"id": "' . $this->ids[$key] . '", "message": "' . $error . '"}';
           }
           echo '{"type": 100, "content": [' . implode(', ', $arr) . '], "message": "' . VAL_INVALIDATE . '"}';
           die();
@@ -208,7 +208,7 @@ class ValerieServer {
     }
     
     if (!$success) {
-      $this->errors[$this->ids[$name]] = htmlspecialchars(strip_tags($error));
+      $this->errors[$name] = htmlspecialchars(strip_tags($error));
       return false;
     } else return true;
     

@@ -14,17 +14,12 @@ class ValerieForm {
         $_SESSION['validator']['referer'] = $_SERVER['PHP_SELF'];
         $this->root = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR) . '/';
         $this->uid = md5('randomness'.time());
-        $this->setDefinition('forms/default.json');
         $this->loadPlugin($plugin);
+        $this->setDefinition('forms/default.json');
     }
     
     public function setTemplate($form) {
         if (is_array($form)) $this->template = array_merge($this->template, $form);
-        else {
-            $file = $this->getArrayFromJSON($form);
-            if (is_array($file))
-                $this->template = array_merge($this->template, $file);
-        }
     }
     
     public function setDefinition($definition) {
@@ -37,7 +32,6 @@ class ValerieForm {
     
     private function loadPlugin($name) {
         $this->plugin = $name;
-        //$this->setTemplate('plugins/'.$this->plugin.'/template.json');
         include($this->root.'plugins/'.$this->plugin.'/template.php');
     }
     
@@ -52,8 +46,8 @@ class ValerieForm {
       foreach($data as $args) {
         $fn = ($this->template[$args['id']]) ? $this->template[$args['id']] : $this->template[$args['type']];
         $vals = $args + array(
-            'error' => $this->getError($args['id']),
-            'value' => $this->getValue($args['id'])
+            'error' => $this->getError($args['name']),
+            'value' => $this->getValue($args['name'])
         );
         if (isset($args['elements'])) {
           $vals = $vals + array('content' => $this->getOutput($args['elements']));
@@ -84,36 +78,47 @@ class ValerieForm {
         echo $this->getMessageType();
     }
     
-    public function getMessage($format = null) {
-        if ($format) {
-            return str_replace(array('{message}', '{type}'), array($_SESSION['validator']['message'], $this->getMessageType()), $format);
-        } else return $_SESSION['validator']['message'];
+    public function getMessage() {
+        $message = $_SESSION['validator']['message'];
+        if (function_exists($this->template['form_message'])) {
+          ob_start();
+          $this->template['form_message'](array(
+            'message' => $message,
+            'type' => $this->getMessageType()
+          ));
+          $message = ob_get_contents();
+          ob_end_clean();
+        }
+        return $message;
     }
     
-    public function printMessage($format = null) {
-        $template = ($format) ? $format : $this->formats['form_message'];
-        echo $this->getMessage($format);
+    public function printMessage() {
+        echo $this->getMessage();
     }
     
-    public function getValue($id) {
-        return $_SESSION['validator'][$id]; 
+    public function getValue($name) {
+        return $_SESSION['validator'][$name]; 
     }
     
-    public function printValue($id) {
-        echo $this->getValue($id);
+    public function printValue($name) {
+        echo $this->getValue($name);
     }
     
-    public function getError($id, $format = null) {
-        $template = ($format) ? $format : $this->formats['field_error'];
-        if (isset($_SESSION['validator'][$id . '_error'])) {
-            if ($template) {
-                return str_replace('{message}', $_SESSION['validator'][$id . '_error'], $template);
-            } else return $_SESSION['validator'][$id . '_error'];
+    public function getError($name) {
+        if (isset($_SESSION['validator'][$name . '_error'])) {
+            $error = $_SESSION['validator'][$name . '_error'];
+            if (function_exists($this->template['field_error'])) {
+              ob_start();
+              $this->template['field_error'](array('message' => $error));
+              $error = ob_get_contents();
+              ob_end_clean();
+            }
+            return $error;
         } else return null;
     }
     
-    public function printError($id, $format = null) {
-        echo $this->getError($id, $format);
+    public function printError($name) {
+        $this->getError($name);
     }
 }
 ?>
