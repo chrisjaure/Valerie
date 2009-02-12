@@ -1,7 +1,7 @@
 <?php
 //------------------------------------------------------------------------------
-//	Valerie v0.5
-//	(c) 2008 Chris Jaure
+//	Valerie v0.6
+//	(c) 2009 Chris Jaure
 //	license: MIT License
 //	website: http://www.chromasynthetic.com/
 //
@@ -11,29 +11,27 @@
 
 class ValerieServer {
   
-  var $values;
-  var $rules;
-  var $errors;
-  var $ajax;
-  var $periodical;
-  var $patterns;
+  private $values = array();
+  private $rules = array();
+  private $ids = array();
+  private $errors;
+  private $ajax;
+  private $periodical;
+  private $patterns;
+  private $referer;
+  private $definition;
+  private $uid;
 
-  function ValerieServer($data, $lang = 'en.php'){
+  public function __construct($data, $lang = 'en.php'){
     
-    if (isset($data['_ajax'])) {
-      $this->ajax = true;
-      unset($data['_ajax']);
-    } else {
-      $this->ajax = false;
-      session_start();
-    }
+    @session_start();
     
-    if (isset($data['_periodical'])) {
-      $this->periodical = $data['_periodical'];
-      unset($data['_periodical']);
-    } else {
-      $this->periodical = false;
-    }
+    $this->ajax = isset($data['_ajax']);
+    $this->periodical = isset($data['_periodical']);
+    
+    $this->uid = $data['formid'];
+    $this->referer = $_SESSION['validator']['referer'];
+    $this->definition = unserialize($_SESSION['validator'][$this->uid]);
     
     require_once("localization/$lang"); 
     
@@ -60,18 +58,25 @@ class ValerieServer {
       'minlength' => array('minlength', VAL_ERROR_MINLENGTH)
     );
     
-    $this->rules = array();
-    $this->values = array();
-    foreach($data as $field => $value) {
-    	list($name, $rules) = explode(':', $field, 2);
-      $this->values[$name] = (!is_array($value)) ? trim($value) : $value;
-      if (isset($rules)) {
-        $this->rules[$name] = explode('|', $rules);
+    $this->setValues($this->definition['elements'], $data);
+    
+  }
+  
+  private function setValues($els, $vals) {
+    foreach($els as $element) {
+      if (isset($element['elements'])) $this->setValues($element['elements'], $vals);
+      if (isset($element['name'])) {
+        $name = $element['name'];
+        $this->values[$name] = (!is_array($vals[$name])) ? trim($vals[$name]) : $vals[$name];
+        if (isset($element['validation'])) {
+          $this->ids[$name] = $element['id'];
+          $this->rules[$name] = explode('|', $element['validation']);
+        }
       }
     }
   }
   
-  function validate(){
+  public function validate(){
     
     if (!$this->ajax) unset($_SESSION['validator']);
     
@@ -80,7 +85,7 @@ class ValerieServer {
       foreach($this->rules as $key => $rules) {
         $value = $this->values[$key];
         foreach($rules as $rule) {
-           if(!$this->test($rule, $value, $key)) break;
+          if(!$this->test($rule, $value, $key)) break;
         }
       }
       
@@ -104,7 +109,7 @@ class ValerieServer {
         }
       } else {
         if ($this->ajax) {
-          echo '{"type": 1, "content": {"message": "' . VAL_VALIDATE . '"}}';
+          echo '{"type": 1, "message": "' . VAL_VALIDATE . '"}';
         } else {
           $_SESSION['validator']['message'] = VAL_VALIDATE;
           $_SESSION['validator']['message_type'] = 'success';
@@ -128,40 +133,40 @@ class ValerieServer {
     return $this->values;
   }
   
-  function register($patterns) {
+  public function register($patterns) {
     $this->patterns = array_merge($this->patterns, $patterns);
   }
   
-  function back($bool = null) {
+  public function back($bool = null) {
     if (!isset($bool)) $bool = $this->ajax;
     if (!$bool) {
-        header("Location: {$_SESSION['referer']}");
+        header("Location: {$this->referer}");
         exit();
     }
   }
   
-  function is_ajax() {
+  public function is_ajax() {
     return $this->ajax;
   }
   
-  function get_name_label($text) {
-    if (is_array($text)) return array($text[0], str_replace('_', ' ', $text[1]));
+  public function get_name_label($text) {
+    if (is_array($text)) return array($text[0], $text[1]);
     else return array($text, $text);
   }
   
-  function get_value($id) {
+  public function get_value($id) {
     return $this->values[$id];
   }
   
-  function get_rule($id) {
+  public function get_rule($id) {
     return $this->rules[$id];
   }
   
-  function is_empty($val) {
+  public function is_empty($val) {
     return ($val == '' || $val == null);
   }
   
-  function format($template, $values) {
+  public function format($template, $values) {
     if (is_array($values)) {
       $replace = array();
       foreach(array_values($values) as $index => $value) {
@@ -173,8 +178,8 @@ class ValerieServer {
     return str_replace($replace, $values, $template);
   }
   
-  function test($rule, $value, $name) {
-    // match any arguments inside {}
+  private function test($rule, $value, $name) {
+    // match any arguments inside ()
     if (preg_match('/^(.*)\((.*)\)$/', $rule, $matches)) {
       $rule = $matches[1];
       $arguments = explode(',', $matches[2]);
@@ -203,37 +208,37 @@ class ValerieServer {
     }
     
     if (!$success) {
-      $this->errors[$name] = htmlspecialchars(strip_tags($error));
+      $this->errors[$this->ids[$name]] = htmlspecialchars(strip_tags($error));
       return false;
     } else return true;
     
   }
   
-  function requiredif($val, $arg) {
+  private function requiredif($val, $arg) {
     if (!$this->is_empty($this->values[$arg])) {
       if ($this->is_empty($val)) return false;
     }
     return true;
   }
   
-  function confirm($val, $args, $err) {
+  private function confirm($val, $args, $err) {
     list($name, $label) = $this->get_name_label($args);
     $message = $this->format($err, $label);
     return array($val == $this->values[$name], $message);
   }
   
-  function differ($val, $args, $err) {
+  private function differ($val, $args, $err) {
     list($name, $label) = $this->get_name_label($args);
     $message = $this->format($err, $label);
     return array($val != $this->values[$name], $message);
   }
   
-  function maxlength($val, $length, $err) {
+  private function maxlength($val, $length, $err) {
     $message = $this->format($err, $length);
     return array(strlen($val) <= (int) $length, $message);
   }
   
-  function minlength($val, $length, $err) {
+  private function minlength($val, $length, $err) {
     $message = $this->format($err, $length);
     return array(strlen($val) >= (int) $length, $message);
   }

@@ -1,5 +1,6 @@
 <?php
   require_once('../source/valerieserver.php');
+
   $myValidator = new ValerieServer($_POST);
   $ajax = $myValidator->is_ajax();
   $myValidator->register(array(

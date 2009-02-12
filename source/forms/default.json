@@ -1,0 +1,55 @@
+{
+  "attributes": {
+    "id": "frm",
+    "method": "post",
+    "action": "my_form.php"
+  },
+  "elements": [
+    {
+      "type": "text",
+      "id": "f1",
+      "name": "f1",
+      "validation": "required|alpha",
+      "label": "Stick your name in here, yo."
+    },
+    {
+      "type": "text",
+      "id": "f2",
+      "name": "f2",
+      "validation": "differ(f1,your first name)",
+      "label": "Your last name."
+    },
+    {
+      "type": "text",
+      "id": "f3",
+      "name": "f3",
+      "validation": "divisible(4)",
+      "label": "A number that is divisible by 4"
+    },
+    {
+      "type": "fieldset",
+      "legend": "Hi",
+      "elements": [
+        {
+          "type": "text",
+          "id": "f4",
+          "name": "f4",
+          "validation": "required",
+          "label": "hi."
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "chk",
+      "name": "chk",
+      "value": "true",
+      "validation": "required",
+      "label": "This is a checkbox label."
+    },
+    {
+      "value": "Submit button!",
+      "type": "submit"
+    }
+  ]
+}

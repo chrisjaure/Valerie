@@ -4,6 +4,9 @@ body {
 label {
   display:block;
 }
+label.checkbox {
+  display:inline;
+}
 input {
   margin-bottom:1.2em;
 }
