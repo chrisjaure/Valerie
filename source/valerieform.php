@@ -65,6 +65,7 @@ class ValerieForm {
         
         $output .= $this->getOutput($this->definition['elements']);
         
+        echo '<link rel="stylesheet" type="text/css" href="../source/plugins/', $this->plugin, '/style.css" />';
         echo $this->template['form']($this->definition['attributes'] + array('content' => $output));
         echo '<script type="text/javascript" src="../source/plugins/', $this->plugin, '/script.js"></script>';
         echo '<script type="text/javascript">jQuery("#', $this->definition['attributes']['id'], '").valerie();</script>';
