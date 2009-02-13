@@ -2,7 +2,7 @@
 //	Valerie v0.6
 //	(c) 2009 Chris Jaure
 //	license: MIT License
-//	website: http://www.chromasynthetic.com/
+//	website: http://code.google.com/p/valerie/
 //
 //	valerieclient.js
 //------------------------------------------------------------------------------

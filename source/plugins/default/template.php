@@ -13,7 +13,7 @@ function default_form_message($args) {
   extract($args);
   ?>
   
-  <strong class="<?php $type; ?>"><?php echo $message; ?></strong>
+  <strong id="valerie-form-message" class="<?php $type; ?>"><?php echo $message; ?></strong>
   
   <?php
 }
@@ -22,7 +22,7 @@ function default_field_error($args) {
   extract($args);
   ?>
   
-  <span class="validator_error">
+  <span class="valerie-field-error">
     <?php echo $message; ?>
   </span>
   
@@ -45,7 +45,7 @@ function default_form($args) {
   extract($args);
   ?>
   
-  <form id="<?php echo $id; ?>" method="<?php echo $method; ?>" action="<?php echo $action; ?>">
+  <form id="<?php echo $id; ?>" class="valerie-form" method="<?php echo $method; ?>" action="<?php echo $action; ?>">
     <?php echo $content; ?>
   </form>
   

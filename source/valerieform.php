@@ -1,4 +1,13 @@
-<?php    
+<?php
+//------------------------------------------------------------------------------
+//	Valerie v0.6
+//	(c) 2009 Chris Jaure
+//	license: MIT License
+//	website: http://code.google.com/p/valerie/
+//
+//	valerieform.php
+//------------------------------------------------------------------------------
+  
 class ValerieForm {
     private $template = array();
     private $definition;
