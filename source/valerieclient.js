@@ -7,6 +7,38 @@
 //	valerieclient.js
 //------------------------------------------------------------------------------
 
+/*
+  Function: valerie
+  
+  jQuery plugin to enable instant form validation feedback. This function simply
+  adds event hooks for plugins to interact with.
+  
+      $('#formId').valerie({
+        ititialized: function(event, form){
+          alert("Valerie has been initialized");
+        },
+        ...
+      });
+  
+  The following custom events are fired in the form.
+  
+  - valerie.initialized (receives event and form)
+  - valerie.beforeSubmit (receives event and form)
+  - valerie.afterSubmit (receives event and form)
+  - valerie.formInvalidated (receives event, array of invalid fields,
+    response message, and form)
+  - valerie.formValidated (receives event, response message, and form)
+  - valerie.error (receives event and form)
+      
+  Global defaults can also be set:
+  
+      $.fn.valerie.events = {
+        ititialized: function(event, form){
+          alert("Valerie has been initialized");
+        },
+      }
+*/
+
 (function($){
   $.fn.valerie = function(o) {
   
@@ -35,7 +67,10 @@
           success: function(response){
             if (response) {
               if (parseInt(response.type, 10) > 1) {
-                form.trigger('valerie.formInvalidated', [response.content, response.message, form]);
+                form.trigger(
+                  'valerie.formInvalidated',
+                  [response.content, response.message, form]
+                );
               }
               else {
                 form.trigger('valerie.formValidated', [response.message, form]);

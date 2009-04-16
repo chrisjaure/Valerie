@@ -1,8 +1,8 @@
 <?php
-  require_once('../source/valerieserver.php');
+  require_once('../source/functions.php');
 
-  $myValidator = new ValerieServer($_POST);
-  $ajax = $myValidator->is_ajax();
+  $myValidator = newValerieServer($_POST);
+  $ajax = $myValidator->isAjax();
   $myValidator->register(array(
     'digit' => array('/^\d$/', 'This field must contain one numerical character.'),
     'less_than_150' => array('is_less_than_150', 'This field must contain a value less than 150.'),

@@ -1,5 +1,5 @@
 <?php
-$this->register(array(
+$Valerie->register(array(
   'required' => array('/^./', VAL_ERROR_REQUIRED),
   'int' => array('/^\d+$/', VAL_ERROR_INT),
   'alpha' => array('/^[a-z]+$/i', VAL_ERROR_ALPHA),
@@ -22,32 +22,32 @@ $this->register(array(
   'minlength' => array('minlength', VAL_ERROR_MINLENGTH)
 ));
 
-function requiredif($val, $arg) {
-  if (!$this->is_empty($this->get_value($arg))) {
-    if ($this->is_empty($val)) return false;
+function requiredif($val, $arg, $err, $Valerie) {
+  if (!$Valerie->isEmpty($Valerie->getValue($arg))) {
+    if ($Valerie->isEmpty($val)) return false;
   }
   return true;
 }
 
-function confirm($val, $args, $err) {
-  list($name, $label) = $this->get_name_label($args);
-  $message = $this->format($err, $label);
-  return array($val == $this->get_value($name), $message);
+function confirm($val, $args, $err, $Valerie) {
+  list($name, $label) = $Valerie->getNameLabel($args);
+  $message = $Valerie->format($err, $label);
+  return array($val == $Valerie->getValue($name), $message);
 }
 
-function differ($val, $args, $err) {
-  list($name, $label) = $this->get_name_label($args);
-  $message = $this->format($err, $label);
-  return array($val != $this->get_value($name), $message);
+function differ($val, $args, $err, $Valerie) {
+  list($name, $label) = $Valerie->getNameLabel($args);
+  $message = $Valerie->format($err, $label);
+  return array($val != $Valerie->getValue($name), $message);
 }
 
-function maxlength($val, $length, $err) {
-  $message = $this->format($err, $length);
+function maxlength($val, $length, $err, $Valerie) {
+  $message = $Valerie->format($err, $length);
   return array(strlen($val) <= (int) $length, $message);
 }
 
-function minlength($val, $length, $err) {
-  $message = $this->format($err, $length);
+function minlength($val, $length, $err, $Valerie) {
+  $message = $Valerie->format($err, $length);
   return array(strlen($val) >= (int) $length, $message);
 }
 

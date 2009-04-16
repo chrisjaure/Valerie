@@ -1,0 +1,9 @@
+.valerie-form-message-error {
+  color:#f00;
+}
+
+.valerie-form-default .valerie-field-error {
+  display:inline !important;
+  color:#f00;
+  padding-left:0.5em;
+}

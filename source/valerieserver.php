@@ -9,6 +9,12 @@
 //------------------------------------------------------------------------------
 
 
+/*
+  Class: ValerieServer
+  
+  Validates the forms.
+*/
+
 class ValerieServer {
   
   private $values = array();
@@ -22,6 +28,14 @@ class ValerieServer {
   private $definition;
   private $uid;
 
+  /*
+    Contructor: __construct
+    
+    Arguments:
+    
+      $data - POST data
+  */
+
   public function __construct($data, $lang = 'en.php'){
     
     @session_start();
@@ -33,17 +47,33 @@ class ValerieServer {
     $this->referer = $_SESSION['validator']['referer'];
     $this->definition = unserialize($_SESSION['validator'][$this->uid]);
     
-    require_once("localization/$lang"); 
-    
-    include('rules/default.php');
-    
-    foreach(scandir(dirname(__FILE__).'/rules/') as $file) {
-      if ($file != '.' && $file != '..' && $file != 'default.php') include("rules/$file");
+    if (!is_array($this->definition)) {
+      if ($this->ajax) {
+        echo '{"type": 101, "message": "An error has occured."}';
+      }
+      else {
+        $_SESSION['validator']['message'] = "An error has occured.";
+        $_SESSION['validator']['message_type'] = 'error';
+      }
     }
+    
+    require_once("localization/$lang"); 
     
     $this->setValues($this->definition['elements'], $data);
     
   }
+  
+  /*
+    Method: setValues
+    
+    Matches elements from the form definition with the submitted values.
+    Recursive.
+    
+    Arguments:
+    
+      $els - array of form elements
+      $val - array of submitted values.
+  */
   
   private function setValues($els, $vals) {
     foreach($els as $element) {
@@ -58,6 +88,17 @@ class ValerieServer {
       }
     }
   }
+  
+  /*
+    Method: validate
+    
+    Validates the submitted form data. If the form has been submitted via ajax,
+    messages will be echoed, otherwise they are stored in session variables.
+    
+    Returns:
+    
+      If the form validates, the values will be returned.
+  */
   
   public function validate(){
     
@@ -116,9 +157,34 @@ class ValerieServer {
     return $this->values;
   }
   
+  /*
+    Method: register
+    
+    Registers a pattern to validate values against.
+    
+    Arguments:
+    
+      $patterns - array of key/value pairs. The value must also be an array
+      containing a regex or function and the message to send if the value is
+      invalid.
+      
+    Example:
+    
+      $form->register(array(
+        'required' => array('/^./', 'Field {1} is required.'),
+      ));
+  */
+  
   public function register($patterns) {
     $this->patterns = array_merge($this->patterns, $patterns);
   }
+  
+  /*
+    Method: back
+    
+    Sends the browser back to the form after submission if javascript is
+    disabled.
+  */
   
   public function back($bool = null) {
     if (!isset($bool)) $bool = $this->ajax;
@@ -128,26 +194,62 @@ class ValerieServer {
     }
   }
   
-  public function is_ajax() {
+  /*
+    Method: isAjax
+    
+    
+  */
+  
+  public function isAjax() {
     return $this->ajax;
   }
   
-  public function get_name_label($text) {
+  /*
+    Method: getNameLabel
+    
+    
+  */
+  
+  public function getNameLabel($text) {
     if (is_array($text)) return array($text[0], $text[1]);
     else return array($text, $text);
   }
   
-  public function get_value($id) {
+  /*
+    Method: getValue
+    
+    
+  */
+  
+  public function getValue($id) {
     return $this->values[$id];
   }
   
-  public function get_rule($id) {
+  /*
+    Method: getRule
+    
+    
+  */
+  
+  public function getRule($id) {
     return $this->rules[$id];
   }
   
-  public function is_empty($val) {
+  /*
+    Method: isEmpty
+    
+    
+  */
+  
+  public function isEmpty($val) {
     return ($val == '' || $val == null);
   }
+  
+  /*
+    Method: format
+    
+    
+  */
   
   public function format($template, $values) {
     if (is_array($values)) {
@@ -161,6 +263,12 @@ class ValerieServer {
     return str_replace($replace, $values, $template);
   }
   
+  /*
+    Method: test
+    
+    
+  */
+  
   private function test($rule, $value, $name) {
     // match any arguments inside ()
     if (preg_match('/^(.*)\((.*)\)$/', $rule, $matches)) {
@@ -172,15 +280,13 @@ class ValerieServer {
     }
 
     // return true if empty and not required
-    if ($this->is_empty($value) && $rule != 'required' && $rule != 'requiredif') return true;
+    if ($this->isEmpty($value) && $rule != 'required' && $rule != 'requiredif') return true;
 
     $error = $this->patterns[$rule][1];
     
-    // check whether it's a class function, a custom function, or a regex pattern
+    // check whether it's a function or a regex pattern
     if (function_exists($this->patterns[$rule][0])) {
-      $success = $this->patterns[$rule][0]($value, $arguments, $error);
-    } elseif (method_exists($this, $rule)) {
-      $success = $this->$rule($value, $arguments, $error);
+      $success = $this->patterns[$rule][0]($value, $arguments, $error, $this);
     } else {
       $success = preg_match($this->patterns[$rule][0], $value);
     }
