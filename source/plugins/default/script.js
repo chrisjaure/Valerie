@@ -4,7 +4,7 @@
   $.fn.valerie.events = {
     initialized: function(e, form) {
       el = $('<strong class="valerie-form-message"></strong>').insertBefore(form).hide();
-      submitBtn = form.find('input[type=submit]');
+      submitBtn = form.find('input[type=submit], button');
     },
     beforeSubmit: function(e, form) {
       submitBtn.attr('disabled', true);
@@ -13,6 +13,7 @@
     },
     afterSubmit: function(e, form) {
       submitBtn.attr('disabled', false);
+      $(window).scrollTop(form.offset().top);
       el.show();
     },
     formValidated: function(e, message, form) {
@@ -28,15 +29,17 @@
         if (field.is('[type=checkbox], [type=radio]')) {
           field.next().after(error);
         }
+        else if (field.is('legend')) {
+          field.append(error);
+        }
         else {
           field.after(error);
         }
         
       });
-      $(window).scrollTop(form.offset().top);
     },
     error: function(e, form) {
-      alert('Error!');
+      alert('Darn, something went wrong.');
     }
   }
 })(jQuery);

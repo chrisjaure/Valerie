@@ -49,11 +49,12 @@ class ValerieServer {
     
     if (!is_array($this->definition)) {
       if ($this->ajax) {
-        echo '{"type": 101, "message": "An error has occured."}';
+        exit ('Could not find form definition.');
       }
       else {
         $_SESSION['validator']['message'] = "An error has occured.";
         $_SESSION['validator']['message_type'] = 'error';
+        $this->back();
       }
     }
     
@@ -80,10 +81,12 @@ class ValerieServer {
       if (isset($element['elements'])) $this->setValues($element['elements'], $vals);
       if (isset($element['name'])) {
         $name = $element['name'];
-        $this->values[$name] = (!is_array($vals[$name])) ? trim($vals[$name]) : $vals[$name];
+        $post_key = $name;
+        if (substr($name, -2) == '[]') $post_key = substr($name, 0, -2);
+        $this->values[$name] = (!is_array($vals[$post_key])) ? trim($vals[$post_key]) : $vals[$post_key];
         if (isset($element['validation'])) {
           $this->ids[$name] = $element['id'];
-          $this->rules[$name] = explode('|', $element['validation']);
+          $this->rules[$name] = (is_array($element['validation'])) ? $element['validation'] : array($element['validation']);
         }
       }
     }
@@ -108,8 +111,11 @@ class ValerieServer {
       
       foreach($this->rules as $key => $rules) {
         $value = $this->values[$key];
-        foreach($rules as $rule) {
-          if(!$this->test($rule, $value, $key)) break;
+        if (!is_array($value)) $value = array($value);
+        foreach ($value as $val) {
+          foreach($rules as $rule) {
+            if(!$this->test($rule, $val, $key)) break;
+          }
         }
       }
       
@@ -119,12 +125,13 @@ class ValerieServer {
             $arr[] = '{"id": "' . $this->ids[$key] . '", "message": "' . $error . '"}';
           }
           echo '{"type": 100, "content": [' . implode(', ', $arr) . '], "message": "' . VAL_INVALIDATE . '"}';
-          die();
+          exit();
         } else {
           foreach($this->errors as $key => $error) {
-              $_SESSION['validator'][$key . '_error'] = $error;
+            $_SESSION['validator'][$key . '_error'] = $error;
           }
           foreach($this->values as $key => $value) {
+            echo $key, ': ', var_dump($value), "<br>";
             $_SESSION['validator'][$key] = $value;
           }
           $_SESSION['validator']['message'] = VAL_INVALIDATE;
@@ -150,7 +157,7 @@ class ValerieServer {
       } else {
         echo '{"type": 1, "content": {"id": "'. $this->periodical . '"}}';
       }
-      die();
+      exit();
 
     }
     
@@ -270,23 +277,32 @@ class ValerieServer {
   */
   
   private function test($rule, $value, $name) {
-    // match any arguments inside ()
-    if (preg_match('/^(.*)\((.*)\)$/', $rule, $matches)) {
-      $rule = $matches[1];
-      $arguments = explode(',', $matches[2]);
+    //get rule arguments
+    if (is_array($rule)) {
+      $arguments = $rule;
+      list($rule) = array_keys($rule);
+      $arguments = $arguments[$rule];
       if (count($arguments) === 1) $arguments = $arguments[0];
-    } else {
+    }
+    else {
       $arguments = null;
     }
 
+    //var_dump($rule, $arguments);
+
     // return true if empty and not required
-    if ($this->isEmpty($value) && $rule != 'required' && $rule != 'requiredif') return true;
+    if ($this->isEmpty($value) && !$this->patterns[$rule][2]) return true;
 
     $error = $this->patterns[$rule][1];
     
     // check whether it's a function or a regex pattern
     if (function_exists($this->patterns[$rule][0])) {
-      $success = $this->patterns[$rule][0]($value, $arguments, $error, $this);
+      $success = $this->patterns[$rule][0](array(
+        "name" => $name,
+        "value" => $value,
+        "arguments" => $arguments,
+        "error" => $error
+      ), $this);
     } else {
       $success = preg_match($this->patterns[$rule][0], $value);
     }

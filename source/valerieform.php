@@ -42,7 +42,6 @@ class ValerieForm {
     
     public function __construct($plugin) {
       @session_start();
-      //$_SESSION['validator']['referer'] = $_SERVER['PHP_SELF'];
       if (ValerieConfig::ROOT) {
         $this->root = ValerieConfig::ROOT;
       }
@@ -55,9 +54,9 @@ class ValerieForm {
       else {
         $this->uri = '../source/';
       }
-      $this->uid = md5('randomness'.time());
+      $this->uid = md5(rand().time());
       $this->plugin = $plugin;
-      $this->setDefinition('forms/default.json');
+      $this->setDefinition('forms/default_form.php');
     }
     
     public function __destruct() {
@@ -161,9 +160,11 @@ class ValerieForm {
       $output = '';
       foreach($data as $args) {
         $fn = ($this->template[$args['id']]) ? $this->template[$args['id']] : $this->template[$args['type']];
+        $input = $this->getValue($args['name']);
         $vals = $args + array(
             'error' => $this->getError($args),
-            'input' => $this->getValue($args['name'])
+            'input' => $input,
+            'selected' => (is_array($input)) ? in_array($args['value'], $input) : $args['value'] == $input
         );
         if (isset($args['elements'])) {
           $vals = $vals + array('content' => $this->getOutput($args['elements']));
