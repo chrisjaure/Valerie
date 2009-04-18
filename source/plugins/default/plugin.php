@@ -1,4 +1,8 @@
 <?php
+$Valerie->setIncludes(array(
+  'css' => array('IE', 'ie_style.css')
+));
+
 $Valerie->setTemplate(array(
   'form_message' => 'default_form_message',
   'field_error' => 'default_field_error',
@@ -23,6 +27,7 @@ function default_form($args) {
   ?>
   
   <form id="<?php echo $id; ?>" class="valerie-form-default" method="<?php echo $method; ?>" action="<?php echo $action; ?>">
+    <?php echo $message; ?>
     <?php echo $content; ?>
   </form>
   
@@ -34,7 +39,7 @@ function default_form_message($args) {
   extract($args);
   ?>
   
-  <strong class="valerie-form-message valerie-form-message-<?php echo $type; ?>"><?php echo $message; ?></strong>
+  <div class="valerie-form-message valerie-form-message-<?php echo $type; ?>"><?php echo $message; ?></div>
   
   <?php
 }
@@ -44,9 +49,9 @@ function default_field_error($args) {
   extract($args);
   ?>
   
-  <label class="valerie-field-error" for="<?php echo $id ?>">
+  <span class="valerie-field-error">
     <?php echo $message; ?>
-  </label>
+  </span>
   
   <?php
 }
@@ -56,12 +61,13 @@ function default_checkbox($args) {
   extract($args);
   ?>
   
-  <br />
-  <input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" 
-  <?php if ($selected) echo 'checked'; ?>
-  /> 
-  <label for="<?php echo $id; ?>" class="checkbox"><?php echo $label; ?></label>
-  <?php echo $error; ?>
+  <label for="<?php echo $id; ?>">
+    <input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" class="checkbox"
+    <?php if ($selected) echo 'checked'; ?>
+    /> 
+    <?php echo $label; ?>
+    <?php echo $error; ?>
+  </label>
   
   <?php
 }
@@ -71,12 +77,13 @@ function default_radio($args) {
   extract($args);
   ?>
   
-  <br />
-  <input type="radio" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" 
-  <?php if ($selected) echo 'checked'; ?>
-  /> 
-  <label for="<?php echo $id; ?>" class="checkbox"><?php echo $label; ?></label>
-  <?php echo $error; ?>
+  <label for="<?php echo $id; ?>">
+    <input type="radio" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" class="radio"
+    <?php if ($selected) echo 'checked'; ?>
+    /> 
+    <?php echo $label; ?>
+    <?php echo $error; ?>
+  </label>
   
   <?php
 }
@@ -89,11 +96,12 @@ function default_checkgroup($args) {
   <fieldset>
     <legend id="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?></legend>
     <?php foreach($checkboxes as $checkbox): ?>
-      <br />
-      <input type="checkbox" id="<?php echo $checkbox['id']; ?>" name="<?php echo $name; ?>" value="<?php echo $checkbox['value']; ?>" 
-      <?php if (is_array($input) && in_array($checkbox['value'], $input)) echo 'checked'; ?>
-      /> 
-      <label for="<?php echo $checkbox['id']; ?>" class="checkbox"><?php echo $checkbox['label']; ?></label>
+      <label for="<?php echo $checkbox['id']; ?>">
+        <input type="checkbox" id="<?php echo $checkbox['id']; ?>" name="<?php echo $name; ?>" value="<?php echo $checkbox['value']; ?>" class="checkbox"
+        <?php if (is_array($input) && in_array($checkbox['value'], $input)) echo 'checked'; ?>
+        /> 
+        <?php echo $checkbox['label']; ?>
+      </label>
     <?php endforeach; ?>
   </fieldset>
   
@@ -108,11 +116,12 @@ function default_radiogroup($args) {
   <fieldset>
     <legend id="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?></legend>
     <?php foreach($radios as $radio): ?>
-      <br />
-      <input type="radio" id="<?php echo $radio['id']; ?>" name="<?php echo $name; ?>" value="<?php echo $radio['value']; ?>" 
-      <?php if ($radio['value'] == $input) echo 'checked'; ?>
-      /> 
-      <label for="<?php echo $radio['id']; ?>" class="checkbox"><?php echo $radio['label']; ?></label>
+      <label for="<?php echo $radio['id']; ?>">
+        <input type="radio" id="<?php echo $radio['id']; ?>" name="<?php echo $name; ?>" value="<?php echo $radio['value']; ?>" class="radio"
+        <?php if ($radio['value'] == $input) echo 'checked'; ?>
+        /> 
+        <?php echo $radio['label']; ?>
+      </label>
     <?php endforeach; ?>
   </fieldset>
   
@@ -124,9 +133,9 @@ function default_text($args) {
   extract($args);
   ?>
   
-  <label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-  <input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $input; ?>" />
-  <?php echo $error; ?>
+  <label for="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?>
+    <input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $input; ?>" class="text" />
+  </label>
   
   <?php
 }
@@ -136,9 +145,9 @@ function default_password($args) {
   extract($args);
   ?>
 
-  <label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-  <input type="password" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $input; ?>" />
-  <?php echo $error; ?>
+  <label for="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?>
+    <input type="password" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $input; ?>" class="password" />
+  </label>
 
   <?php
 }
@@ -148,9 +157,9 @@ function default_textarea($args) {
   extract($args);
   ?>
   
-  <label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-  <textarea id="<?php echo $id; ?>" name="<?php echo $name; ?>"><?php echo $input; ?></textarea>
-  <?php echo $error; ?>
+  <label for="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?>
+    <textarea id="<?php echo $id; ?>" name="<?php echo $name; ?>"><?php echo $input; ?></textarea>
+  </label>
   
   <?php
 }
@@ -160,13 +169,13 @@ function default_select($args) {
   extract($args);
   ?>
   
-  <label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-  <select id="<?php echo $id; ?>" name="<?php echo $name; ?>">
-    <?php foreach($options as $option): ?>
-      <option <?php if ($option['value'] == $input) echo 'selected'; ?> value="<?php echo $option['value']; ?>"><?php echo $option['label']; ?></option>
-    <?php endforeach; ?>
-  </select>
-  <?php echo $error; ?>
+  <label for="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?>
+    <select id="<?php echo $id; ?>" name="<?php echo $name; ?>">
+      <?php foreach($options as $option): ?>
+        <option <?php if ($option['value'] == $input) echo 'selected'; ?> value="<?php echo $option['value']; ?>"><?php echo $option['label']; ?></option>
+      <?php endforeach; ?>
+    </select>
+  </label>
   
   <?php
 }
@@ -176,7 +185,7 @@ function default_hidden($args) {
   extract($args);
   ?>
   
-  <input type="hidden" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" />
+  <input type="hidden" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" class="hidden" />
   
   <?php
 }
@@ -198,7 +207,7 @@ function default_submit($args) {
   extract($args);
   ?>
   
-  <input type="submit" value="<?php echo $value; ?>" />
+  <input type="submit" value="<?php echo $value; ?>" class="submit" />
   
   <?php
 }

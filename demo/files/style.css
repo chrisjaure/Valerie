@@ -1,17 +1,8 @@
 body {
   background-color:#e0e0e0;
-}
-label {
-  display:block;
-}
-label.checkbox {
-  display:inline;
-}
-input {
-  margin-bottom:1.2em;
-}
-input[type=submit] {
-  display:block;
+  margin:0;
+  padding:0;
+  font-size:70%;
 }
 div.content {
   margin:0 auto;

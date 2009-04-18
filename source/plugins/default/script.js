@@ -3,7 +3,7 @@
 
   $.fn.valerie.events = {
     initialized: function(e, form) {
-      el = $('<strong class="valerie-form-message"></strong>').insertBefore(form).hide();
+      el = $('<div class="valerie-form-message"/>').prependTo(form).hide();
       submitBtn = form.find('input[type=submit], button');
     },
     beforeSubmit: function(e, form) {
@@ -24,16 +24,16 @@
     formInvalidated: function(e, els, message, form) {
       el.text(message).addClass('valerie-form-message-error');
       $.each(els, function(){
-        var error = $('<label for="' + this.id + '" class="valerie-field-error">' + this.message + '</label>'),
+        var error = $('<span class="valerie-field-error">' + this.message + '</span>'),
             field = $('#'+this.id);
         if (field.is('[type=checkbox], [type=radio]')) {
-          field.next().after(error);
+          field.parent().append(error);
         }
         else if (field.is('legend')) {
           field.append(error);
         }
         else {
-          field.after(error);
+          field.before(error);
         }
         
       });

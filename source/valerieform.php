@@ -188,7 +188,7 @@ class ValerieForm {
         
         $output .= $this->getOutput($this->definition['elements']);
         
-        echo $this->template['form']($this->definition['attributes'] + array('content' => $output));
+        echo $this->template['form']($this->definition['attributes'] + array('content' => $output, 'message' => $this->getMessage()));
     }
     
     /*
@@ -232,16 +232,21 @@ class ValerieForm {
     
     public function getMessage() {
         $message = $_SESSION['validator']['message'];
-        if (function_exists($this->template['form_message'])) {
-          ob_start();
-          $this->template['form_message'](array(
-            'message' => $message,
-            'type' => $this->getMessageType()
-          ));
-          $message = ob_get_contents();
-          ob_end_clean();
+        if (isset($message)) {
+          if (function_exists($this->template['form_message'])) {
+            ob_start();
+            $this->template['form_message'](array(
+              'message' => $message,
+              'type' => $this->getMessageType()
+            ));
+            $message = ob_get_contents();
+            ob_end_clean();
+          }
+          return $message;
         }
-        return $message;
+        else {
+          return null;
+        }
     }
     
     /*
@@ -354,6 +359,11 @@ class ValerieForm {
       echo "<script type=\"text/javascript\" src=\"{$this->uri}plugins/{$this->plugin}/script.js\"></script>\n";
       
       foreach ($this->includes as $type => $path) {
+        if (is_array($path)) {
+          $conditional = $path[0];
+          $path = $path[1];
+          echo "<!--[if $conditional]>\n";
+        }
         switch ($type) {
           case 'css':
             echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$this->uri}plugins/{$this->plugin}/$path\" />\n";
@@ -361,6 +371,9 @@ class ValerieForm {
           case 'js':
             echo "<script type=\"text/javascript\" src=\"{$this->uri}plugins/{$this->plugin}/$path\"></script>\n";
             break;
+        }
+        if (isset($conditional)) {
+          echo "<![endif]-->\n";
         }
       }
       

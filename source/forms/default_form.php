@@ -84,12 +84,13 @@
       "id": "chk3",
       "name": "chk3",
       "value": "chk3",
-      "label": "Sign up for newsletter?"
+      "label": "Sign up for newsletter?",
+      "validation": "required"
     },
     {
       "type": "checkgroup",
       "name": "chckgroup2[]",
-      "label": "News letter topics:",
+      "label": "News letter topics",
       "id": "chckgroup2",
       "validation": [
         {
