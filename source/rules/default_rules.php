@@ -49,7 +49,7 @@ $Valerie->register(array(
   
   'phoneintl' => array(
     '/^\d{1,3}[\s|\.|-]\d{7,20}$/',
-    __('Please enter an international telephone number')
+    __('Please enter an international telephone number.')
   ),
   
   'postal' => array(

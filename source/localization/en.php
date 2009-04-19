@@ -7,28 +7,75 @@
 //------------------------------------------------------------------------------
 
 // error messages
-define("VAL_ERROR_REQUIRED", "This field is required.");
-define("VAL_ERROR_REQUIREDIF", "This field is required.");
-define("VAL_ERROR_INT", "This field must contain a positive integer.");
-define("VAL_ERROR_ALPHA", "This field may contain only alphabetic characters.");
-define("VAL_ERROR_ALPHANUMERIC", "This field may contain only alphanumeric characters.");
-define("VAL_ERROR_CURRENCY", "This field must contain a US currency.");
-define("VAL_ERROR_DATE", "This field must contain a date.");
-define("VAL_ERROR_TIME", "This field must contain a 12 hour time value.");
-define("VAL_ERROR_TIME24", "This field must contain a 24 hour time value.");
-define("VAL_ERROR_PHONE", "This field must contain a telephone number.");
-define("VAL_ERROR_PHONEINTL", "This field must contain an international telephone number.");
-define("VAL_ERROR_POSTAL", "This field must contain a postal code.");
-define("VAL_ERROR_ZIP", "This field must contain a zip code.");
-define("VAL_ERROR_EMAIL", "This field must contain an email address.");
-define("VAL_ERROR_URL", "This field must contain a URL.");
-define("VAL_ERROR_IP", "This field must contain an IP address.");
-define("VAL_ERROR_CONFIRM", "This field must contain the same value as {1}.");
-define("VAL_ERROR_DIFFER", "This field must not contain the same value as {1}.");
-define("VAL_ERROR_MAXLENGTH", "This field must not exceed {1} characters.");
-define("VAL_ERROR_MINLENGTH", "This field must contain at least {1} characters.");
+$lang = array(
 
-//misc messages
-define("VAL_VALIDATE", "Form submitted.");
-define("VAL_INVALIDATE", "Please fix the errors below.");
+  "Required." =>
+  "",
+  
+  "Please enter an integer." =>
+  "",
+  
+  "Please enter letters only." =>
+  "",
+  
+  "Please enter alpha-numeric characters only." =>
+  "",
+  
+  "Please enter a US currency." =>
+  "",
+  
+  "Please enter a date." =>
+  "",
+  
+  "Please enter a 12 hour time value." =>
+  "",
+  
+  "Please enter a 24 hour time value." =>
+  "",
+  
+  "Please enter a telephone number." =>
+  "",
+  
+  "Please enter an international telephone number." =>
+  "",
+  
+  "Please enter a postal code." =>
+  "",
+  
+  "Please enter a zip code." =>
+  "",
+  
+  "Please enter an email address." =>
+  "",
+  
+  "Please enter a URL." =>
+  "",
+  
+  "Please enter an IP address." =>
+  "",
+  
+  "Please enter the same value as {1}." =>
+  "",
+  
+  "Please enter a value different from {1}." =>
+  "",
+  
+  "Please enter no more than {1} character(s)." =>
+  "",
+  
+  "Please enter at least {1} character(s)." =>
+  "",
+  
+  "Please enter between {1} and {2} characters." =>
+  "",
+  
+  "Please select at least {1} option(s)." =>
+  "",
+  
+  "Please select no more than {1} option(s)." =>
+  "",
+  
+  "Please select between {1} and {2} options." =>
+  ""
+);
 ?>
