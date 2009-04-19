@@ -2,6 +2,7 @@
   display:block;
   margin-bottom:1em;
 }
+
 .valerie-form-default input,
 .valerie-form-default select,
 .valerie-form-default textarea {
@@ -11,68 +12,84 @@
 .valerie-form-default input.text,
 .valerie-form-default input.password,
 .valerie-form-default textarea {
-  border:solid 1px #bfbfbf;
+  border:solid 1px;
+  border-color:#6f736d #cfdce6 #cfdce6;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
+  margin:1px;
 }
+
 .valerie-form-default input.text:focus,
 .valerie-form-default input.password:focus,
 .valerie-form-default textarea:focus {
-  border-color:#7f7f7f;
+  border-color:#E1DA86;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  outline:solid 1px #f3eeac;
 }
 
 .valerie-form-default input.text,
 .valerie-form-default input.password {
-  width:200px;
+  width:40%;
 }
+
 .valerie-form-default textarea {
-  width:300px;
   height:100px;
+  width:70%;
 }
+
 .valerie-form-default input.checkbox,
 .valerie-form-default input.radio {
   display:inline;
   margin:0;
   vertical-align:middle;
 }
+
 .valerie-form-default input.submit {
   display:block;
 }
+
 .valerie-form-default fieldset {
-  margin:2em 0;
   border:solid 1px #7f7f7f;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
+  margin:2em 0;
   padding:1em 1em 0.5em;
 }
+
 .valerie-form-default legend {
+  color:#000;
   font-weight:bold;
   font-size:1.1em;
-  color:#000;
 }
+
 .valerie-form-default .valerie-form-message {
+  background-color:#ffff00;
   font-weight:bold;
   font-size:1.2em;
   margin-bottom:0.5em;
-  background-color:#ffff00;
   padding:0.5em;
 }
+
 .valerie-form-default .valerie-form-message-error {
-  color:#f00;
   background-color:transparent;
-  padding:0;
   border-bottom:solid 2px #f00;
-}
-.valerie-form-default .valerie-field-error {
-  display:inline;
   color:#f00;
-  padding-left:0.5em;
+  padding:0;
+}
+
+.valerie-form-default .valerie-field-error {
+  color:#f00;
+  display:inline;
   font-weight:normal;
   font-style:italic;
+  padding-left:0.5em;
 }
+
 .valerie-form-default legend .valerie-field-error {
   font-size:0.9em;
 }
-.valerie-form-default .clear {
 
+.valerie-form-default .valerie-alert {
+  border-color:#f00 !important;
 }

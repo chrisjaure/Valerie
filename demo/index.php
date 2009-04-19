@@ -7,7 +7,6 @@ $form = newValerieForm('default');
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
   <title>Valerie Demo</title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <?php $form->printAssets(); ?>
     <link rel="stylesheet" type="text/css" href="files/style.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

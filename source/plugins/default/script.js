@@ -10,6 +10,7 @@
       submitBtn.attr('disabled', true);
       el.hide();
       form.find('.valerie-field-error').remove();
+      form.find('.valerie-alert').removeClass('valerie-alert');
     },
     afterSubmit: function(e, form) {
       submitBtn.attr('disabled', false);
@@ -30,12 +31,11 @@
           field.parent().append(error);
         }
         else if (field.is('legend')) {
-          field.append(error);
+          field.append(error).parent().addClass('valerie-alert');
         }
         else {
-          field.before(error);
+          field.before(error).addClass('valerie-alert');
         }
-        
       });
     },
     error: function(e, form) {
