@@ -1,5 +1,6 @@
 <?php
-$Valerie->register(array(
+// $Valerie created in /source/functions.php in newValerieServer.
+$Valerie->registerRules(array(
 
   'required' => array(
     '/^./',

@@ -335,6 +335,7 @@ class ValerieForm {
   */
   
   public function getValue($name) {
+    if (substr($name, -2) == '[]') $post_key = substr($name, 0, -2);
     return $_SESSION['validator'][$name]; 
   }
   

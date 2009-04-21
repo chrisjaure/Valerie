@@ -19,11 +19,12 @@ class ValerieServer {
   
   private $values = array();
   private $rules = array();
-  private $ids = array();
+  private $elements = array();
   private $errors;
   private $ajax;
   private $periodical;
   private $patterns = array();
+  private $filters = array();
   private $referer;
   private $definition;
   private $uid;
@@ -61,7 +62,6 @@ class ValerieServer {
     require_once("localization/$lang"); 
     
     $this->setValues($this->definition['elements'], $data);
-    
   }
   
   /*
@@ -81,13 +81,17 @@ class ValerieServer {
       if (isset($element['elements'])) $this->setValues($element['elements'], $vals);
       if (isset($element['name'])) {
         $name = $element['name'];
-        $post_key = $name;
-        if (substr($name, -2) == '[]') $post_key = substr($name, 0, -2);
-        $this->values[$name] = (!is_array($vals[$post_key])) ? trim($vals[$post_key]) : $vals[$post_key];
+        if (substr($name, -2) == '[]') $name = substr($name, 0, -2);
+        if (is_array($vals[$name])) {
+          $this->values[$name] = array_map('trim', $vals[$name]);
+        }
+        else {
+          $this->values[$name] = trim($vals[$name]);
+        }
         if (isset($element['validation'])) {
-          $this->ids[$name] = $element['id'];
           $this->rules[$name] = (is_array($element['validation'])) ? $element['validation'] : array($element['validation']);
         }
+        $this->elements[$name] = $element;
       }
     }
   }
@@ -109,22 +113,25 @@ class ValerieServer {
     
     if ($this->periodical === false) {
       
-      foreach($this->rules as $key => $rules) {
-        $value = $this->values[$key];
-        if (!is_array($value)) $value = array($value);
-        foreach ($value as $val) {
+      // validate
+      foreach($this->rules as $name => $rules) {
+        $values = $this->values[$name];
+        if (!is_array($values)) $values = array($values);
+        foreach ($values as $value) {
           foreach($rules as $rule) {
-            if(!$this->test($rule, $val, $key)) break;
+            if(!$this->test($rule, $value, $name)) break;
           }
         }
       }
       
+      // return any errors, script will die if any
       if (isset($this->errors)) {
+        $invalidated = __('Please correct the errors below.');
         if ($this->ajax) {
           foreach ($this->errors as $key => $error) {
-            $arr[] = '{"id": "' . $this->ids[$key] . '", "message": "' . $error . '"}';
+            $arr[] = '{"id": "' . $this->elements[$key]['id'] . '", "message": "' . $error . '"}';
           }
-          echo '{"type": 100, "content": [' . implode(', ', $arr) . '], "message": "' . VAL_INVALIDATE . '"}';
+          echo '{"type": 100, "content": [' . implode(', ', $arr) . '], "message": "' . $invalidated . '"}';
           exit();
         } else {
           foreach($this->errors as $key => $error) {
@@ -134,15 +141,16 @@ class ValerieServer {
             echo $key, ': ', var_dump($value), "<br>";
             $_SESSION['validator'][$key] = $value;
           }
-          $_SESSION['validator']['message'] = VAL_INVALIDATE;
+          $_SESSION['validator']['message'] = $invalidated;
           $_SESSION['validator']['message_type'] = 'error';
           $this->back();
         }
       } else {
+        $validated = __('Your form has been submitted.');
         if ($this->ajax) {
-          echo '{"type": 1, "message": "' . VAL_VALIDATE . '"}';
+          echo '{"type": 1, "message": "' . $validated . '"}';
         } else {
-          $_SESSION['validator']['message'] = VAL_VALIDATE;
+          $_SESSION['validator']['message'] = $validated;
           $_SESSION['validator']['message_type'] = 'success';
         }
       }
@@ -161,6 +169,17 @@ class ValerieServer {
 
     }
     
+    // filter
+    foreach ($this->elements as $name => $element) {
+      $filters = $element['filters'];
+      if (isset($filters)) {
+        if (!is_array($filters)) $filters = array($filters);
+        foreach ($filters as $filter) {
+          $this->values[$name] = $this->filter($filter, $this->values[$name]);
+        }
+      }
+    }
+    
     return $this->values;
   }
   
@@ -171,19 +190,39 @@ class ValerieServer {
     
     Arguments:
     
-      $patterns - array of key/value pairs. The value must also be an array
-      containing a regex or function and the message to send if the value is
-      invalid.
+      $patterns - array of key/value pairs. The key is to be used in the form
+      definition. The value must also be an array containing a regex or function
+      and the message to send if the value is invalid.
       
     Example:
     
-      $form->register(array(
-        'required' => array('/^./', 'Field {1} is required.'),
+      $form->registerRules(array(
+        'required' => array('/^./', 'This field is required.')
       ));
   */
   
-  public function register($patterns) {
+  public function registerRules($patterns) {
     $this->patterns = array_merge($this->patterns, $patterns);
+  }
+  
+  /*
+    Method: registerFilters
+    
+    Registers filters to be applied to values AFTER they have been validated.
+    
+    Arguments:
+    
+      $filters - array of key/value pairs.
+      
+    Example:
+    
+      $form->registerFilters(array(
+        'striptags' => 'strip_tags'
+      ));
+  */
+  
+  public function registerFilters($filters) {
+    $this->filters = array_merge($this->filters, $filters);
   }
   
   /*
@@ -228,8 +267,8 @@ class ValerieServer {
     
   */
   
-  public function getValue($id) {
-    return $this->values[$id];
+  public function getValue($name) {
+    return $this->values[$name];
   }
   
   /*
@@ -238,8 +277,8 @@ class ValerieServer {
     
   */
   
-  public function getRule($id) {
-    return $this->rules[$id];
+  public function getRule($name) {
+    return $this->rules[$name];
   }
   
   /*
@@ -273,7 +312,7 @@ class ValerieServer {
   /*
     Method: test
     
-    
+    Checks values validation rules.
   */
   
   private function test($rule, $value, $name) {
@@ -287,8 +326,6 @@ class ValerieServer {
     else {
       $arguments = null;
     }
-
-    //var_dump($rule, $arguments);
 
     // return true if empty and not required
     if ($this->isEmpty($value) && !$this->patterns[$rule][2]) return true;
@@ -317,6 +354,29 @@ class ValerieServer {
       return false;
     } else return true;
     
-  }  
+  }
+  
+  /*
+    Method: filter
+    
+    Filters values.
+  */
+  
+  private function filter($filter, $values) {
+    if (is_array($values)) {
+      foreach($values as &$value) {
+        if (function_exists($filter)) {
+          $value = $filter($value);
+        }
+      }
+    }
+    else {
+      if (function_exists($filter)) {
+        $values = $filter($values);
+      }
+    }
+    
+    return $values;
+  }
 }
 ?>

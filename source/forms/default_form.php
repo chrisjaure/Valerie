@@ -13,6 +13,9 @@
         "required",
         "alpha"
       ],
+      "filters": [
+        "striptags"
+      ],
       "label": "Stick your name in here, yo."
     },
     {
@@ -50,6 +53,9 @@
           "id": "f4",
           "name": "f4",
           "validation": "required",
+          "filters": [
+            "striptags"
+          ],
           "label": "hi."
         },
         {
@@ -123,6 +129,7 @@
       "id": "slct",
       "name": "slct",
       "label": "My select",
+      "validation": "required",
       "options": [
         {
           "label": "yoyo",

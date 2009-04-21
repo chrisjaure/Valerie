@@ -5,7 +5,8 @@ include_once "config.php";
 /*
   Function: newValerieServer
   
-  Returns new ValerieServer and includes all rules in /rules dir.
+  Returns new ValerieServer and includes all rules in /rules dir and all filters
+  in /filters dir.
 */
 
 function newValerieServer($data) {
@@ -15,6 +16,9 @@ function newValerieServer($data) {
   $dir = dirname(__FILE__);
   foreach(scandir($dir.'/rules/') as $file) {
     if (is_file("$dir/rules/$file")) include("$dir/rules/$file");
+  }
+  foreach(scandir($dir.'/filters/') as $file) {
+    if (is_file("$dir/filters/$file")) include("$dir/filters/$file");
   }
 
   return $Valerie;

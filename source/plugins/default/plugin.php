@@ -115,7 +115,7 @@ function default_checkgroup($args) {
   extract($args);
   ?>
   
-  <fieldset <?php if (isset($error)) echo 'class="valerie-alert"'?>>
+  <fieldset <?php if (isset($error)) echo 'class="valerie-alert"'; ?>>
     <legend id="<?php echo $id; ?>">
       <?php echo $label; ?>
       <?php echo $error; ?>
@@ -179,7 +179,7 @@ function default_text($args) {
       id="<?php echo $id; ?>"
       name="<?php echo $name; ?>"
       value="<?php echo $input; ?>"
-      class="text <?php if (isset($error)) echo 'valerie-alert'?>";
+      class="text <?php if (isset($error)) echo 'valerie-alert'; ?>"
     />
   </label>
   
@@ -199,7 +199,7 @@ function default_password($args) {
       id="<?php echo $id; ?>"
       name="<?php echo $name; ?>"
       value="<?php echo $input; ?>"
-      class="password <?php if (isset($error)) echo 'valerie-alert'?>"
+      class="password <?php if (isset($error)) echo 'valerie-alert'; ?>"
     />
   </label>
 
@@ -217,10 +217,8 @@ function default_textarea($args) {
     <textarea
       id="<?php echo $id; ?>"
       name="<?php echo $name; ?>"
-      <?php if (isset($error)) echo 'class="valerie-alert"'?>
-    >
-      <?php echo $input; ?>
-    </textarea>
+      <?php if (isset($error)) echo 'class="valerie-alert"'; ?>
+    ><?php echo $input; ?></textarea>
   </label>
   
   <?php
@@ -232,7 +230,12 @@ function default_select($args) {
   ?>
   
   <label for="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?>
-    <select id="<?php echo $id; ?>" name="<?php echo $name; ?>">
+    <select
+      id="<?php echo $id; ?>"
+      name="<?php echo $name; ?>"
+      <?php if (isset($multiple)) echo "multiple=\"$multiple\""; ?>
+      <?php if (isset($size)) echo "size=\"$size\""; ?>
+    >
       <?php foreach($options as $option): ?>
         <option
           <?php if ($option['value'] == $input) echo 'selected'; ?>

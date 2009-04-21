@@ -11,7 +11,8 @@
 
 .valerie-form-default input.text,
 .valerie-form-default input.password,
-.valerie-form-default textarea {
+.valerie-form-default textarea,
+.valerie-form-default select {
   border:solid 1px;
   border-color:#6f736d #cfdce6 #cfdce6;
   -moz-border-radius: 2px;
@@ -21,15 +22,31 @@
 
 .valerie-form-default input.text:focus,
 .valerie-form-default input.password:focus,
-.valerie-form-default textarea:focus {
+.valerie-form-default textarea:focus,
+.valerie-form-default select:focus {
   border-color:#E1DA86;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   outline:solid 1px #f3eeac;
 }
 
+.valerie-form-default input.valerie-alert,
+.valerie-form-default textarea.valerie-alert,
+.valerie-form-default fieldset.valerie-alert,
+.valerie-form-default select.valerie-alert {
+  border-color:#f00;
+}
+
+.valerie-form-default input.valerie-alert:focus,
+.valerie-form-default textarea.valerie-alert:focus,
+.valerie-form-default select.valerie-alert:focus {
+  outline-color:#ffcece;
+  border-color:#ff7373;
+}
+
 .valerie-form-default input.text,
-.valerie-form-default input.password {
+.valerie-form-default input.password,
+.valerie-form-default select {
   width:40%;
 }
 
@@ -88,8 +105,4 @@
 
 .valerie-form-default legend .valerie-field-error {
   font-size:0.9em;
-}
-
-.valerie-form-default .valerie-alert {
-  border-color:#f00 !important;
 }

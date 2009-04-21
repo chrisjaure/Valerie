@@ -76,6 +76,12 @@ $lang = array(
   "",
   
   "Please select between {1} and {2} options." =>
+  "",
+  
+  "Your form has been submitted." =>
+  "",
+  
+  "Please correct the errors below." =>
   ""
 );
 ?>

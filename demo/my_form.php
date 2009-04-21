@@ -3,7 +3,7 @@
 
   $myValidator = newValerieServer($_POST);
   $ajax = $myValidator->isAjax();
-  $myValidator->register(array(
+  $myValidator->registerRules(array(
     'digit' => array('/^\d$/', 'This field must contain one numerical character.'),
     'less_than_150' => array('is_less_than_150', 'This field must contain a value less than 150.'),
     'divisible' => array('is_divisible_by', '{2} is not divisible by {1}.'),
