@@ -53,9 +53,7 @@
           "id": "f4",
           "name": "f4",
           "validation": "required",
-          "filters": [
-            "striptags"
-          ],
+          "filters": "striptags",
           "label": "hi."
         },
         {

@@ -12,7 +12,7 @@
 /*
   Class: ValerieServer
   
-  Validates the forms.
+  Validates the forms. Any form values are converted to UTF-8 charset.
 */
 
 class ValerieServer {
@@ -35,6 +35,11 @@ class ValerieServer {
     Arguments:
     
       $data - POST data
+      $lang - language file to use, filename minus .php
+      
+    Returns:
+    
+      ValerieServer instance
   */
 
   public function __construct($data, $lang = 'en.php'){
@@ -59,7 +64,8 @@ class ValerieServer {
       }
     }
     
-    require_once("localization/$lang"); 
+    require_once "localization/$lang";
+    require_once "libs/utf8/utf8.php";
     
     $this->setValues($this->definition['elements'], $data);
   }
@@ -83,10 +89,13 @@ class ValerieServer {
         $name = $element['name'];
         if (substr($name, -2) == '[]') $name = substr($name, 0, -2);
         if (is_array($vals[$name])) {
-          $this->values[$name] = array_map('trim', $vals[$name]);
+          foreach ($vals[$name] as &$value) {
+            $value = $this->cleanValue($value);
+          }
+          $this->values[$name] = $vals[$name];
         }
         else {
-          $this->values[$name] = trim($vals[$name]);
+          $this->values[$name] = $this->cleanValue($vals[$name]);
         }
         if (isset($element['validation'])) {
           $this->rules[$name] = (is_array($element['validation'])) ? $element['validation'] : array($element['validation']);
@@ -97,6 +106,24 @@ class ValerieServer {
   }
   
   /*
+    Method: cleanValue
+    
+    This will trim the value and make sure it's a valid UTF-8 string.
+  */
+  
+  private function cleanValue($value) {
+    $value = trim($value);
+    if (strtolower(ValerieConfig::CHAR_ENCODING) != 'utf-8') {
+      $value = iconv(ValerieConfig::CHAR_ENCODING, 'UTF-8//TRANSLIT', $value);
+    }
+    else {
+      $value = iconv('UTF-8', 'UTF-8//IGNORE', $value);
+    }
+    
+    return $value;
+  }
+  
+  /*
     Method: validate
     
     Validates the submitted form data. If the form has been submitted via ajax,
@@ -104,7 +131,7 @@ class ValerieServer {
     
     Returns:
     
-      If the form validates, the values will be returned.
+      array of values if the form validates.
   */
   
   public function validate(){
@@ -243,7 +270,9 @@ class ValerieServer {
   /*
     Method: isAjax
     
+    Returns:
     
+      bool, true if ajax request
   */
   
   public function isAjax() {
@@ -312,7 +341,17 @@ class ValerieServer {
   /*
     Method: test
     
-    Checks values validation rules.
+    Checks value against its validation rules.
+    
+    Arguments:
+    
+      $rule - rule name
+      $value - form value
+      $name - form value name
+      
+    Returns:
+    
+      bool, true on success, false on failure
   */
   
   private function test($rule, $value, $name) {
@@ -360,22 +399,43 @@ class ValerieServer {
     Method: filter
     
     Filters values.
+    
+    Arguments:
+    
+      $filter - filter name
+      $values - value(s) to filter
+      
+    Returns:
+    
+      filtered value(s)
+      
   */
   
   private function filter($filter, $values) {
+    // get arguments
+    if (is_array($filter)) {
+      $arguments = $filter;
+      list($filter) = array_keys($filter);
+      $arguments = $arguments[$filter];
+      if (count($arguments) === 1) $arguments = $arguments[0];
+    }
+    else {
+      $arguments = null;
+    }
+  
+    $fn = $this->filters[$filter];
     if (is_array($values)) {
       foreach($values as &$value) {
-        if (function_exists($filter)) {
-          $value = $filter($value);
+        if (function_exists($fn)) {
+          $value = $fn($value, $arguments);
         }
       }
     }
     else {
-      if (function_exists($filter)) {
-        $values = $filter($values);
+      if (function_exists($fn)) {
+        $values = $fn($values, $arguments);
       }
     }
-    
     return $values;
   }
 }

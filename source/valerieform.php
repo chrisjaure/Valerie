@@ -42,18 +42,8 @@ class ValerieForm {
   
   public function __construct($plugin) {
     @session_start();
-    if (ValerieConfig::ROOT) {
-      $this->root = ValerieConfig::ROOT;
-    }
-    else {
-      $this->root = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR) . '/';
-    }
-    if (ValerieConfig::URI) {
-      $this->uri = ValerieConfig::URI;
-    }
-    else {
-      $this->uri = '../source/';
-    }
+    $this->root = ValerieConfig::root();
+    $this->uri = ValerieConfig::URI;
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
     $this->setDefinition('forms/default_form.php');
@@ -335,7 +325,7 @@ class ValerieForm {
   */
   
   public function getValue($name) {
-    if (substr($name, -2) == '[]') $post_key = substr($name, 0, -2);
+    if (substr($name, -2) == '[]') $name = substr($name, 0, -2);
     return $_SESSION['validator'][$name]; 
   }
   
@@ -411,7 +401,7 @@ class ValerieForm {
   public function printAssets($global = true) {
     echo "\n\n<!-- Begin JibberBook {$this->plugin} Assets -->\n";
     if ($global) {
-      echo "<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></script>";
+      echo "<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></script>\n";
       echo "<script type=\"text/javascript\" src=\"{$this->uri}valerieclient.js\"></script>\n";
     }
     echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$this->uri}plugins/{$this->plugin}/style.css\" />\n";

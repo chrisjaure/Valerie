@@ -154,21 +154,21 @@ function maxlength($args, $Valerie) {
   extract($args);
   // $arguments = max length
   $message = $Valerie->format($error, $arguments);
-  return array(strlen($value) <= (int) $arguments, $message);
+  return array(utf8_strlen($value) <= (int) $arguments, $message);
 }
 
 function minlength($args, $Valerie) {
   extract($args);
   // $arguments = min length
   $message = $Valerie->format($error, $arguments);
-  return array(strlen($value) >= (int) $arguments, $message);
+  return array(utf8_strlen($value) >= (int) $arguments, $message);
 }
 
 function rangelength($args, $Valerie) {
   extract($args);
   // $arguments = [0] min length, [1] max length
   $message = $Valerie->format($error, $arguments);
-  $length = strlen($value);
+  $length = utf8_strlen($value);
   return array(
     ($length >= (int) $arguments[0]) && ($length <= (int) $arguments[1]),
     $message

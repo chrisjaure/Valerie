@@ -1,6 +1,9 @@
+/* default form style */
+
 .valerie-form-default label {
   display:block;
   margin-bottom:1em;
+  cursor:pointer;
 }
 
 .valerie-form-default input,
@@ -45,9 +48,12 @@
 }
 
 .valerie-form-default input.text,
-.valerie-form-default input.password,
-.valerie-form-default select {
+.valerie-form-default input.password {
   width:40%;
+}
+
+.valerie-form-default select {
+  min-width:40%;
 }
 
 .valerie-form-default textarea {

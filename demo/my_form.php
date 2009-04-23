@@ -31,6 +31,8 @@
   // do stuff with the data
   
   // if it's not an ajax call, go back to the form
-  $myValidator->back();
+  //$myValidator->back();
   // OR Valerie::back($ajax);
+  
+  var_dump($data);
 ?>

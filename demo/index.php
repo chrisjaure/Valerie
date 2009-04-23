@@ -6,10 +6,10 @@ $form = newValerieForm('default');
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-  <title>Valerie Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Valerie Demo</title>
     <?php $form->printAssets(); ?>
     <link rel="stylesheet" type="text/css" href="files/style.css" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   </head>
   <body>
   <div class="content">

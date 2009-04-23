@@ -1,6 +1,6 @@
 <?php
 
-include_once "config.php";
+require_once "config.php";
 
 /*
   Function: newValerieServer
@@ -13,7 +13,7 @@ function newValerieServer($data) {
   require('valerieserver.php');
   $Valerie = new ValerieServer($data);
   
-  $dir = dirname(__FILE__);
+  $dir = ValerieConfig::root();
   foreach(scandir($dir.'/rules/') as $file) {
     if (is_file("$dir/rules/$file")) include("$dir/rules/$file");
   }
