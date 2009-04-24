@@ -52,6 +52,7 @@
       }
 
       form.submit(function(e){
+        if (form.find('input[type=file]')[0]) return true;
         e.preventDefault();
         $.ajax({
           url: form.attr('action'),

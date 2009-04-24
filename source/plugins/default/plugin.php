@@ -23,7 +23,8 @@ $Valerie->setTemplate(array(
   'checkgroup' => 'default_checkgroup',
   'radiogroup' => 'default_radiogroup',
   'hidden' => 'default_hidden',
-  'button' => 'default_button'
+  'button' => 'default_button',
+  'file' => 'default_file'
 ));
 
 // form
@@ -262,6 +263,23 @@ function default_hidden($args) {
     value="<?php echo $value; ?>"
     class="hidden"
   />
+  
+  <?php
+}
+
+// file
+function default_file($args) {
+  extract($args);
+  ?>
+  
+  <label for="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?>
+    <input
+      type="file"
+      id="<?php echo $id; ?>"
+      name="<?php echo $name; ?>"
+      class="file"
+    />
+  </label>
   
   <?php
 }

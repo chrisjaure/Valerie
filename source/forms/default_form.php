@@ -23,12 +23,8 @@
       "id": "f2",
       "name": "f2",
       "validation": [
-        {
-          "differ": ["f1", "your first name"]
-        },
-        {
-          "requiredif": ["f1"]
-        }
+        {"differ": ["f1", "your first name"]},
+        {"requiredif": "f1"}
       ],
       "label": "Your last name."
     },
@@ -38,9 +34,7 @@
       "name": "f3",
       "validation": [
         "required",
-        {
-          "rangelength": [6, 20]
-        }
+        {"rangelength": [6, 20]}
       ],
       "label": "password"
     },
@@ -97,12 +91,8 @@
       "label": "News letter topics",
       "id": "chckgroup2",
       "validation": [
-        {
-          "selectrange": [2,3]
-        },
-        {
-          "requiredif": ["chk3"]
-        }
+        {"selectrange": [2, 3]},
+        {"requiredif": "chk3"}
       ],
       "checkboxes": [
         {

@@ -7,18 +7,28 @@ require_once "config.php";
   
   Returns new ValerieServer and includes all rules in /rules dir and all filters
   in /filters dir.
+  
+  Arguments:
+    
+    $data - post data
+    
+  Returns:
+  
+    instance of ValerieServer
 */
 
 function newValerieServer($data) {
-  require('valerieserver.php');
+  require 'valerieserver.php';
   $Valerie = new ValerieServer($data);
   
   $dir = ValerieConfig::root();
-  foreach(scandir($dir.'/rules/') as $file) {
-    if (is_file("$dir/rules/$file")) include("$dir/rules/$file");
+  foreach(scandir("$dir/rules/") as $file) {
+    if (is_file("$dir/rules/$file"))
+      include "$dir/rules/$file";
   }
-  foreach(scandir($dir.'/filters/') as $file) {
-    if (is_file("$dir/filters/$file")) include("$dir/filters/$file");
+  foreach(scandir("$dir/filters/") as $file) {
+    if (is_file("$dir/filters/$file"))
+      include "$dir/filters/$file";
   }
 
   return $Valerie;
@@ -28,13 +38,21 @@ function newValerieServer($data) {
   Function: newValerieForm
   
   Returns new ValerieForm and includes plugin file.
+  
+  Arguments:
+  
+    $plugin - optional, name of plugin folder
+    
+  Returns:
+  
+    instance of ValerieForm
 */
 
 function newValerieForm($plugin='default') {
-  require('valerieform.php');
+  require 'valerieform.php';
   $Valerie = new ValerieForm($plugin);
   
-  include('plugins/'.$plugin.'/plugin.php');
+  include "plugins/$plugin/plugin.php";
 
   return $Valerie;
 }
@@ -43,6 +61,14 @@ function newValerieForm($plugin='default') {
   Function: __
   
   Tranlates string if it exists.
+  
+  Arguments:
+  
+    $str - string to translate
+  
+  Returns:
+  
+    translated string or $str
 */
 
 function __($str) {
@@ -57,8 +83,17 @@ function __($str) {
 /*
   Function: _e
   
-  Prints translated string.
+  Prints translated string if it exists, otherwise prints string.
+  
+  Arguments:
+  
+    $str - string to translate
+    
+  See Also:
+  
+    <__>
 */
+
 function _e($str) {
     echo __($str);
 }

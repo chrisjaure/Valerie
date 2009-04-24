@@ -165,7 +165,6 @@ class ValerieServer {
             $_SESSION['validator'][$key . '_error'] = $error;
           }
           foreach($this->values as $key => $value) {
-            echo $key, ': ', var_dump($value), "<br>";
             $_SESSION['validator'][$key] = $value;
           }
           $_SESSION['validator']['message'] = $invalidated;
@@ -360,7 +359,6 @@ class ValerieServer {
       $arguments = $rule;
       list($rule) = array_keys($rule);
       $arguments = $arguments[$rule];
-      if (count($arguments) === 1) $arguments = $arguments[0];
     }
     else {
       $arguments = null;
@@ -417,7 +415,6 @@ class ValerieServer {
       $arguments = $filter;
       list($filter) = array_keys($filter);
       $arguments = $arguments[$filter];
-      if (count($arguments) === 1) $arguments = $arguments[0];
     }
     else {
       $arguments = null;
