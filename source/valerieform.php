@@ -66,19 +66,19 @@ class ValerieForm {
       
     Example:
     
-        $form->setTemplate(array(
-          'checkbox': 'checkbox_format'
-        ));
+      $form->setTemplate(array(
+        'checkbox': 'checkbox_format'
+      ));
+      
+      function checkbox_format($args) {
+        extract($args) ?>
         
-        function checkbox_format($args) {
-          extract($args) ?>
-          
-          <input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" /> 
-          <label for="<?php echo $id; ?>" class="checkbox"><?php echo $label; ?></label>
-          <?php echo $error; ?>
-          
-          <?php
-        }
+        <input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" /> 
+        <label for="<?php echo $id; ?>" class="checkbox"><?php echo $label; ?></label>
+        <?php echo $error; ?>
+        
+        <?php
+      }
   */
   
   public function setTemplate($form) {
@@ -98,28 +98,28 @@ class ValerieForm {
     
     Example:
     
-        //element definition
-        {
-          "type": "text",
-          "id": "text1",
-          "name": "text1",
-          "label": "This is a text field",
-          "validation": [
-            "required",
-            {
-              "maxlength": [25]
-            }
-          ]
-        }
-        
-        //setting definition
-        $Valerie->setDefinition(array(
-          "text" => "text_func",
-          "text1" => "special_func_for_text1"
-        ));
-        
-        function text_func($args) {...}
-        function special_func_for_text1($args) {...}
+      //element definition
+      {
+        "type": "text",
+        "id": "text1",
+        "name": "text1",
+        "label": "This is a text field",
+        "validation": [
+          "required",
+          {
+            "maxlength": [25]
+          }
+        ]
+      }
+      
+      //setting definition
+      $Valerie->setDefinition(array(
+        "text" => "text_func",
+        "text1" => "special_func_for_text1"
+      ));
+      
+      function text_func($args) {...}
+      function special_func_for_text1($args) {...}
         
     In this example, special_func_for_text1 will be used to render the
     defined text field because it has been registered for that element's id.
@@ -155,11 +155,11 @@ class ValerieForm {
     
     Example:
     
-        $Valerie->setIncludes(array(
-          'css' => 'style2.css',
-          'css' => array('lt IE 7', 'ie6_style.css'),
-          'js' => 'script2.js'
-        ))
+    $Valerie->setIncludes(array(
+      'css' => 'style2.css',
+      'css' => array('lt IE 7', 'ie6_style.css'),
+      'js' => 'script2.js'
+    ))
   */
   
   public function setIncludes($includes) {

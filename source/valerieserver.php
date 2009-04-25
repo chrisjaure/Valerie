@@ -113,7 +113,7 @@ class ValerieServer {
   
   private function cleanValue($value) {
     $value = trim($value);
-    if (strtolower(ValerieConfig::CHAR_ENCODING) != 'utf-8') {
+    if (strtoupper(ValerieConfig::CHAR_ENCODING) != 'UTF-8') {
       $value = iconv(ValerieConfig::CHAR_ENCODING, 'UTF-8//TRANSLIT', $value);
     }
     else {
@@ -281,7 +281,16 @@ class ValerieServer {
   /*
     Method: getNameLabel
     
+    Returns a two-value array. If an array is passed in, first two values are
+    returned. Otherwise the array is populated with the string.
     
+    Arguments:
+      
+      $text - string or array
+      
+    Returns:
+    
+      array
   */
   
   public function getNameLabel($text) {
@@ -292,7 +301,15 @@ class ValerieServer {
   /*
     Method: getValue
     
+    Gets the form value(s).
     
+    Arguments:
+      
+      $name - name of field
+      
+    Returns:
+    
+      string or array
   */
   
   public function getValue($name) {
@@ -302,7 +319,15 @@ class ValerieServer {
   /*
     Method: getRule
     
+    Gets the rule(s) associated with form field.
     
+    Arguments:
+    
+      $name - name of field
+      
+    Returns:
+    
+      string or array
   */
   
   public function getRule($name) {
@@ -312,7 +337,15 @@ class ValerieServer {
   /*
     Method: isEmpty
     
+    Determines if field value is empty.
     
+    Arguments:
+    
+      $val - value
+      
+    Returns:
+    
+      bool
   */
   
   public function isEmpty($val) {
@@ -322,7 +355,16 @@ class ValerieServer {
   /*
     Method: format
     
+    Replaces n tokens ({1}, {2}, ...) with values.
     
+    Arguments:
+    
+      $template - string with tokens to be replaced
+      $values - string value or array of values
+      
+    Returns:
+    
+      string
   */
   
   public function format($template, $values) {
@@ -405,7 +447,7 @@ class ValerieServer {
       
     Returns:
     
-      filtered value(s)
+      string or array
       
   */
   

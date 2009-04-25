@@ -1,4 +1,12 @@
 <?php
+//------------------------------------------------------------------------------
+//	Valerie v0.6
+//	(c) 2009 Chris Jaure
+//	license: MIT License
+//	website: http://code.google.com/p/valerie/
+//
+//	functions.php
+//------------------------------------------------------------------------------
 
 require_once "config.php";
 

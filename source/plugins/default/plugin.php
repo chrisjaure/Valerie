@@ -1,4 +1,13 @@
 <?php
+//------------------------------------------------------------------------------
+//	Valerie v0.6
+//	(c) 2009 Chris Jaure
+//	license: MIT License
+//	website: http://code.google.com/p/valerie/
+//
+//	plugins/default/plugin.php
+//------------------------------------------------------------------------------
+
 // $Valerie created in /source/functions.php in newValerieForm.
 // setIncludes, setTemplate defined in /source/ValerieForm.php 
 $Valerie->setIncludes(array(

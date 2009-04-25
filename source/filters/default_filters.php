@@ -1,4 +1,13 @@
 <?php
+//------------------------------------------------------------------------------
+//	Valerie v0.6
+//	(c) 2009 Chris Jaure
+//	license: MIT License
+//	website: http://code.google.com/p/valerie/
+//
+//	filters/default_filters.php
+//------------------------------------------------------------------------------
+
 // $Valerie created in /source/functions.php in newValerieServer.
 $Valerie->registerFilters(array(
   'striptags' => 'strip_tags',

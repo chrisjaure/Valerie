@@ -1,4 +1,19 @@
 <?php
+//------------------------------------------------------------------------------
+//	Valerie v0.6
+//	(c) 2009 Chris Jaure
+//	license: MIT License
+//	website: http://code.google.com/p/valerie/
+//
+//	config.php
+//------------------------------------------------------------------------------
+
+
+/*
+  Class: ValerieConfig
+  
+  Static variables and functions for configuring Valerie
+*/
 
 class ValerieConfig {
 

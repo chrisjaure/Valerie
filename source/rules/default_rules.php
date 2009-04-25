@@ -1,4 +1,13 @@
 <?php
+//------------------------------------------------------------------------------
+//	Valerie v0.6
+//	(c) 2009 Chris Jaure
+//	license: MIT License
+//	website: http://code.google.com/p/valerie/
+//
+//	rules/default_rules.php
+//------------------------------------------------------------------------------
+
 // $Valerie created in /source/functions.php in newValerieServer.
 $Valerie->registerRules(array(
 
