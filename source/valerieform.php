@@ -203,12 +203,17 @@ class ValerieForm {
   private function getOutput($data) {
     $output = '';
     foreach($data as $args) {
-      $fn = ($this->template[$args['id']]) ? $this->template[$args['id']] : $this->template[$args['type']];
+      if ($this->template[$args['id']])
+        $fn = $this->template[$args['id']];
+      else
+        $fn = $this->template[$args['type']];
       $input = $this->getValue($args['name']);
       $vals = $args + array(
         'error' => $this->getError($args),
         'input' => $input,
-        'selected' => (is_array($input)) ? in_array($args['value'], $input) : $args['value'] == $input
+        'selected' => (is_array($input)) ? 
+          in_array($args['value'], $input) :
+          $args['value'] == $input
       );
       if (isset($args['elements'])) {
         $vals = $vals + array('content' => $this->getOutput($args['elements']));
@@ -401,11 +406,16 @@ class ValerieForm {
   public function printAssets($global = true) {
     echo "\n\n<!-- Begin JibberBook {$this->plugin} Assets -->\n";
     if ($global) {
-      echo "<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></script>\n";
-      echo "<script type=\"text/javascript\" src=\"{$this->uri}valerieclient.js\"></script>\n";
+      echo "<script type=\"text/javascript\" " .
+        "src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\">" .
+        "</script>\n";
+      echo "<script type=\"text/javascript\" " .
+        "src=\"{$this->uri}valerieclient.js\"></script>\n";
     }
-    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$this->uri}plugins/{$this->plugin}/style.css\" />\n";
-    echo "<script type=\"text/javascript\" src=\"{$this->uri}plugins/{$this->plugin}/script.js\"></script>\n";
+    echo "<link rel=\"stylesheet\" type=\"text/css\" ".
+      "href=\"{$this->uri}plugins/{$this->plugin}/style.css\" />\n";
+    echo "<script type=\"text/javascript\" " .
+      "src=\"{$this->uri}plugins/{$this->plugin}/script.js\"></script>\n";
     
     foreach ($this->includes as $type => $path) {
       if (is_array($path)) {
@@ -416,10 +426,12 @@ class ValerieForm {
       $path = strip_tags($path);
       switch ($type) {
         case 'css':
-          echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$this->uri}plugins/{$this->plugin}/$path\" />\n";
+          echo "<link rel=\"stylesheet\" type=\"text/css\" ".
+            "href=\"{$this->uri}plugins/{$this->plugin}/$path\" />\n";
           break;
         case 'js':
-          echo "<script type=\"text/javascript\" src=\"{$this->uri}plugins/{$this->plugin}/$path\"></script>\n";
+          echo "<script type=\"text/javascript\" ".
+            "src=\"{$this->uri}plugins/{$this->plugin}/$path\"></script>\n";
           break;
       }
       if (isset($conditional)) {
@@ -427,7 +439,9 @@ class ValerieForm {
       }
     }
     
-    echo "<script type=\"text/javascript\">jQuery(function($){ $(\"#{$this->definition['attributes']['id']}\").valerie(); })</script>\n";
+    echo "<script type=\"text/javascript\">" .
+      "jQuery(function($){ $(\"#{$this->definition['attributes']['id']}\")" .
+      ".valerie(); })</script>\n";
     echo "<!-- End JibberBook {$this->plugin} Assets -->\n\n";
   }
 }

@@ -30,7 +30,7 @@ class ValerieServer {
   private $uid;
 
   /*
-    Contructor: __construct
+    Constructor: __construct
     
     Arguments:
     
@@ -84,7 +84,8 @@ class ValerieServer {
   
   private function setValues($els, $vals) {
     foreach($els as $element) {
-      if (isset($element['elements'])) $this->setValues($element['elements'], $vals);
+      if (isset($element['elements']))
+        $this->setValues($element['elements'], $vals);
       if (isset($element['name'])) {
         $name = $element['name'];
         if (substr($name, -2) == '[]') $name = substr($name, 0, -2);
@@ -98,7 +99,10 @@ class ValerieServer {
           $this->values[$name] = $this->cleanValue($vals[$name]);
         }
         if (isset($element['validation'])) {
-          $this->rules[$name] = (is_array($element['validation'])) ? $element['validation'] : array($element['validation']);
+          if (is_array($element['validation']))
+            $this->rules[$name] = $element['validation'];
+          else
+            $this->rules[$name] = array($element['validation']);
         }
         $this->elements[$name] = $element;
       }
@@ -156,9 +160,11 @@ class ValerieServer {
         $invalidated = __('Please correct the errors below.');
         if ($this->ajax) {
           foreach ($this->errors as $key => $error) {
-            $arr[] = '{"id": "' . $this->elements[$key]['id'] . '", "message": "' . $error . '"}';
+            $arr[] = '{"id": "' . $this->elements[$key]['id'] .
+              '", "message": "' . $error . '"}';
           }
-          echo '{"type": 100, "content": [' . implode(', ', $arr) . '], "message": "' . $invalidated . '"}';
+          echo '{"type": 100, "content": [' . implode(', ', $arr) .
+            '], "message": "' . $invalidated . '"}';
           exit();
         } else {
           foreach($this->errors as $key => $error) {
@@ -183,11 +189,16 @@ class ValerieServer {
     } else {
     
       foreach($this->rules[$this->periodical] as $rule ) {
-        if(!$this->test($rule, $this->values[$this->periodical], $this->periodical)) break;
+        if(!$this->test(
+          $rule,
+          $this->values[$this->periodical],
+          $this->periodical
+        )) break;
       }
     
       if (isset($this->errors)) {
-        echo '{"type": 100, "content": {"id": "' . key($this->errors) . '", "message": "' . current($this->errors) . '"}}';
+        echo '{"type": 100, "content": {"id": "' . key($this->errors) .
+          '", "message": "' . current($this->errors) . '"}}';
       } else {
         echo '{"type": 1, "content": {"id": "'. $this->periodical . '"}}';
       }
