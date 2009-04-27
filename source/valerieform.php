@@ -33,11 +33,11 @@ class ValerieForm {
     
     Arguments:
     
-      $plugin - name of plugin folder
+      - $plugin - name of plugin folder
       
     Returns:
     
-      instance of ValerieForm
+      - instance of ValerieForm
   */
   
   public function __construct($plugin) {
@@ -62,23 +62,23 @@ class ValerieForm {
     
     Arguments:
     
-      $form - array of key value pairs
+      - $form - array of key value pairs
       
     Example:
     
-      $form->setTemplate(array(
-        'checkbox': 'checkbox_format'
-      ));
-      
-      function checkbox_format($args) {
-        extract($args) ?>
+        $form->setTemplate(array(
+          'checkbox': 'checkbox_format'
+        ));
         
-        <input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" /> 
-        <label for="<?php echo $id; ?>" class="checkbox"><?php echo $label; ?></label>
-        <?php echo $error; ?>
-        
-        <?php
-      }
+        function checkbox_format($args) {
+          extract($args) ?>
+          
+          <input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" /> 
+          <label for="<?php echo $id; ?>" class="checkbox"><?php echo $label; ?></label>
+          <?php echo $error; ?>
+          
+          <?php
+        }
   */
   
   public function setTemplate($form) {
@@ -98,28 +98,28 @@ class ValerieForm {
     
     Example:
     
-      //element definition
-      {
-        "type": "text",
-        "id": "text1",
-        "name": "text1",
-        "label": "This is a text field",
-        "validation": [
-          "required",
-          {
-            "maxlength": [25]
-          }
-        ]
-      }
-      
-      //setting definition
-      $Valerie->setDefinition(array(
-        "text" => "text_func",
-        "text1" => "special_func_for_text1"
-      ));
-      
-      function text_func($args) {...}
-      function special_func_for_text1($args) {...}
+        //element definition
+        {
+          "type": "text",
+          "id": "text1",
+          "name": "text1",
+          "label": "This is a text field",
+          "validation": [
+            "required",
+            {
+              "maxlength": [25]
+            }
+          ]
+        }
+        
+        //setting definition
+        $Valerie->setDefinition(array(
+          "text" => "text_func",
+          "text1" => "special_func_for_text1"
+        ));
+        
+        function text_func($args) {...}
+        function special_func_for_text1($args) {...}
         
     In this example, special_func_for_text1 will be used to render the
     defined text field because it has been registered for that element's id.
@@ -151,15 +151,15 @@ class ValerieForm {
     
     Arguments:
       
-      $includes - associative array with type/relative path pairs.
+      - $includes - associative array with type/relative path pairs.
     
     Example:
     
-    $Valerie->setIncludes(array(
-      'css' => 'style2.css',
-      'css' => array('lt IE 7', 'ie6_style.css'),
-      'js' => 'script2.js'
-    ))
+        $Valerie->setIncludes(array(
+          'css' => 'style2.css',
+          'css' => array('lt IE 7', 'ie6_style.css'),
+          'js' => 'script2.js'
+        ))
   */
   
   public function setIncludes($includes) {
@@ -173,11 +173,11 @@ class ValerieForm {
     
     Arguments:
     
-      $file - filepath or filename relative to root
+      - $file - filepath or filename relative to root
       
     Returns:
     
-      array
+      - array
   */
   
   private function getArrayFromJSON($file) {
@@ -193,11 +193,11 @@ class ValerieForm {
     
     Arguments:
     
-      $data - json definition
+      - $data - json definition
     
     Returns:
     
-      string
+      - string
   */
   
   private function getOutput($data) {
@@ -250,7 +250,7 @@ class ValerieForm {
     
     Returns:
     
-      string 'error' or 'success'
+      - string 'error' or 'success'
     
   */
   
@@ -265,7 +265,7 @@ class ValerieForm {
     
     See Also:
     
-      <getMessageType>
+      - <getMessageType>
   */
   
   public function printMessageType() {
@@ -279,7 +279,7 @@ class ValerieForm {
     
     Returns:
     
-      Form validation message.
+      - Form validation message.
   */
   
   public function getMessage() {
@@ -308,7 +308,7 @@ class ValerieForm {
     
     See Also:
     
-      <getMessage>
+      - <getMessage>
   */
   
   public function printMessage() {
@@ -322,11 +322,11 @@ class ValerieForm {
     
     Arguments:
     
-      $name - name of field
+      - $name - name of field
     
     Returns:
     
-      Value of a submitted field.
+      - Value of a submitted field.
   */
   
   public function getValue($name) {
@@ -339,11 +339,11 @@ class ValerieForm {
     
     Arguments:
     
-      $name - name of field
+      - $name - name of field
     
     See Also:
     
-      <getValue>
+      - <getValue>
   */
   
   public function printValue($name) {
@@ -357,11 +357,11 @@ class ValerieForm {
     
     Arguments:
     
-      $args - array, field arguments
+      - $args - array, field arguments
     
     Returns:
     
-      Field validation error or null.
+      - Field validation error or null.
   */
   
   public function getError($args) {
@@ -382,11 +382,11 @@ class ValerieForm {
     
     Arguments:
     
-      $args - array, field arguments
+      - $args - array, field arguments
     
     See Also:
     
-      <getError>
+      - <getError>
   */
   
   public function printError($args) {
@@ -400,7 +400,7 @@ class ValerieForm {
     
     Arguments:
     
-      $global - bool, print all required files or only those for the plugin
+      - $global - bool, print all required files or only those for the plugin
   */
   
   public function printAssets($global = true) {

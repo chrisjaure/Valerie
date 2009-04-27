@@ -18,11 +18,11 @@ require_once "config.php";
   
   Arguments:
     
-    $data - post data
+    - $data - post data
     
   Returns:
   
-    instance of ValerieServer
+    - instance of ValerieServer
 */
 
 function newValerieServer($data) {
@@ -49,11 +49,11 @@ function newValerieServer($data) {
   
   Arguments:
   
-    $plugin - optional, name of plugin folder
+    - $plugin - optional, name of plugin folder
     
   Returns:
   
-    instance of ValerieForm
+    - instance of ValerieForm
 */
 
 function newValerieForm($plugin='default') {
@@ -72,11 +72,11 @@ function newValerieForm($plugin='default') {
   
   Arguments:
   
-    $str - string to translate
+    - $str - string to translate
   
   Returns:
   
-    translated string or $str
+    - translated string or $str
 */
 
 function __($str) {
@@ -95,11 +95,11 @@ function __($str) {
   
   Arguments:
   
-    $str - string to translate
+    - $str - string to translate
     
   See Also:
   
-    <__>
+    - <__>
 */
 
 function _e($str) {

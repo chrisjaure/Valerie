@@ -34,12 +34,12 @@ class ValerieServer {
     
     Arguments:
     
-      $data - POST data
-      $lang - language file to use, filename minus .php
+      - $data - POST data
+      - $lang - language file to use, filename minus .php
       
     Returns:
     
-      ValerieServer instance
+      - ValerieServer instance
   */
 
   public function __construct($data, $lang = 'en.php'){
@@ -78,8 +78,8 @@ class ValerieServer {
     
     Arguments:
     
-      $els - array of form elements
-      $val - array of submitted values.
+      - $els - array of form elements
+      - $val - array of submitted values.
   */
   
   private function setValues($els, $vals) {
@@ -135,7 +135,7 @@ class ValerieServer {
     
     Returns:
     
-      array of values if the form validates.
+      - array of values if the form validates.
   */
   
   public function validate(){
@@ -227,15 +227,15 @@ class ValerieServer {
     
     Arguments:
     
-      $patterns - array of key/value pairs. The key is to be used in the form
+      - $patterns - array of key/value pairs. The key is to be used in the form
       definition. The value must also be an array containing a regex or function
       and the message to send if the value is invalid.
       
     Example:
     
-      $form->registerRules(array(
-        'required' => array('/^./', 'This field is required.')
-      ));
+        $form->registerRules(array(
+          'required' => array('/^./', 'This field is required.')
+        ));
   */
   
   public function registerRules($patterns) {
@@ -249,13 +249,13 @@ class ValerieServer {
     
     Arguments:
     
-      $filters - array of key/value pairs.
+      - $filters - array of key/value pairs.
       
     Example:
     
-      $form->registerFilters(array(
-        'striptags' => 'strip_tags'
-      ));
+        $form->registerFilters(array(
+          'striptags' => 'strip_tags'
+        ));
   */
   
   public function registerFilters($filters) {
@@ -282,7 +282,7 @@ class ValerieServer {
     
     Returns:
     
-      bool, true if ajax request
+      - bool, true if ajax request
   */
   
   public function isAjax() {
@@ -297,11 +297,11 @@ class ValerieServer {
     
     Arguments:
       
-      $text - string or array
+      - $text - string or array
       
     Returns:
     
-      array
+      - array
   */
   
   public function getNameLabel($text) {
@@ -316,11 +316,11 @@ class ValerieServer {
     
     Arguments:
       
-      $name - name of field
+      - $name - name of field
       
     Returns:
     
-      string or array
+      - string or array
   */
   
   public function getValue($name) {
@@ -334,11 +334,11 @@ class ValerieServer {
     
     Arguments:
     
-      $name - name of field
+      - $name - name of field
       
     Returns:
     
-      string or array
+      - string or array
   */
   
   public function getRule($name) {
@@ -352,11 +352,11 @@ class ValerieServer {
     
     Arguments:
     
-      $val - value
+      - $val - value
       
     Returns:
     
-      bool
+      - bool
   */
   
   public function isEmpty($val) {
@@ -370,12 +370,12 @@ class ValerieServer {
     
     Arguments:
     
-      $template - string with tokens to be replaced
-      $values - string value or array of values
+      - $template - string with tokens to be replaced
+      - $values - string value or array of values
       
     Returns:
     
-      string
+      - string
   */
   
   public function format($template, $values) {
@@ -397,13 +397,13 @@ class ValerieServer {
     
     Arguments:
     
-      $rule - rule name
-      $value - form value
-      $name - form value name
+      - $rule - rule name
+      - $value - form value
+      - $name - form value name
       
     Returns:
     
-      bool, true on success, false on failure
+      - bool, true on success, false on failure
   */
   
   private function test($rule, $value, $name) {
@@ -453,12 +453,12 @@ class ValerieServer {
     
     Arguments:
     
-      $filter - filter name
-      $values - value(s) to filter
+      - $filter - filter name
+      - $values - value(s) to filter
       
     Returns:
     
-      string or array
+      - string or array
       
   */
   
