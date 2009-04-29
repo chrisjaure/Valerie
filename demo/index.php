@@ -12,8 +12,13 @@ $form = newValerieForm('default');
     <link rel="stylesheet" type="text/css" href="files/style.css" />
     <script type="text/javascript">
       $(function(){
+        var output = $('<ul></ul>').insertBefore('#frm');
         $('#frm').bind('valerie.formValidated', function(e,a,b,response) {
-          alert(response.data);
+          var html = '';
+          $.each(response.data, function(index, value){
+            html += '<li>' + index + ': ' + value.toString();
+          });
+          output.html(html);
         });
       });
     </script>
@@ -22,6 +27,13 @@ $form = newValerieForm('default');
   <div class="content">
   <h1>Valerie Demo</h1>
   <h2>Using Ajax to validate form data server-side.</h2>
+    <?php if ($form->getValue('data')) : ?>
+      <ul>
+      <?php foreach ($form->getValue('data') as $index => $value) : ?>
+        <li><?php echo $index; ?>: <?php var_dump($value); ?></li>
+      <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
     <?php $form->render(); ?>     
   </div>
   </body>

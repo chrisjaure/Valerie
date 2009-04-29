@@ -31,8 +31,7 @@
   
   if ($data) {
     // do stuff with the data
-    if (!$ajax) var_dump($data);
-    else $myValidator->setResponse('data', $data);
+    $myValidator->setResponse('data', $data);
     $myValidator->back();
     //$myValidator->goto('http://www.google.com/search?as_q=nintendo+wii');
   }
