@@ -26,6 +26,7 @@
     formInvalidated: function(e, els, message, form) {
       el.text(message).addClass('valerie-form-message-error');
       $.each(els, function(){
+        if (!this.message) return;
         var error = $('<span class="valerie-field-error">' + this.message + '</span>'),
             field = $('#'+this.id);
         if (field.is('[type=checkbox], [type=radio]')) {

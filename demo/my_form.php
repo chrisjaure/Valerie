@@ -19,24 +19,31 @@
     } else return true;
   }
 
+  // Create a new instance of ValerieServer
   $myValidator = newValerieServer($_POST);
-  $ajax = $myValidator->isAjax();
+  
+  // Register any additional rules
   $myValidator->registerRules(array(
     'digit' => array('/^\d$/', 'This field must contain one numerical character.'),
     'less_than_150' => array('is_less_than_150', 'This field must contain a value less than 150.'),
     'divisible' => array('is_divisible_by', '{2} is not divisible by {1}.'),
     'sum_equals' => array('sum_equals', '{1} plus {2} equals {3}, not {4}.')
   ));
+  
+  // Validate data, returns data on success or false in failure
   $data = $myValidator->validate();
   
   if ($data) {
-    // do stuff with the data
+    // Do stuff with the data, here we are setting additional data to use on
+    // the form page. In this case, we're just returning the filtered form data.
     $myValidator->setResponse('data', $data);
-    $myValidator->back();
-    //$myValidator->goto('http://www.google.com/search?as_q=nintendo+wii');
+    
+    // Optionally, you can redirect to a different page with goto
+    // $myValidator->goto('http://google.com/');
   }
-  else {
-    // if it's not an ajax call, go back to the form
-    $myValidator->back();
-  }
+  
+  // This function outputs any json if ajax is used, or redirects back to form
+  // page if it's a regular form submission
+  $myValidator->back();
+  //var_dump($_SESSION[ValerieConfig::SESSION_NS]);
 ?>

@@ -50,9 +50,9 @@ class ValerieForm {
   }
   
   public function __destruct() {
-    session_unset($_SESSION['validator']);
-    $_SESSION['validator']['referer'] = $_SERVER['PHP_SELF'];
-    $_SESSION['validator'][$this->uid] = serialize($this->definition);
+    session_unset($_SESSION[ValerieConfig::SESSION_NS]);
+    $_SESSION[ValerieConfig::SESSION_NS]['referer'] = $_SERVER['PHP_SELF'];
+    $_SESSION[ValerieConfig::SESSION_NS][$this->uid] = serialize($this->definition);
   }
   
   /*
@@ -244,6 +244,21 @@ class ValerieForm {
   }
   
   /*
+    Method: getResponse
+  
+    Get a response set by ValerieServer
+  */
+  
+  public function getResponse($name, $namespace = null) {
+    if (isset($namespace)) {
+      return $_SESSION[ValerieConfig::SESSION_NS][$namespace][$name];
+    }
+    else {
+      return $_SESSION[ValerieConfig::SESSION_NS][$name];
+    }
+  }
+    
+  /*
     Method: getMessageType
     
     Returns the status of the message. Used only when javascript isn't enabled.
@@ -255,7 +270,7 @@ class ValerieForm {
   */
   
   public function getMessageType() {
-    return $_SESSION['validator']['message_type'];
+    return $_SESSION[ValerieConfig::SESSION_NS]['form']['message_type'];
   }
   
   /*
@@ -283,7 +298,7 @@ class ValerieForm {
   */
   
   public function getMessage() {
-    $message = $_SESSION['validator']['message'];
+    $message = $_SESSION[ValerieConfig::SESSION_NS]['form']['message'];
     if (isset($message)) {
       if (function_exists($this->template['form_message'])) {
         ob_start();
@@ -331,7 +346,8 @@ class ValerieForm {
   
   public function getValue($name) {
     if (substr($name, -2) == '[]') $name = substr($name, 0, -2);
-    return $_SESSION['validator'][$name]; 
+    $value = $this->getResponse('elements', 'form');
+    return $value[$name]['value']; 
   }
   
   /*
@@ -365,8 +381,9 @@ class ValerieForm {
   */
   
   public function getError($args) {
-    if (isset($_SESSION['validator'][$args['name'] . '_error'])) {
-      $error = $_SESSION['validator'][$args['name'] . '_error'];
+    $error = $this->getResponse('elements', 'form');
+    $error = $error[$args['name']]['message'];
+    if ($error) {
       if (function_exists($this->template['field_error'])) {
         ob_start();
         $this->template['field_error']($args + array('message' => $error));

@@ -66,15 +66,15 @@
             form.trigger('valerie.afterSubmit', [form]);
           },
           success: function(response){
-            if (response) {
-              if (response.message_type == 'invalid') {
+            if (response.form) {
+              if (response.form.message_type == 'invalid') {
                 form.trigger(
                   'valerie.formInvalidated',
-                  [response.elements, response.message, form, response]
+                  [response.form.elements, response.form.message, form, response]
                 );
               }
               else {
-                form.trigger('valerie.formValidated', [response.message, form, response]);
+                form.trigger('valerie.formValidated', [response.form.message, form, response]);
                 if (response['goto']) {
                   window.location = response['goto'];
                 }

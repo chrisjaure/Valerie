@@ -1,5 +1,8 @@
 <?php
+// first include functions.php which is a bootstrap for everything else
 include('../source/functions.php');
+
+// create a new ValerieForm instance
 $form = newValerieForm('default');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -8,9 +11,15 @@ $form = newValerieForm('default');
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Valerie Demo</title>
-    <?php $form->printAssets(); ?>
+    
+    <?php
+      // print assets required for Valerie
+      $form->printAssets();
+    ?>
+    
     <link rel="stylesheet" type="text/css" href="files/style.css" />
     <script type="text/javascript">
+      // Here is a custom event to print form data on validation (for ajax)
       $(function(){
         var output = $('<ul></ul>').insertBefore('#frm');
         $('#frm').bind('valerie.formValidated', function(e,a,b,response) {
@@ -27,14 +36,21 @@ $form = newValerieForm('default');
   <div class="content">
   <h1>Valerie Demo</h1>
   <h2>Using Ajax to validate form data server-side.</h2>
-    <?php if ($form->getValue('data')) : ?>
+    <?php
+    // Here we are getting data set by my_form.php on a successful submission
+    // (for non-ajax submissions).
+    if ($form->getResponse('data')) : ?>
       <ul>
-      <?php foreach ($form->getValue('data') as $index => $value) : ?>
-        <li><?php echo $index; ?>: <?php var_dump($value); ?></li>
+      <?php foreach ($form->getResponse('data') as $index => $value) : ?>
+        <li><?php echo $index; ?>: <?php var_export($value); ?></li>
       <?php endforeach; ?>
       </ul>
     <?php endif; ?>
-    <?php $form->render(); ?>     
+    
+    <?php
+    // Render the form
+    $form->render();
+    ?>     
   </div>
   </body>
 </html>

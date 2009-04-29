@@ -52,16 +52,16 @@ class ValerieServer {
     $this->periodical = isset($data['_periodical']);
     
     $this->uid = $data['formid'];
-    $this->referer = $_SESSION['validator']['referer'];
-    $this->definition = unserialize($_SESSION['validator'][$this->uid]);
+    $this->referer = $_SESSION[ValerieConfig::SESSION_NS]['referer'];
+    $this->definition = unserialize($_SESSION[ValerieConfig::SESSION_NS][$this->uid]);
     
     if (!is_array($this->definition)) {
       if ($this->ajax) {
         exit ('Could not find form definition.');
       }
       else {
-        $_SESSION['validator']['message'] = "An error has occured.";
-        $_SESSION['validator']['message_type'] = 'error';
+        $_SESSION[ValerieConfig::SESSION_NS]['message'] = "An error has occured.";
+        $_SESSION[ValerieConfig::SESSION_NS]['message_type'] = 'error';
         $this->back();
       }
     }
@@ -141,7 +141,7 @@ class ValerieServer {
   
   public function validate() {
     
-    if (!$this->ajax) unset($_SESSION['validator']);
+    if (!$this->ajax) unset($_SESSION[ValerieConfig::SESSION_NS]);
     
     if ($this->periodical === false) {
       
@@ -158,37 +158,28 @@ class ValerieServer {
       
       // return any errors
       if (isset($this->errors)) {
-        $invalidated = __('Please correct the errors below.');
-        if ($this->ajax) {
-          $elements = array();
-          foreach ($this->errors as $key => $error) {
-            $elements[] = array(
-              'id' => $this->elements[$key]['id'],
-              'message' => $error
-            );
+        $elements = array();
+        foreach ($this->elements as $name => $element) {
+          $el = array(
+            'id' => $element['id'],
+            'name' => $name,
+            'message' => $this->errors[$name]
+          );
+          if (!$this->ajax) {
+            $el['value'] = $this->values[$name];
           }
-          $this->setResponse(array(
-            'message_type' => 'invalid',
-            'message' => $invalidated,
-            'elements' => $elements
-          ));
-        } else {
-          foreach($this->errors as $key => $error) {
-            $this->setResponse($key.'_error', $error);
-          }
-          foreach($this->values as $key => $value) {
-            $this->setResponse($key, $value);
-          }
-          $this->setResponse(array(
-            'message' => $invalidated,
-            'message_type' => 'invalid'
-          ));
+          $elements[$name] = $el;
         }
+        $this->setResponse(array(
+          'message_type' => 'invalid',
+          'message' => __('Please correct the errors below.'),
+          'elements' => $elements
+        ), null, 'form');
       } else {
         $this->setResponse(array(
           'message_type' => 'valid',
           'message' => __('Your form has been submitted.')
-        ));
+        ), null, 'form');
       }
     } else {
     
@@ -276,26 +267,28 @@ class ValerieServer {
     Set a value to be sent back to form.
   */
   
-  public function setResponse($name, $value = null) {
+  public function setResponse($name, $value = null, $namespace = null) {
+    if (!is_array($name)) $name = array($name => $value);
     if ($this->ajax) {
-      if (is_array($name)) {
-        foreach($name as $key => $value) {
-          $this->response[$key] = $value;
+      $container = &$this->response;
+      if (isset($namespace)) {
+        if (!is_array($this->response[$namespace])) {
+          $this->response[$namespace] = array();
         }
-      }
-      else {
-        $this->response[$name] = $value;
+        $container = &$this->response[$namespace];
       }
     }
     else {
-      if (is_array($name)) {
-        foreach($name as $key => $value) {
-          $_SESSION['validator'][$key] = $value;
+      $container = &$_SESSION[ValerieConfig::SESSION_NS];
+      if (isset($namespace)) {
+        if (!is_array($this->response[$namespace])) {
+          $this->response[$namespace] = array();
         }
+        $container = &$_SESSION[ValerieConfig::SESSION_NS][$namespace];
       }
-      else {
-        $_SESSION['validator'][$name] = $value;
-      }
+    }
+    foreach($name as $key => $value) {
+      $container[$key] = $value;
     }
   }
   

@@ -23,6 +23,7 @@ class ValerieConfig {
   const ROOT = '';
   const URI = '../source/';
   const CHAR_ENCODING = 'utf-8';
+  const SESSION_NS = 'valerie';
   
   // END CONFIG OPTIONS --------------------------------------------------------
   
