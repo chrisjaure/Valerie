@@ -7,71 +7,74 @@
   "elements": [
     {
       "type": "text",
+      "label": "Stick your name in here, yo.",
       "id": "f1",
-      "name": "f1",
+      "name": "your_name",
       "validation": [
         "required",
         "alpha"
       ],
-      "filters": [
-        "striptags"
-      ],
-      "label": "Stick your name in here, yo."
+      "filters": "striptags"
     },
     {
       "type": "text",
+      "label": "A different name.",
       "id": "f2",
-      "name": "f2",
+      "name": "last_name",
       "validation": [
-        {"differ": ["f1", "your first name"]},
-        {"requiredif": "f1"}
+        {"differ": ["your_name", "your first name"]}
       ],
-      "label": "Your last name."
+      "filters": "striptags"
     },
     {
       "type": "password",
+      "label": "And a password too.",
       "id": "f3",
-      "name": "f3",
+      "name": "password",
       "validation": [
         "required",
         {"rangelength": [6, 20]}
       ],
-      "label": "password"
+      "filters": "striptags"
     },
     {
       "type": "fieldset",
-      "legend": "Hi",
+      "legend": "This is a fieldset",
       "elements": [
         {
           "type": "text",
+          "label": "Enter something here.",
           "id": "f4",
-          "name": "f4",
+          "name": "something",
           "validation": "required",
-          "filters": "striptags",
-          "label": "hi."
+          "filters": "striptags"
         },
         {
           "type": "textarea",
+          "label": "Write me a story. (some html allowed)",
           "id": "f5",
-          "name": "f5",
-          "label": "Textarea"
+          "name": "story",
+          "validation": [
+            {"minlength": 20}
+          ],
+          "filters": "purify"
         },
         {
           "type": "radiogroup",
           "id": "radiogroup1",
-          "label": "Radio Group",
-          "name": "radiogroup1",
+          "label": "Is your story any good?",
+          "name": "good_story",
           "validation": "required",
           "radios": [
             {
               "id": "f6",
-              "label": "radio",
-              "value": "r1"
+              "label": "Yes",
+              "value": "yes"
             },
             {
               "id": "f7",
-              "label": "radio2",
-              "value": "r2"
+              "label": "No",
+              "value": "no"
             }
           ]
         }
@@ -80,56 +83,66 @@
     {
       "type": "checkbox",
       "id": "chk3",
-      "name": "chk3",
-      "value": "chk3",
-      "label": "Sign up for newsletter?",
-      "validation": "required"
+      "name": "newsletter",
+      "value": "yes",
+      "label": "Sign up for newsletter?"
     },
     {
       "type": "checkgroup",
-      "name": "chckgroup2[]",
-      "label": "News letter topics",
+      "name": "topics[]",
+      "label": "Newsletter topics",
       "id": "chckgroup2",
       "validation": [
         {"selectrange": [2, 3]},
-        {"requiredif": "chk3"}
+        {"requiredif": "newsletter"}
       ],
       "checkboxes": [
         {
           "id": "g2-1",
-          "value": "g2-1",
+          "value": "one",
           "label": "one"
         },
         {
           "id": "g2-2",
-          "value": "g2-2",
+          "value": "two",
           "label": "two"
         },
         {
           "id": "g2-3",
-          "value": "g2-3",
+          "value": "three",
           "label": "three"
+        },
+        {
+          "id": "g2-4",
+          "value": "four",
+          "label": "four"
         }
       ]
     },
     {
       "type": "select",
       "id": "slct",
-      "name": "slct",
-      "label": "My select",
-      "validation": "required",
+      "name": "select",
+      "label": "Here's a select, too.",
+      "validation": [
+        {"not": "default"}
+      ],
       "options": [
         {
-          "label": "yoyo",
-          "value": "test"
+          "label": "select something...",
+          "value": "default"
         },
         {
-          "label": "hi",
-          "value": "hi"
+          "label": "foo",
+          "value": "foo"
         },
         {
-          "label": "poo",
-          "value": "poo"
+          "label": "bar",
+          "value": "bar"
+        },
+        {
+          "label": "three",
+          "value": "three"
         }
       ]
     },

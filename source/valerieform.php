@@ -46,7 +46,6 @@ class ValerieForm {
     $this->uri = ValerieConfig::URI;
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
-    $this->setDefinition('forms/default_form.php');
   }
   
   public function __destruct() {
@@ -182,6 +181,8 @@ class ValerieForm {
   
   private function getArrayFromJSON($file) {
     if (file_exists($file)) $path = $file;
+    elseif (file_exists(dirname($_SERVER['PHP_SELF'] . $file)))
+      $path = dirname($_SERVER['PHP_SELF'] . $file);
     elseif (file_exists($this->root . $file)) $path = $this->root . $file;
     return json_decode(@file_get_contents($path), true);
   }
@@ -381,8 +382,10 @@ class ValerieForm {
   */
   
   public function getError($args) {
+    $name = $args['name'];
+    if (substr($name, -2) == '[]') $name = substr($name, 0, -2);
     $error = $this->getResponse('elements', 'form');
-    $error = $error[$args['name']]['message'];
+    $error = $error[$name]['message'];
     if ($error) {
       if (function_exists($this->template['field_error'])) {
         ob_start();

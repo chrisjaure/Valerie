@@ -4,6 +4,9 @@ include('../source/functions.php');
 
 // create a new ValerieForm instance
 $form = newValerieForm('default');
+
+// set form definition
+$form->setDefinition('form_def.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -19,7 +22,7 @@ $form = newValerieForm('default');
     
     <link rel="stylesheet" type="text/css" href="files/style.css" />
     <script type="text/javascript">
-      // Here is a custom event to print form data on validation (for ajax)
+      // Here is a custom event to print form data on validation (for ajax).
       $(function(){
         var output = $('<ul></ul>').insertBefore('#frm');
         $('#frm').bind('valerie.formValidated', function(e,a,b,response) {
@@ -37,8 +40,9 @@ $form = newValerieForm('default');
   <h1>Valerie Demo</h1>
   <h2>Using Ajax to validate form data server-side.</h2>
     <?php
-    // Here we are getting data set by my_form.php on a successful submission
-    // (for non-ajax submissions).
+    // Here we are getting data set by my_form.php on a successful submission.
+    // This does the same thing as the javascript function but for non-ajax
+    // submissions.
     if ($form->getResponse('data')) : ?>
       <ul>
       <?php foreach ($form->getResponse('data') as $index => $value) : ?>

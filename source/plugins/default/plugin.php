@@ -243,6 +243,7 @@ function default_select($args) {
     <select
       id="<?php echo $id; ?>"
       name="<?php echo $name; ?>"
+      <?php if (isset($error)) echo 'class="valerie-alert"'; ?>
       <?php if (isset($multiple)) echo "multiple=\"$multiple\""; ?>
       <?php if (isset($size)) echo "size=\"$size\""; ?>
     >

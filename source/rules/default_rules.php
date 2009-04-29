@@ -103,6 +103,11 @@ $Valerie->registerRules(array(
     __('Please enter a value different from {1}.')
   ),
   
+  'not' => array(
+    'notequalto',
+    __('Please select a different value.')
+  ),
+  
   'maxlength' => array(
     'maxlength',
     __('Please enter no more than {1} character(s).')
@@ -157,6 +162,12 @@ function differ($args, $Valerie) {
   list($fld_name, $label) = $Valerie->getNameLabel($arguments);
   $message = $Valerie->format($error, $label);
   return array($value != $Valerie->getValue($fld_name), $message);
+}
+
+function notequalto($args) {
+  extract($args);
+  // $arguments = value
+  return $value != $arguments;
 }
 
 function maxlength($args, $Valerie) {
