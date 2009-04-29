@@ -94,7 +94,8 @@
   padding:0.5em;
 }
 
-.valerie-form-default .valerie-form-message-error {
+.valerie-form-default .valerie-form-message-error,
+.valerie-form-default .valerie-form-message-invalid {
   background-color:transparent;
   border-bottom:solid 2px #f00;
   color:#f00;

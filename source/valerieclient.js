@@ -67,14 +67,17 @@
           },
           success: function(response){
             if (response) {
-              if (parseInt(response.type, 10) > 1) {
+              if (response.message_type == 'invalid') {
                 form.trigger(
                   'valerie.formInvalidated',
-                  [response.content, response.message, form]
+                  [response.elements, response.message, form, response]
                 );
               }
               else {
-                form.trigger('valerie.formValidated', [response.message, form]);
+                form.trigger('valerie.formValidated', [response.message, form, response]);
+                if (response['goto']) {
+                  window.location = response['goto'];
+                }
               }
             }
             else {

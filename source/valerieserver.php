@@ -28,6 +28,8 @@ class ValerieServer {
   private $referer;
   private $definition;
   private $uid;
+  private $response = array();
+  private $responseReturned;
 
   /*
     Constructor: __construct
@@ -130,15 +132,14 @@ class ValerieServer {
   /*
     Method: validate
     
-    Validates the submitted form data. If the form has been submitted via ajax,
-    messages will be echoed, otherwise they are stored in session variables.
+    Validates the submitted form data.
     
     Returns:
     
-      - array of values if the form validates.
+      - array of values if the form validates, otherwise false.
   */
   
-  public function validate(){
+  public function validate() {
     
     if (!$this->ajax) unset($_SESSION['validator']);
     
@@ -155,36 +156,39 @@ class ValerieServer {
         }
       }
       
-      // return any errors, script will die if any
+      // return any errors
       if (isset($this->errors)) {
         $invalidated = __('Please correct the errors below.');
         if ($this->ajax) {
+          $elements = array();
           foreach ($this->errors as $key => $error) {
-            $arr[] = '{"id": "' . $this->elements[$key]['id'] .
-              '", "message": "' . $error . '"}';
+            $elements[] = array(
+              'id' => $this->elements[$key]['id'],
+              'message' => $error
+            );
           }
-          echo '{"type": 100, "content": [' . implode(', ', $arr) .
-            '], "message": "' . $invalidated . '"}';
-          exit();
+          $this->setResponse(array(
+            'message_type' => 'invalid',
+            'message' => $invalidated,
+            'elements' => $elements
+          ));
         } else {
           foreach($this->errors as $key => $error) {
-            $_SESSION['validator'][$key . '_error'] = $error;
+            $this->setResponse($key.'_error', $error);
           }
           foreach($this->values as $key => $value) {
-            $_SESSION['validator'][$key] = $value;
+            $this->setResponse($key, $value);
           }
-          $_SESSION['validator']['message'] = $invalidated;
-          $_SESSION['validator']['message_type'] = 'error';
-          $this->back();
+          $this->setResponse(array(
+            'message' => $invalidated,
+            'message_type' => 'invalid'
+          ));
         }
       } else {
-        $validated = __('Your form has been submitted.');
-        if ($this->ajax) {
-          echo '{"type": 1, "message": "' . $validated . '"}';
-        } else {
-          $_SESSION['validator']['message'] = $validated;
-          $_SESSION['validator']['message_type'] = 'success';
-        }
+        $this->setResponse(array(
+          'message_type' => 'valid',
+          'message' => __('Your form has been submitted.')
+        ));
       }
     } else {
     
@@ -197,27 +201,31 @@ class ValerieServer {
       }
     
       if (isset($this->errors)) {
-        echo '{"type": 100, "content": {"id": "' . key($this->errors) .
+        echo '{"type": "invalid", "content": {"id": "' . key($this->errors) .
           '", "message": "' . current($this->errors) . '"}}';
       } else {
-        echo '{"type": 1, "content": {"id": "'. $this->periodical . '"}}';
+        echo '{"type": "valid", "content": {"id": "'. $this->periodical . '"}}';
       }
       exit();
 
     }
     
-    // filter
-    foreach ($this->elements as $name => $element) {
-      $filters = $element['filters'];
-      if (isset($filters)) {
-        if (!is_array($filters)) $filters = array($filters);
-        foreach ($filters as $filter) {
-          $this->values[$name] = $this->filter($filter, $this->values[$name]);
+    if (!isset($this->errors)) {
+    
+      // filter
+      foreach ($this->elements as $name => $element) {
+        $filters = $element['filters'];
+        if (isset($filters)) {
+          if (!is_array($filters)) $filters = array($filters);
+          foreach ($filters as $filter) {
+            $this->values[$name] = $this->filter($filter, $this->values[$name]);
+          }
         }
       }
+      
+      return $this->values;
     }
-    
-    return $this->values;
+    else return false;
   }
   
   /*
@@ -263,18 +271,80 @@ class ValerieServer {
   }
   
   /*
+    Method: setResponse
+    
+    Set a value to be sent back to form.
+  */
+  
+  public function setResponse($name, $value = null) {
+    if ($this->ajax) {
+      if (is_array($name)) {
+        foreach($name as $key => $value) {
+          $this->response[$key] = $value;
+        }
+      }
+      else {
+        $this->response[$name] = $value;
+      }
+    }
+    else {
+      if (is_array($name)) {
+        foreach($name as $key => $value) {
+          $_SESSION['validator'][$key] = $value;
+        }
+      }
+      else {
+        $_SESSION['validator'][$name] = $value;
+      }
+    }
+  }
+  
+  /*
+    Method: printResponse
+    
+    Sends json back to client if ajax request.
+  */
+  
+  public function printResponse() {
+    if ($this->ajax) {
+      echo json_encode($this->response);
+    }
+  }
+  
+  /*
     Method: back
     
     Sends the browser back to the form after submission if javascript is
     disabled.
   */
   
-  public function back($bool = null) {
-    if (!isset($bool)) $bool = $this->ajax;
-    if (!$bool) {
-        header("Location: {$this->referer}");
-        exit();
+  public function back() {
+    if (!$this->ajax) {
+      header("Location: {$this->referer}");
+      exit();
     }
+    $this->printResponse();
+  }
+  
+  /*
+    Method: goto
+    
+    Sends the browser to the provided url.
+    
+    Arguments:
+    
+      - $url - url to redirect to
+  */
+  
+  public function goto($url) {
+    if ($this->ajax) {
+      $this->setResponse('goto', $url);
+    }
+    else {
+      header("Location: $url");
+      exit();
+    }
+    $this->printResponse();
   }
   
   /*

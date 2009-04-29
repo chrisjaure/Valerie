@@ -10,6 +10,13 @@ $form = newValerieForm('default');
     <title>Valerie Demo</title>
     <?php $form->printAssets(); ?>
     <link rel="stylesheet" type="text/css" href="files/style.css" />
+    <script type="text/javascript">
+      $(function(){
+        $('#frm').bind('valerie.formValidated', function(e,a,b,response) {
+          alert(response.data);
+        });
+      });
+    </script>
   </head>
   <body>
   <div class="content">

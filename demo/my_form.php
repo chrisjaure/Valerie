@@ -1,16 +1,7 @@
 <?php
   require_once('../source/functions.php');
 
-  $myValidator = newValerieServer($_POST);
-  $ajax = $myValidator->isAjax();
-  $myValidator->registerRules(array(
-    'digit' => array('/^\d$/', 'This field must contain one numerical character.'),
-    'less_than_150' => array('is_less_than_150', 'This field must contain a value less than 150.'),
-    'divisible' => array('is_divisible_by', '{2} is not divisible by {1}.'),
-    'sum_equals' => array('sum_equals', '{1} plus {2} equals {3}, not {4}.')
-  ));
-  $data = $myValidator->validate();
-
+  // extra validation rules
   function is_less_than_150($val) {
     return (int) $val < 150;
   }
@@ -27,12 +18,26 @@
       return array(false, $err);
     } else return true;
   }
+
+  $myValidator = newValerieServer($_POST);
+  $ajax = $myValidator->isAjax();
+  $myValidator->registerRules(array(
+    'digit' => array('/^\d$/', 'This field must contain one numerical character.'),
+    'less_than_150' => array('is_less_than_150', 'This field must contain a value less than 150.'),
+    'divisible' => array('is_divisible_by', '{2} is not divisible by {1}.'),
+    'sum_equals' => array('sum_equals', '{1} plus {2} equals {3}, not {4}.')
+  ));
+  $data = $myValidator->validate();
   
-  // do stuff with the data
-  
-  // if it's not an ajax call, go back to the form
-  //$myValidator->back();
-  // OR Valerie::back($ajax);
-  
-  var_dump($data);
+  if ($data) {
+    // do stuff with the data
+    if (!$ajax) var_dump($data);
+    else $myValidator->setResponse('data', $data);
+    $myValidator->back();
+    //$myValidator->goto('http://www.google.com/search?as_q=nintendo+wii');
+  }
+  else {
+    // if it's not an ajax call, go back to the form
+    $myValidator->back();
+  }
 ?>
