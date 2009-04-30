@@ -265,6 +265,13 @@ class ValerieServer {
     Method: setResponse
     
     Set a value to be sent back to form.
+    
+    Arguments:
+      
+      - $name - array of name/value pairs or string name
+      - $value - string value if $name is string
+      - $namespace - if this is set, values will be saved in an array with this
+      index
   */
   
   public function setResponse($name, $value = null, $namespace = null) {

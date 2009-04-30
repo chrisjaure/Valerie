@@ -248,6 +248,15 @@ class ValerieForm {
     Method: getResponse
   
     Get a response set by ValerieServer
+    
+    Arguments:
+    
+      - $name - index of response
+      - $namespace - namespace response was saved in
+      
+    Returns:
+    
+      - response
   */
   
   public function getResponse($name, $namespace = null) {

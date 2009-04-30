@@ -43,10 +43,12 @@
       "elements": [
         {
           "type": "text",
-          "label": "Enter something here.",
+          "label": "Enter a number divisible by 5.",
           "id": "f4",
-          "name": "something",
-          "validation": "required",
+          "name": "divisible_by_5",
+          "validation": [
+            {"divisibleby": 5}
+          ],
           "filters": "striptags"
         },
         {
