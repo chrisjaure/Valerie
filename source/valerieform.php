@@ -129,7 +129,7 @@ class ValerieForm {
     
     'error' contains the error message if the field is invalid. 'input'
     contains any user input. 'selected' contains a boolean value indicating
-    is a radio or checkbox is selected.
+    if a radio, checkbox, or option is selected.
   */
   
   public function setDefinition($definition) {
@@ -144,6 +144,7 @@ class ValerieForm {
     
     Set a list of css/js files to include for plugin use. Note that
     'style.css' and 'script.js' are automatically included.
+    
     The includes should be defined in an array with type/path pairs.
     To wrap the asset in an IE conditional comment, define an array
     containing the condition and the path.
@@ -290,7 +291,7 @@ class ValerieForm {
     
     See Also:
     
-      - <getMessageType>
+      - < getMessageType >
   */
   
   public function printMessageType() {
@@ -333,7 +334,7 @@ class ValerieForm {
     
     See Also:
     
-      - <getMessage>
+      - < getMessage >
   */
   
   public function printMessage() {
@@ -369,7 +370,7 @@ class ValerieForm {
     
     See Also:
     
-      - <getValue>
+      - < getValue >
   */
   
   public function printValue($name) {
@@ -415,7 +416,7 @@ class ValerieForm {
     
     See Also:
     
-      - <getError>
+      - < getError >
   */
   
   public function printError($args) {
