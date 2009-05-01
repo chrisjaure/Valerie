@@ -30,6 +30,7 @@ class ValerieServer {
   private $uid;
   private $response = array();
   private $responseReturned;
+  private $ns;
 
   /*
     Constructor: __construct
@@ -52,27 +53,21 @@ class ValerieServer {
     $this->periodical = isset($data['_periodical']);
     
     $this->uid = $data['formid'];
-    $this->referer = $_SESSION[ValerieConfig::SESSION_NS]['referer'];
     $this->definition = unserialize(
       $_SESSION[ValerieConfig::SESSION_NS][$this->uid]
     );
+    unset($_SESSION[ValerieConfig::SESSION_NS][$this->uid]);
     
     if (!is_array($this->definition)) {
-      if ($this->ajax) {
-        exit('Could not find form definition.');
-      }
-      else {
-        $_SESSION[ValerieConfig::SESSION_NS]['message'] = __(
-          'An error has occured.'
-        );
-        $_SESSION[ValerieConfig::SESSION_NS]['message_type'] = 'error';
-        $this->back();
-      }
+      exit('<b>Error:</b> Could not find form definition.');
     }
     
     require_once "localization/$lang";
     require_once "libs/utf8/utf8.php";
-    
+
+    $this->ns = ValerieConfig::SESSION_NS .
+      $this->definition['attributes']['id'];
+    $this->referer = $_SESSION[$this->ns]['referer'];
     $this->setValues($this->definition['elements'], $data);
   }
   
@@ -145,7 +140,7 @@ class ValerieServer {
   
   public function validate() {
     
-    if (!$this->ajax) unset($_SESSION[ValerieConfig::SESSION_NS]);
+    if (!$this->ajax) unset($_SESSION[$this->ns]);
     
     if ($this->periodical === false) {
       
@@ -283,20 +278,17 @@ class ValerieServer {
     if ($this->ajax) {
       $container = &$this->response;
       if (isset($namespace)) {
-        if (!is_array($this->response[$namespace])) {
-          $this->response[$namespace] = array();
-        }
         $container = &$this->response[$namespace];
       }
     }
     else {
-      $container = &$_SESSION[ValerieConfig::SESSION_NS];
+      $container = &$_SESSION[$this->ns];
       if (isset($namespace)) {
-        if (!is_array($this->response[$namespace])) {
-          $this->response[$namespace] = array();
-        }
-        $container = &$_SESSION[ValerieConfig::SESSION_NS][$namespace];
+        $container = &$_SESSION[$this->ns][$namespace];
       }
+    }
+    if (!is_array($container[$namespace])) {
+      $container[$namespace] = array();
     }
     foreach($name as $key => $value) {
       $container[$key] = $value;

@@ -1,30 +1,33 @@
 /* default form script */
 
 (function($){
-  var el, submitBtn;
 
   $.fn.valerie.events = {
     initialized: function(e, form) {
-      el = $('<div class="valerie-form-message"/>').prependTo(form).hide();
-      submitBtn = form.find('input[type=submit], button');
+      var el = $('<div class="valerie-form-message"/>').prependTo(form).hide();
+      var submitBtn = form.find('input[type=submit], button');
+      form.data('message', el).data('button', submitBtn);
     },
     beforeSubmit: function(e, form) {
-      submitBtn.attr('disabled', true);
-      el.text('Loading...').show().removeClass('valerie-form-message-error');
+      form.data('button').attr('disabled', true);
+      form.data('message')
+        .text('Loading...')
+        .show()
+        .removeClass('valerie-form-message-error');
       form.find('.valerie-field-error').remove();
       form.find('.valerie-alert').removeClass('valerie-alert');
       $(window).scrollTop(form.offset().top);
     },
     afterSubmit: function(e, form) {
-      submitBtn.attr('disabled', false);
-      el.show();
+      form.data('button').attr('disabled', false);
+      form.data('message').show();
     },
     formValidated: function(e, message, form) {
       form[0].reset();
-      el.text(message);
+      form.data('message').text(message);
     },
     formInvalidated: function(e, els, message, form) {
-      el.text(message).addClass('valerie-form-message-error');
+      form.data('message').text(message).addClass('valerie-form-message-error');
       $.each(els, function(){
         if (!this.message) return;
         var error = $('<span class="valerie-field-error">' + this.message + '</span>'),

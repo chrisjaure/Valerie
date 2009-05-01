@@ -3,10 +3,44 @@
 include('../source/functions.php');
 
 // create a new ValerieForm instance
-$form = newValerieForm('default');
+$form = newValerieForm();
 
 // set form definition
 $form->setDefinition('form_def.php');
+
+// create a second form
+$form2 = newValerieForm();
+
+// set definition from array
+$form2->setDefinition(array(
+  'attributes' => array(
+    'id' => 'frm2',
+    'method' => 'post',
+    'action' => 'my_form.php'
+  ),
+  'elements' => array(
+    array(
+      'type' => 'fieldset',
+      'legend' => 'This is the second form.',
+      'elements' => array(
+        array(
+          'type' => 'text',
+          'label' => 'Search or something.',
+          'name' => 'search',
+          'id' => 'fld_search',
+          'validation' => 'required',
+          'filter' => 'striptags'
+        ),
+        array(
+          'type' => 'submit',
+          'value' => 'go!'
+        )
+      )
+    )
+  )
+));
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -52,7 +86,10 @@ $form->setDefinition('form_def.php');
     <?php endif; ?>
     
     <?php
-    // Render the form
+    // Render the first form
+    $form2->render();
+    
+    // Render the second form
     $form->render();
     ?>     
   </div>

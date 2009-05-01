@@ -30,7 +30,7 @@ require_once "config.php";
 */
 
 function newValerieServer($data) {
-  require 'valerieserver.php';
+  require_once 'valerieserver.php';
   $Valerie = new ValerieServer($data);
   
   $dir = ValerieConfig::root();
@@ -61,10 +61,11 @@ function newValerieServer($data) {
 */
 
 function newValerieForm($plugin='default') {
-  require 'valerieform.php';
+  require_once 'valerieform.php';
   $Valerie = new ValerieForm($plugin);
   
-  include "plugins/$plugin/plugin.php";
+  include_once "plugins/$plugin/template.php";
+  include "plugins/$plugin/config.php";
 
   return $Valerie;
 }
@@ -72,7 +73,7 @@ function newValerieForm($plugin='default') {
 /*
   Function: __
   
-  Tranlates string if it exists.
+  Translates string if it exists.
   
   Arguments:
   

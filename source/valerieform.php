@@ -25,6 +25,7 @@ class ValerieForm {
   private $plugin;
   private $includes = array();
   private $uid;
+  private $ns;
   
   /*
     Constructor: __construct
@@ -49,11 +50,13 @@ class ValerieForm {
   }
   
   public function __destruct() {
-    session_unset($_SESSION[ValerieConfig::SESSION_NS]);
-    $_SESSION[ValerieConfig::SESSION_NS]['referer'] = $_SERVER['PHP_SELF'];
-    $_SESSION[ValerieConfig::SESSION_NS][$this->uid] = serialize(
-      $this->definition
-    );
+    if (isset($this->ns)) {
+      unset($_SESSION[$this->ns]);
+      $_SESSION[$this->ns]['referer'] = $_SERVER['PHP_SELF'];
+      $_SESSION[ValerieConfig::SESSION_NS][$this->uid] = serialize(
+        $this->definition
+      );
+    }
   }
   
   /*
@@ -146,6 +149,8 @@ class ValerieForm {
     else {
       $this->definition = $this->getArrayFromJSON($definition);
     }
+    $this->ns = ValerieConfig::SESSION_NS .
+      $this->definition['attributes']['id'];
   }
   
   /*
@@ -248,6 +253,10 @@ class ValerieForm {
     
     $output .= $this->getOutput($this->definition['elements']);
     
+    echo "<script type=\"text/javascript\">" .
+      "jQuery(function($){ $(\"#{$this->definition['attributes']['id']}\")" .
+      ".valerie(); })</script>\n";
+    
     echo $this->template['form']($this->definition['attributes'] + array(
       'content' => $output,
       'message' => $this->getMessage()
@@ -271,10 +280,10 @@ class ValerieForm {
   
   public function getResponse($name, $namespace = null) {
     if (isset($namespace)) {
-      return $_SESSION[ValerieConfig::SESSION_NS][$namespace][$name];
+      return $_SESSION[$this->ns][$namespace][$name];
     }
     else {
-      return $_SESSION[ValerieConfig::SESSION_NS][$name];
+      return $_SESSION[$this->ns][$name];
     }
   }
     
@@ -290,7 +299,7 @@ class ValerieForm {
   */
   
   public function getMessageType() {
-    return $_SESSION[ValerieConfig::SESSION_NS]['form']['message_type'];
+    return $_SESSION[$this->ns]['form']['message_type'];
   }
   
   /*
@@ -318,7 +327,7 @@ class ValerieForm {
   */
   
   public function getMessage() {
-    $message = $_SESSION[ValerieConfig::SESSION_NS]['form']['message'];
+    $message = $_SESSION[$this->ns]['form']['message'];
     if (isset($message)) {
       if (function_exists($this->template['form_message'])) {
         ob_start();
@@ -478,9 +487,6 @@ class ValerieForm {
       }
     }
     
-    echo "<script type=\"text/javascript\">" .
-      "jQuery(function($){ $(\"#{$this->definition['attributes']['id']}\")" .
-      ".valerie(); })</script>\n";
     echo "<!-- End JibberBook {$this->plugin} Assets -->\n\n";
   }
 }
