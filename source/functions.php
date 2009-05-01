@@ -8,6 +8,10 @@
 //	functions.php
 //------------------------------------------------------------------------------
 
+/*
+  Script: functions.php
+*/
+
 require_once "config.php";
 
 /*
@@ -99,7 +103,7 @@ function __($str) {
     
   See Also:
   
-    - <__>
+    - < __ >
 */
 
 function _e($str) {

@@ -53,14 +53,18 @@ class ValerieServer {
     
     $this->uid = $data['formid'];
     $this->referer = $_SESSION[ValerieConfig::SESSION_NS]['referer'];
-    $this->definition = unserialize($_SESSION[ValerieConfig::SESSION_NS][$this->uid]);
+    $this->definition = unserialize(
+      $_SESSION[ValerieConfig::SESSION_NS][$this->uid]
+    );
     
     if (!is_array($this->definition)) {
       if ($this->ajax) {
-        exit ('Could not find form definition.');
+        exit('Could not find form definition.');
       }
       else {
-        $_SESSION[ValerieConfig::SESSION_NS]['message'] = "An error has occured.";
+        $_SESSION[ValerieConfig::SESSION_NS]['message'] = __(
+          'An error has occured.'
+        );
         $_SESSION[ValerieConfig::SESSION_NS]['message_type'] = 'error';
         $this->back();
       }

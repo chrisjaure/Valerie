@@ -51,7 +51,9 @@ class ValerieForm {
   public function __destruct() {
     session_unset($_SESSION[ValerieConfig::SESSION_NS]);
     $_SESSION[ValerieConfig::SESSION_NS]['referer'] = $_SERVER['PHP_SELF'];
-    $_SESSION[ValerieConfig::SESSION_NS][$this->uid] = serialize($this->definition);
+    $_SESSION[ValerieConfig::SESSION_NS][$this->uid] = serialize(
+      $this->definition
+    );
   }
   
   /*
@@ -72,8 +74,15 @@ class ValerieForm {
         function checkbox_format($args) {
           extract($args) ?>
           
-          <input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" /> 
-          <label for="<?php echo $id; ?>" class="checkbox"><?php echo $label; ?></label>
+          <input
+            type="checkbox"
+            id="<?php echo $id; ?>"
+            name="<?php echo $name; ?>"
+            value="<?php echo $value; ?>"
+          /> 
+          <label for="<?php echo $id; ?>" class="checkbox">
+            <?php echo $label; ?>
+          </label>
           <?php echo $error; ?>
           
           <?php
@@ -436,8 +445,8 @@ class ValerieForm {
   public function printAssets($global = true) {
     echo "\n\n<!-- Begin JibberBook {$this->plugin} Assets -->\n";
     if ($global) {
-      echo "<script type=\"text/javascript\" " .
-        "src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\">" .
+      echo "<script type=\"text/javascript\" src=" .
+        "\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\">" .
         "</script>\n";
       echo "<script type=\"text/javascript\" " .
         "src=\"{$this->uri}valerieclient.js\"></script>\n";
