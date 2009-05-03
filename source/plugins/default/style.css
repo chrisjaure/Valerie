@@ -49,16 +49,16 @@
 
 .valerie-form-default input.text,
 .valerie-form-default input.password {
-  width:40%;
+  width:200px;
 }
 
 .valerie-form-default select {
-  min-width:40%;
+  min-width:200px;
 }
 
 .valerie-form-default textarea {
   height:100px;
-  width:70%;
+  width:300px;
 }
 
 .valerie-form-default input.checkbox,

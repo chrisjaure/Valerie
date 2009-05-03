@@ -287,8 +287,8 @@ class ValerieServer {
         $container = &$_SESSION[$this->ns][$namespace];
       }
     }
-    if (!is_array($container[$namespace])) {
-      $container[$namespace] = array();
+    if (!is_array($container)) {
+      $container = array();
     }
     foreach($name as $key => $value) {
       $container[$key] = $value;

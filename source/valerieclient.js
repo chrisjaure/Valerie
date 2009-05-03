@@ -31,7 +31,7 @@
   - valerie.error (receives event and form)
   
   The response for `formInvalidated` and `formValidated` can contain data set
-  server-side using < valerieserver.php#setResponse >.
+  server-side using < source/valerieserver.php#setResponse >.
   
   The object of fields is structured like this:
   

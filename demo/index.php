@@ -73,6 +73,7 @@ $form2->setDefinition(array(
   <div class="content">
   <h1>Valerie Demo</h1>
   <h2>Using Ajax to validate form data server-side.</h2>
+    <h3>Here is one form:</h3>
     <?php
     // Here we are getting data set by my_form.php on a successful submission.
     // This does the same thing as the javascript function but for non-ajax
@@ -87,10 +88,13 @@ $form2->setDefinition(array(
     
     <?php
     // Render the first form
-    $form2->render();
-    
-    // Render the second form
     $form->render();
+    ?>
+    
+    <h3>Here is another form:</h3>
+    <?php
+    // Render the second form
+    $form2->render();
     ?>     
   </div>
   </body>
