@@ -16,7 +16,10 @@
         .removeClass('valerie-form-message-error');
       form.find('.valerie-field-error').remove();
       form.find('.valerie-alert').removeClass('valerie-alert');
-      $(window).scrollTop(form.offset().top);
+      var win = $(window), top = form.offset().top;
+      if (win.scrollTop() > top) {
+        win.scrollTop(top);
+      }
     },
     afterSubmit: function(e, form) {
       form.data('button').attr('disabled', false);
