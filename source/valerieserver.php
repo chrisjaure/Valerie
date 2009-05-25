@@ -56,7 +56,6 @@ class ValerieServer {
     $this->definition = unserialize(
       $_SESSION[ValerieConfig::SESSION_NS][$this->uid]
     );
-    unset($_SESSION[ValerieConfig::SESSION_NS][$this->uid]);
     
     if (!is_array($this->definition)) {
       exit('<b>Error:</b> Could not find form definition.');
