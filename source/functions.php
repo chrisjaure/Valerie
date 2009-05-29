@@ -12,6 +12,7 @@
   Script: functions.php
 */
 
+require_once "libs/appconfig.php";
 require_once "config.php";
 
 /*
@@ -33,7 +34,7 @@ function newValerieServer($data) {
   require_once 'valerieserver.php';
   $Valerie = new ValerieServer($data);
   
-  $dir = ValerieConfig::root();
+  $dir = AppConfig::get('valerie:root');
   foreach(scandir("$dir/rules/") as $file) {
     if (is_file("$dir/rules/$file"))
       include "$dir/rules/$file";

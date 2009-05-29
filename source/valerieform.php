@@ -43,8 +43,8 @@ class ValerieForm {
   
   public function __construct($plugin) {
     @session_start();
-    $this->root = ValerieConfig::root();
-    $this->uri = ValerieConfig::URI;
+    $this->root = AppConfig::get('valerie:root');
+    $this->uri = AppConfig::get('valerie:uri');
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
   }
@@ -53,7 +53,7 @@ class ValerieForm {
     if (isset($this->ns)) {
       unset($_SESSION[$this->ns]);
       $_SESSION[$this->ns]['referer'] = $_SERVER['PHP_SELF'];
-      $_SESSION[ValerieConfig::SESSION_NS][$this->uid] = serialize(
+      $_SESSION[AppConfig::get('valerie:session_ns')][$this->uid] = serialize(
         $this->definition
       );
     }
@@ -149,7 +149,7 @@ class ValerieForm {
     else {
       $this->definition = $this->getArrayFromJSON($definition);
     }
-    $this->ns = ValerieConfig::SESSION_NS .
+    $this->ns = AppConfig::get('valerie:session_ns') .
       $this->definition['attributes']['id'];
   }
   

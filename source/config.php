@@ -8,38 +8,18 @@
 //	config.php
 //------------------------------------------------------------------------------
 
+AppConfig::set(array(
 
-/*
-  Class: ValerieConfig
+
+  // BEGIN SETTINGS ------------------------------------------------------------
+
+  'root' => realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR) . '/',
+  'uri' => '../source/',
+  'char_encoding' => 'utf-8',
+  'session_ns' => 'valerie'
   
-  Static variables and functions for configuring Valerie
-*/
+  // END SETTINGS --------------------------------------------------------------
 
-class ValerieConfig {
-
-
-  // CONFIG OPTIONS ------------------------------------------------------------
-
-  const ROOT = '';
-  const URI = '../source/';
-  const CHAR_ENCODING = 'utf-8';
-  const SESSION_NS = 'valerie';
   
-  // END CONFIG OPTIONS --------------------------------------------------------
-  
-  
-  private static $root;
-  
-  public static function root() {
-    if (self::ROOT != '') return self::ROOT;
-    else {
-      if (!isset(self::$root)) {
-        self::$root = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR) . '/';
-      }
-      return self::$root;
-    }
-  }
-
-}
-
+), 'valerie');
 ?>
