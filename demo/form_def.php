@@ -2,7 +2,7 @@
   "attributes": {
     "id": "frm",
     "method": "post",
-    "action": "my_form.php"
+    "action": "process_form.php"
   },
   "elements": [
     {

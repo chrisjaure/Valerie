@@ -1,6 +1,6 @@
 <?php
 // first include functions.php which is a bootstrap for everything else
-include('../source/functions.php');
+include('../source/bootstrap.php');
 
 // create a new ValerieForm instance
 $form = newValerieForm();
@@ -16,7 +16,7 @@ $form2->setDefinition(array(
   'attributes' => array(
     'id' => 'frm2',
     'method' => 'post',
-    'action' => 'my_form.php'
+    'action' => 'process_form.php'
   ),
   'elements' => array(
     array(

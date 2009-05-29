@@ -1,5 +1,5 @@
 <?php
-  require_once('../source/functions.php');
+  require_once('../source/bootstrap.php');
 
   // extra validation rules
   function is_less_than_150($args) {
