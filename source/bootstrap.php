@@ -12,7 +12,7 @@
   Script: functions.php
 */
 
-require_once "libs/appconfig.php";
+require_once "libs/app.class.php";
 require_once "config.php";
 
 /*
