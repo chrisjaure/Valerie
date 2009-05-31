@@ -10,55 +10,61 @@
 
 
 /*
-  Class: AppConfig
+  Class: App
   
   Static variables and functions for configuring Valerie
 */
 
-class AppConfig {
+class App {
 
-  private static $settings = array();
+  private static $store = array();
+  private static $locked = array();
   
-  public static function set($name, $value = null, $namespace = null) {
+  public static function set($name, $value = null) {
     if (!is_array($name)) {
-      $name = array($name, $value);
-    }
-    else {
-      $namespace = $value;
-    }
-    if (isset($namespace)) {
-      $ref = &self::$settings[$namespace];
-      if (!is_array($ref)) $ref = array();
-    }
-    else {
-      $ref = &self::$settings;
+      if (strpos($name, ':') !== false) {
+        list($namespace, $name) = explode(':', $name, 2);
+        $name = array($namespace => array($name => $value));
+      }
+      else {
+        $name = array($name => $value);
+      }
     }
     foreach ($name as $key => $val) {
-      if (strpos($key, ':') !== false) {
-        list($namespace, $key) = explode(':', $key, 2);
-        if (!isset(self::$settings[$namespace][$key])) {
-          self::$settings[$namespace][$key] = $val;
+      $locked = in_array($key, self::$locked);
+      if (is_array($val) && is_array(self::$store[$key])) {
+        if ($locked) {
+          self::$store[$key] = array_merge($val, self::$store[$key]);
+        }
+        else {
+          self::$store[$key] = array_merge(self::$store[$key], $val);
         }
       }
       else {
-        if (!isset($ref[$key])) {
-          $ref[$key] = $val;
+        $store = &self::$store[$key];
+        $isset = isset($store);
+        if (($isset && !$locked) || !$isset) {
+          $store = $val;
         }
       }
     }
   }
-
-  public static function get($name, $namespace = null) {
+  
+  public static function get($name = null) {
+    if ($name == null) return self::$store;
     if (strpos($name, ':') !== false) {
       list($namespace, $name) = explode(':', $name, 2);
-    }
-    if (isset($namespace)) {
-      $ref = &self::$settings[$namespace];
+      return self::$store[$namespace][$name];
     }
     else {
-      $ref = &self::$settings;
+      return self::$store[$name];
     }
-    return $ref[$name];
+  }
+  
+  public static function lock($name) {
+    if (!is_array($name)) $name = array($name);
+    $new_locked = self::$locked + $name;
+    self::$locked = array_unique($new_locked);
   }
 
 }

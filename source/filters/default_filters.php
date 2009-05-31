@@ -25,7 +25,8 @@ $Valerie->registerFilters(array(
   You may need to set some options.
 */
 function default_purify($value, $args) {
-  require_once ValerieConfig::root() . 'libs/htmlpurifier/HTMLPurifier.standalone.php';
+  require_once App::get('valerie-config:root')
+    . 'libs/htmlpurifier/HTMLPurifier.standalone.php';
   
   $config = HTMLPurifier_Config::createDefault();
   

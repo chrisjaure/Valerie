@@ -34,7 +34,7 @@ function newValerieServer($data) {
   require_once 'valerieserver.php';
   $Valerie = new ValerieServer($data);
   
-  $dir = AppConfig::get('valerie:root');
+  $dir = App::get('valerie-config:root');
   foreach(scandir("$dir/rules/") as $file) {
     if (is_file("$dir/rules/$file"))
       include "$dir/rules/$file";

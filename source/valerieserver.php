@@ -54,7 +54,7 @@ class ValerieServer {
     
     $this->uid = $data['formid'];
     $this->definition = unserialize(
-      $_SESSION[AppConfig::get('valerie:session_ns')][$this->uid]
+      $_SESSION[App::get('valerie-config:session_ns')][$this->uid]
     );
     
     if (!is_array($this->definition)) {
@@ -64,7 +64,7 @@ class ValerieServer {
     require_once "localization/$lang";
     require_once "libs/utf8/utf8.php";
 
-    $this->ns = AppConfig::get('valerie:session_ns') .
+    $this->ns = App::get('valerie-config:session_ns') .
       $this->definition['attributes']['id'];
     $this->referer = $_SESSION[$this->ns]['referer'];
     $this->setValues($this->definition['elements'], $data);
@@ -117,9 +117,9 @@ class ValerieServer {
   
   private function cleanValue($value) {
     $value = trim($value);
-    if (strtoupper(AppConfig::get('valerie:char_encoding')) != 'UTF-8') {
+    if (strtoupper(App::get('valerie-config:char_encoding')) != 'UTF-8') {
       $value = iconv(
-        AppConfig::get('valerie:char_encoding'),
+        App::get('valerie-config:char_encoding'),
         'UTF-8//TRANSLIT',
         $value
       );
@@ -176,12 +176,12 @@ class ValerieServer {
           'message_type' => 'invalid',
           'message' => __('Please correct the errors below.'),
           'elements' => $elements
-        ), null, 'form');
+        ), 'form');
       } else {
         $this->setResponse(array(
           'message_type' => 'valid',
           'message' => __('Your form has been submitted.')
-        ), null, 'form');
+        ), 'form');
       }
     } else {
     
@@ -278,6 +278,7 @@ class ValerieServer {
   
   public function setResponse($name, $value = null, $namespace = null) {
     if (!is_array($name)) $name = array($name => $value);
+    else $namespace = $value;
     if ($this->ajax) {
       $container = &$this->response;
       if (isset($namespace)) {
@@ -294,7 +295,13 @@ class ValerieServer {
       $container = array();
     }
     foreach($name as $key => $value) {
-      $container[$key] = $value;
+      if (strpos($key, ':') !== false) {
+        list($namespace, $key) = explode(':', $key, 2);
+        $container[$namespace][$key] = $value;
+      }
+      else {
+        $container[$key] = $value;
+      }
     }
   }
   
