@@ -46,8 +46,11 @@ class ValerieForm {
     $this->root = App::get('valerie:config:root');
     $this->uri = array(
       'source' => App::get('valerie:config:source_uri'),
-      'plugin' => App::get('valerie:config:plugin_uri')
+      'plugin' => App::get('valerie:config:plugin_uri') . $plugin
     );
+    if ($plugin == 'default') {
+      $this->uri['plugin'] = $this->uri['source'] . 'defaults/plugin';
+    }
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
     $config = App::get($plugin, "valerie:plugins");
@@ -470,9 +473,9 @@ class ValerieForm {
         "src=\"{$this->uri['source']}valerieclient.js\"></script>\n";
     }
     echo "<link rel=\"stylesheet\" type=\"text/css\" ".
-      "href=\"{$this->uri[plugin]}{$this->plugin}/style.css\" />\n";
+      "href=\"{$this->uri['plugin']}/style.css\" />\n";
     echo "<script type=\"text/javascript\" " .
-      "src=\"{$this->uri['plugin']}{$this->plugin}/script.js\"></script>\n";
+      "src=\"{$this->uri['plugin']}/script.js\"></script>\n";
     
     foreach ($this->includes as $type => $path) {
       if (is_array($path)) {
@@ -484,11 +487,11 @@ class ValerieForm {
       switch ($type) {
         case 'css':
           echo "<link rel=\"stylesheet\" type=\"text/css\" ".
-            "href=\"{$this->uri['plugin']}{$this->plugin}/$path\" />\n";
+            "href=\"{$this->uri['plugin']}/$path\" />\n";
           break;
         case 'js':
           echo "<script type=\"text/javascript\" ".
-            "src=\"{$this->uri['plugin']}{$this->plugin}/$path\"></script>\n";
+            "src=\"{$this->uri['plugin']}/$path\"></script>\n";
           break;
       }
       if (isset($conditional)) {
