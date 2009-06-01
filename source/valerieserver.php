@@ -68,6 +68,9 @@ class ValerieServer {
       $this->definition['attributes']['id'];
     $this->referer = $_SESSION[$this->ns]['referer'];
     $this->setValues($this->definition['elements'], $data);
+    
+    $this->filters = App::get('valerie-filters');
+    $this->patterns = App::get('valerie-rules');
   }
   
   /*

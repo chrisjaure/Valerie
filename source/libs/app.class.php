@@ -50,13 +50,15 @@ class App {
     }
   }
   
-  public static function get($name = null) {
+  public static function get($name = null, $namespace = null) {
     if ($name == null) return self::$store;
     if (strpos($name, ':') !== false) {
       list($namespace, $name) = explode(':', $name, 2);
       return self::$store[$namespace][$name];
     }
-    else {
+    elseif (isset($namespace)) {
+      return self::$store[$namespace][$name];
+    } else {
       return self::$store[$name];
     }
   }

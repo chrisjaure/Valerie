@@ -3,13 +3,13 @@
 include('../source/bootstrap.php');
 
 // create a new ValerieForm instance
-$form = newValerieForm();
+$form = new ValerieForm();
 
 // set form definition
 $form->setDefinition('form_def.php');
 
 // create a second form
-$form2 = newValerieForm();
+$form2 = new ValerieForm();
 
 // set definition from array
 $form2->setDefinition(array(

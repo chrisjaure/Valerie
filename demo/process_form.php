@@ -15,7 +15,7 @@
   }
 
   // Create a new instance of ValerieServer
-  $myValidator = newValerieServer($_POST);
+  $myValidator = new ValerieServer($_POST);
   
   // Register any additional rules
   $myValidator->registerRules(array(

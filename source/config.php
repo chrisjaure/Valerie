@@ -17,7 +17,8 @@ App::set('valerie-config', array(
   'root' => realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR) . '/',
   'uri' => '../source/',
   'char_encoding' => 'utf-8',
-  'session_ns' => 'valerie'
+  'session_ns' => 'valerie',
+  'plugins' => 'all'
   
   // END SETTINGS --------------------------------------------------------------
 

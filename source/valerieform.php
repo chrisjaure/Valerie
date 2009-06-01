@@ -41,12 +41,15 @@ class ValerieForm {
       - instance of ValerieForm
   */
   
-  public function __construct($plugin) {
+  public function __construct($plugin = 'default') {
     @session_start();
     $this->root = App::get('valerie-config:root');
     $this->uri = App::get('valerie-config:uri');
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
+    $config = App::get($this->plugin, 'valerie-plugins');
+    $this->template = $config['templates'];
+    $this->includes = $config['includes'];
   }
   
   public function __destruct() {

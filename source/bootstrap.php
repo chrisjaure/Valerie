@@ -5,71 +5,49 @@
 //	license: MIT License
 //	website: http://code.google.com/p/valerie/
 //
-//	functions.php
+//	bootstrap.php
 //------------------------------------------------------------------------------
 
 /*
-  Script: functions.php
+  Script: bootstrap.php
 */
 
 require_once "libs/app.class.php";
 require_once "config.php";
+require_once "valerieserver.php";
+require_once "valerieform.php";
 
-/*
-  Function: newValerieServer
-  
-  Returns new ValerieServer and includes all rules in /rules dir and all filters
-  in /filters dir.
-  
-  Arguments:
-    
-    - $data - post data
-    
-  Returns:
-  
-    - instance of ValerieServer
-*/
+$dir = App::get('valerie-config:root');
 
-function newValerieServer($data) {
-  require_once 'valerieserver.php';
-  $Valerie = new ValerieServer($data);
-  
-  $dir = App::get('valerie-config:root');
-  foreach(scandir("$dir/rules/") as $file) {
-    if (is_file("$dir/rules/$file"))
-      include "$dir/rules/$file";
-  }
-  foreach(scandir("$dir/filters/") as $file) {
-    if (is_file("$dir/filters/$file"))
-      include "$dir/filters/$file";
-  }
-
-  return $Valerie;
+// load the rules
+foreach(scandir("$dir/rules/") as $file) {
+  if (is_file("$dir/rules/$file"))
+    include_once "$dir/rules/$file";
 }
 
-/*
-  Function: newValerieForm
-  
-  Returns new ValerieForm and includes plugin file.
-  
-  Arguments:
-  
-    - $plugin - optional, name of plugin folder
-    
-  Returns:
-  
-    - instance of ValerieForm
-*/
-
-function newValerieForm($plugin='default') {
-  require_once 'valerieform.php';
-  $Valerie = new ValerieForm($plugin);
-  
-  include_once "plugins/$plugin/template.php";
-  include "plugins/$plugin/config.php";
-
-  return $Valerie;
+// load the filers
+foreach(scandir("$dir/filters/") as $file) {
+  if (is_file("$dir/filters/$file"))
+    include_once "$dir/filters/$file";
 }
+
+// load the plugins
+$plugins = App::get('valerie-config:plugins');
+
+if ($plugins = 'all') {
+  $plugins = scandir("$dir/plugins/");
+}
+
+include_once "$dir/plugins/default/template.php";
+include_once "$dir/plugins/default/config.php";
+foreach ((array) $plugins as $plugin) {
+  if (is_file("$dir/plugins/$plugin/template.php"))
+    include_once "$dir/plugins/$plugin/template.php";
+    
+  if (is_file("$dir/plugins/$plugin/config.php"))
+    include_once "$dir/plugins/$plugin/config.php";
+}
+
 
 /*
   Function: __
