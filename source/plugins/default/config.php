@@ -8,6 +8,8 @@
 //	plugins/default/plugin.php
 //------------------------------------------------------------------------------
 
+include_once 'template.php';
+
 $plugin = array(
 
   'includes' => array(
@@ -35,6 +37,6 @@ $plugin = array(
   
 );
 
-App::set('valerie-plugins:default', $plugin);
+App::set('valerie:plugins:default', $plugin);
 
 ?>

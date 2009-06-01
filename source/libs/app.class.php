@@ -22,50 +22,56 @@ class App {
   
   public static function set($name, $value = null) {
     if (!is_array($name)) {
-      if (strpos($name, ':') !== false) {
-        list($namespace, $name) = explode(':', $name, 2);
-        $name = array($namespace => array($name => $value));
+      $name = array($name => $value);
+    }
+  
+    foreach ($name as $key => $value) {
+      $namespace = explode(':', $key);
+      $store = &self::$store;
+      $locked = false;
+      $nscheck = '';
+      foreach ($namespace as $ns) {
+        $store = &$store[$ns];
+        $nscheck = ltrim($nscheck . ':'. $ns, ':');
+        if (in_array($nscheck, self::$locked)) {
+          $locked = true;
+        }
+      }
+      if (isset($store)) {
+        if (is_array($value) && is_array($store)) {
+          foreach($value as $new_key => $val) {
+            self::set($key.$new_key, $val);
+          }
+        } else {
+          if (!$locked) {
+            $store = $value;
+          }
+        }
       }
       else {
-        $name = array($name => $value);
+        $store = $value;
       }
-    }
-    foreach ($name as $key => $val) {
-      $locked = in_array($key, self::$locked);
-      if (is_array($val) && is_array(self::$store[$key])) {
-        if ($locked) {
-          self::$store[$key] = array_merge($val, self::$store[$key]);
-        }
-        else {
-          self::$store[$key] = array_merge(self::$store[$key], $val);
-        }
-      }
-      else {
-        $store = &self::$store[$key];
-        $isset = isset($store);
-        if (($isset && !$locked) || !$isset) {
-          $store = $val;
-        }
-      }
-    }
+    } 
   }
   
   public static function get($name = null, $namespace = null) {
     if ($name == null) return self::$store;
-    if (strpos($name, ':') !== false) {
-      list($namespace, $name) = explode(':', $name, 2);
-      return self::$store[$namespace][$name];
+    $name = explode(':', $name);
+    
+    if (isset($namespace)) {
+      $name = array_merge(explode(':', $namespace), $name);
     }
-    elseif (isset($namespace)) {
-      return self::$store[$namespace][$name];
-    } else {
-      return self::$store[$name];
+    
+    $store = self::$store;
+    foreach ($name as $ns) {
+      $store = $store[$ns];
     }
+    
+    return $store;
   }
   
   public static function lock($name) {
-    if (!is_array($name)) $name = array($name);
-    $new_locked = self::$locked + $name;
+    $new_locked = self::$locked + (array) $name;
     self::$locked = array_unique($new_locked);
   }
 

@@ -17,7 +17,7 @@ require_once "config.php";
 require_once "valerieserver.php";
 require_once "valerieform.php";
 
-$dir = App::get('valerie-config:root');
+$dir = App::get('valerie:config:root');
 
 // load the rules
 foreach(scandir("$dir/rules/") as $file) {
@@ -32,18 +32,14 @@ foreach(scandir("$dir/filters/") as $file) {
 }
 
 // load the plugins
-$plugins = App::get('valerie-config:plugins');
+$plugins = App::get('valerie:config:plugins');
 
 if ($plugins = 'all') {
   $plugins = scandir("$dir/plugins/");
 }
 
-include_once "$dir/plugins/default/template.php";
 include_once "$dir/plugins/default/config.php";
-foreach ((array) $plugins as $plugin) {
-  if (is_file("$dir/plugins/$plugin/template.php"))
-    include_once "$dir/plugins/$plugin/template.php";
-    
+foreach ((array) $plugins as $plugin) {    
   if (is_file("$dir/plugins/$plugin/config.php"))
     include_once "$dir/plugins/$plugin/config.php";
 }

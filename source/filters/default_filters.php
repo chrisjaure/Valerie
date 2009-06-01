@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 // $Valerie created in /source/functions.php in newValerieServer.
-App::set('valerie-filters', array(
+App::set('valerie:filters', array(
   'striptags' => 'strip_tags',
   'purify' => 'default_purify',
   'limit' => 'default_limit'

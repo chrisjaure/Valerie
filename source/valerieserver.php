@@ -54,7 +54,7 @@ class ValerieServer {
     
     $this->uid = $data['formid'];
     $this->definition = unserialize(
-      $_SESSION[App::get('valerie-config:session_ns')][$this->uid]
+      $_SESSION[App::get('valerie:config:session_ns')][$this->uid]
     );
     
     if (!is_array($this->definition)) {
@@ -64,13 +64,13 @@ class ValerieServer {
     require_once "localization/$lang";
     require_once "libs/utf8/utf8.php";
 
-    $this->ns = App::get('valerie-config:session_ns') .
+    $this->ns = App::get('valerie:config:session_ns') .
       $this->definition['attributes']['id'];
     $this->referer = $_SESSION[$this->ns]['referer'];
     $this->setValues($this->definition['elements'], $data);
     
-    $this->filters = App::get('valerie-filters');
-    $this->patterns = App::get('valerie-rules');
+    $this->filters = App::get('valerie:filters');
+    $this->patterns = App::get('valerie:rules');
   }
   
   /*
@@ -120,9 +120,9 @@ class ValerieServer {
   
   private function cleanValue($value) {
     $value = trim($value);
-    if (strtoupper(App::get('valerie-config:char_encoding')) != 'UTF-8') {
+    if (strtoupper(App::get('valerie:config:char_encoding')) != 'UTF-8') {
       $value = iconv(
-        App::get('valerie-config:char_encoding'),
+        App::get('valerie:config:char_encoding'),
         'UTF-8//TRANSLIT',
         $value
       );

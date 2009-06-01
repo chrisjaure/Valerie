@@ -8,8 +8,8 @@
 //	config.php
 //------------------------------------------------------------------------------
 
-App::lock('valerie-config');
-App::set('valerie-config', array(
+App::lock('valerie:config');
+App::set('valerie:config', array(
 
 
   // BEGIN SETTINGS ------------------------------------------------------------
