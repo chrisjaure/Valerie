@@ -20,28 +20,31 @@ require_once "valerieform.php";
 $dir = App::get('valerie:config:root');
 
 // load the rules
-foreach(scandir("$dir/rules/") as $file) {
-  if (is_file("$dir/rules/$file"))
-    include_once "$dir/rules/$file";
+$valerie_rule_path = App::get('valerie:config:rule_path');
+foreach(scandir($valerie_rule_path) as $file) {
+  if (is_file($valerie_rule_path . $file))
+    include_once $valerie_rule_path . $file;
 }
 
 // load the filers
-foreach(scandir("$dir/filters/") as $file) {
-  if (is_file("$dir/filters/$file"))
-    include_once "$dir/filters/$file";
+$valerie_filter_path = App::get('valerie:config:filter_path');
+foreach(scandir($valerie_filter_path) as $file) {
+  if (is_file($valerie_filter_path . $file))
+    include_once $valerie_filter_path . $file;
 }
 
 // load the plugins
-$plugins = App::get('valerie:config:plugins');
+$valerie_plugin_path = App::get('valerie:config:plugin_path');
+$valerie_plugins = App::get('valerie:config:plugins');
 
-if ($plugins = 'all') {
-  $plugins = scandir("$dir/plugins/");
+if ($valerie_plugins = 'all') {
+  $valerie_plugins = scandir($valerie_plugin_path);
 }
 
-include_once "$dir/plugins/default/config.php";
-foreach ((array) $plugins as $plugin) {    
-  if (is_file("$dir/plugins/$plugin/config.php"))
-    include_once "$dir/plugins/$plugin/config.php";
+//include_once "$dir/plugins/default/config.php";
+foreach ((array) $valerie_plugins as $plugin) {    
+  if (is_file($valerie_plugin_path . $plugin .'/config.php'))
+    include_once $valerie_plugin_path . $plugin .'/config.php';
 }
 
 

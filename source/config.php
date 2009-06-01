@@ -15,13 +15,30 @@ App::set('valerie:config', array(
   // BEGIN SETTINGS ------------------------------------------------------------
 
   'root' => realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR) . '/',
-  'uri' => '../source/',
   'char_encoding' => 'utf-8',
   'session_ns' => 'valerie',
+  'app_path' => '../application/',
+  'plugin_uri' => '../application/plugins/',
+  'source_uri' => '../source/',
   'plugins' => 'all'
+  
   
   // END SETTINGS --------------------------------------------------------------
 
   
 ));
+
+$valerie_app_path = realpath(App::get('valerie:config:app_path')) . '/';
+App::set('valerie:config', array(
+
+  // BEGIN PATH SETTINGS -------------------------------------------------------
+
+  'plugin_path' => $valerie_app_path . 'plugins/',
+  'filter_path' => $valerie_app_path . 'filters/',
+  'rule_path' => $valerie_app_path . 'rules/'
+  
+  // END PATH SETTINGS ---------------------------------------------------------
+  
+));
+
 ?>

@@ -21,7 +21,7 @@ class ValerieForm {
   private $replace;
   private $formats = array();
   private $root;
-  private $uri;
+  private $uri = array();
   private $plugin;
   private $includes = array();
   private $uid;
@@ -44,7 +44,10 @@ class ValerieForm {
   public function __construct($plugin = 'default') {
     @session_start();
     $this->root = App::get('valerie:config:root');
-    $this->uri = App::get('valerie:config:uri');
+    $this->uri = array(
+      'source' => App::get('valerie:config:source_uri'),
+      'plugin' => App::get('valerie:config:plugin_uri')
+    );
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
     $config = App::get($plugin, "valerie:plugins");
@@ -464,12 +467,12 @@ class ValerieForm {
         "\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\">" .
         "</script>\n";
       echo "<script type=\"text/javascript\" " .
-        "src=\"{$this->uri}valerieclient.js\"></script>\n";
+        "src=\"{$this->uri['source']}valerieclient.js\"></script>\n";
     }
     echo "<link rel=\"stylesheet\" type=\"text/css\" ".
-      "href=\"{$this->uri}plugins/{$this->plugin}/style.css\" />\n";
+      "href=\"{$this->uri[plugin]}{$this->plugin}/style.css\" />\n";
     echo "<script type=\"text/javascript\" " .
-      "src=\"{$this->uri}plugins/{$this->plugin}/script.js\"></script>\n";
+      "src=\"{$this->uri['plugin']}{$this->plugin}/script.js\"></script>\n";
     
     foreach ($this->includes as $type => $path) {
       if (is_array($path)) {
@@ -481,11 +484,11 @@ class ValerieForm {
       switch ($type) {
         case 'css':
           echo "<link rel=\"stylesheet\" type=\"text/css\" ".
-            "href=\"{$this->uri}plugins/{$this->plugin}/$path\" />\n";
+            "href=\"{$this->uri['plugin']}{$this->plugin}/$path\" />\n";
           break;
         case 'js':
           echo "<script type=\"text/javascript\" ".
-            "src=\"{$this->uri}plugins/{$this->plugin}/$path\"></script>\n";
+            "src=\"{$this->uri['plugin']}{$this->plugin}/$path\"></script>\n";
           break;
       }
       if (isset($conditional)) {

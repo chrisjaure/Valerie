@@ -40,7 +40,7 @@ class App {
       if (isset($store)) {
         if (is_array($value) && is_array($store)) {
           foreach($value as $new_key => $val) {
-            self::set($key.$new_key, $val);
+            self::set($key . ':' . $new_key, $val);
           }
         } else {
           if (!$locked) {
