@@ -14,14 +14,12 @@ App::set('valerie:config', array(
 
   // BEGIN SETTINGS ------------------------------------------------------------
 
-  'root' => realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR) . '/',
   'char_encoding' => 'utf-8',
   'session_ns' => 'valerie',
   'app_path' => '../application/',
   'plugin_uri' => '../application/plugins/',
   'source_uri' => '../source/',
   'plugins' => 'all'
-  
   
   // END SETTINGS --------------------------------------------------------------
 

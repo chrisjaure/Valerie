@@ -12,30 +12,38 @@
   Script: bootstrap.php
 */
 
+$valerie_config_path = '../application/config.php';
+
 require_once "libs/app.class.php";
-require_once "config.php";
+require_once $valerie_config_path;
+
+App::set('valerie:config:root', realpath(dirname(__FILE__) . '/') . '/');
+
 require_once "valerieserver.php";
 require_once "valerieform.php";
 
 $valerie_root = App::get('valerie:config:root');
 
 // load defaults
-include_once "$valerie_root/defaults/plugin/config.php";
-include_once "$valerie_root/defaults/filters.php";
-include_once "$valerie_root/defaults/rules.php";
+include_once "{$valerie_root}defaults/plugin/config.php";
+include_once "{$valerie_root}defaults/filters.php";
+include_once "{$valerie_root}defaults/rules.php";
 
 // load the rules
 $valerie_rule_path = App::get('valerie:config:rule_path');
-foreach(scandir($valerie_rule_path) as $file) {
-  if (is_file($valerie_rule_path . $file))
-    include_once $valerie_rule_path . $file;
+  if (is_dir($valerie_rule_path)) {
+  foreach(scandir($valerie_rule_path) as $file) {
+    if (is_file($valerie_rule_path . $file))
+      include_once $valerie_rule_path . $file;
+  }
 }
-
 // load the filers
 $valerie_filter_path = App::get('valerie:config:filter_path');
-foreach(scandir($valerie_filter_path) as $file) {
-  if (is_file($valerie_filter_path . $file))
-    include_once $valerie_filter_path . $file;
+if (is_dir($valerie_filter_path)) {
+  foreach(scandir($valerie_filter_path) as $file) {
+    if (is_file($valerie_filter_path . $file))
+      include_once $valerie_filter_path . $file;
+  }
 }
 
 // load the plugins
@@ -43,7 +51,9 @@ $valerie_plugin_path = App::get('valerie:config:plugin_path');
 $valerie_plugins = App::get('valerie:config:plugins');
 
 if ($valerie_plugins = 'all') {
-  $valerie_plugins = scandir($valerie_plugin_path);
+  if (is_dir($valerie_plugin_path)) {
+    $valerie_plugins = scandir($valerie_plugin_path);
+  }
 }
 
 foreach ((array) $valerie_plugins as $valerie_plugin) {    
