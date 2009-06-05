@@ -21,6 +21,7 @@ class App {
   private static $locked = array();
   
   public static function set($name, $value = null) {
+    
     if (!is_array($name)) {
       $name = array($name => $value);
     }
@@ -38,11 +39,19 @@ class App {
         }
       }
       if (isset($store)) {
-        if (is_array($value) && is_array($store)) {
+        $new_val_is_array = is_array($value);
+        $old_val_is_array = is_array($store);
+        if ($new_val_is_array && $old_val_is_array) {
           foreach($value as $new_key => $val) {
             self::set($key . ':' . $new_key, $val);
           }
-        } else {
+        }
+        elseif (!$new_val_is_array && $old_val_is_array) {
+          if (!self::child_locked($key)) {
+            $store = $value;
+          }
+        }
+        else {
           if (!$locked) {
             $store = $value;
           }
@@ -71,8 +80,19 @@ class App {
   }
   
   public static function lock($name) {
-    $new_locked = self::$locked + (array) $name;
+    $new_locked = self::$locked;
+    $new_locked[] = $name;
     self::$locked = array_unique($new_locked);
+  }
+  
+  private static function child_locked($name) {
+    $vals = self::get($name);
+    if (is_array($vals)) {
+      foreach ($vals as $key => $val) {
+        if(self::child_locked($name . ':' . $key)) return true;
+      }
+    }
+    return (in_array($name, self::$locked));
   }
 
 }

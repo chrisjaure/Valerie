@@ -13,16 +13,15 @@
 */
 
 $valerie_config_path = '../application/config.php';
+$valerie_root = realpath(dirname(__FILE__) . '/') . '/';
 
 require_once "libs/app.class.php";
 require_once $valerie_config_path;
 
-App::set('valerie:config:root', realpath(dirname(__FILE__) . '/') . '/');
+App::set('valerie:config:root', $valerie_root);
 
 require_once "valerieserver.php";
 require_once "valerieform.php";
-
-$valerie_root = App::get('valerie:config:root');
 
 // load defaults
 include_once "{$valerie_root}defaults/plugin/config.php";
