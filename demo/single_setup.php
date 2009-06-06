@@ -34,7 +34,7 @@ $config = array(
 
 App::set('valerie:form', $config);
 
-App::set('valerie:hooks', array(
+App::attach('valerie:hooks', array(
 
   'onSuccess' => 'myform_success',
   'beforeRender' => 'myform_beforeRender',

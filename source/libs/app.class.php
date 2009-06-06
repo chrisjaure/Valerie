@@ -5,7 +5,7 @@
 //	license: MIT License
 //	website: http://code.google.com/p/valerie/
 //
-//	appconfig.php
+//	app.class.php
 //------------------------------------------------------------------------------
 
 
@@ -92,9 +92,31 @@ class App {
       $store = $store[$ns];
     }
     foreach ((array) $store as $fn) {
-      call_user_func($fn, $args);
+      if (is_callable($fn)) {
+        call_user_func($fn, $args);
+      }
     }
-    
+  }
+  
+  public static function attach($name, $item) {
+    if (is_array($item)) {
+      foreach($item as $key => $val) {
+        self::attach($name . ':' . $key, $val);
+      }
+    }
+    else {
+      $value = (array) App::get($name);
+      $value[] = $item;
+      App::set($name, $value);
+    }
+  }
+  
+  public static function detach($name, $item) {
+    $value = (array) App::get($name);
+    App::set($name, null);
+    $index = array_search($item, $value);
+    unset($value[$index]);
+    App::set($name, $value);
   }
   
   public static function lock($name) {
