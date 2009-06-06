@@ -58,7 +58,9 @@ class ValerieServer {
     );
     
     if (!is_array($this->definition)) {
-      exit('<b>Error:</b> Could not find form definition.');
+      $error = 'Form definition could not be found at this location: $_SESSION['
+        . App::get('valerie:config:session_ns') . '][' . $this->uid . ']';
+      trigger_error($error, E_USER_ERROR);
     }
     
     require_once "localization/$lang";
@@ -87,11 +89,14 @@ class ValerieServer {
   
   private function setValues($els, $vals) {
     foreach($els as $element) {
-      if (isset($element['elements']))
+      if (isset($element['elements'])) {
         $this->setValues($element['elements'], $vals);
+      }
       if (isset($element['name'])) {
         $name = $element['name'];
-        if (substr($name, -2) == '[]') $name = substr($name, 0, -2);
+        if (substr($name, -2) == '[]') {
+          $name = substr($name, 0, -2);
+        }
         if (is_array($vals[$name])) {
           foreach ($vals[$name] as &$value) {
             $value = $this->cleanValue($value);
@@ -102,10 +107,7 @@ class ValerieServer {
           $this->values[$name] = $this->cleanValue($vals[$name]);
         }
         if (isset($element['validation'])) {
-          if (is_array($element['validation']))
-            $this->rules[$name] = $element['validation'];
-          else
-            $this->rules[$name] = array($element['validation']);
+          $this->rules[$name] = (array) $element['validation'];
         }
         $this->elements[$name] = $element;
       }
@@ -153,8 +155,7 @@ class ValerieServer {
       // validate
       foreach($this->rules as $name => $rules) {
         $values = $this->values[$name];
-        if (!is_array($values)) $values = array($values);
-        foreach ($values as $value) {
+        foreach ((array) $values as $value) {
           foreach($rules as $rule) {
             if(!$this->test($rule, $value, $name)) break;
           }
@@ -180,13 +181,15 @@ class ValerieServer {
           'message' => __('Please correct the errors below.'),
           'elements' => $elements
         ), 'form');
-      } else {
+      }
+      else {
         $this->setResponse(array(
           'message_type' => 'valid',
           'message' => __('Your form has been submitted.')
         ), 'form');
       }
-    } else {
+    }
+    else {
     
       foreach($this->rules[$this->periodical] as $rule ) {
         if(!$this->test(
@@ -199,7 +202,8 @@ class ValerieServer {
       if (isset($this->errors)) {
         echo '{"type": "invalid", "content": {"id": "' . key($this->errors) .
           '", "message": "' . current($this->errors) . '"}}';
-      } else {
+      }
+      else {
         echo '{"type": "valid", "content": {"id": "'. $this->periodical . '"}}';
       }
       exit();
@@ -212,8 +216,7 @@ class ValerieServer {
       foreach ($this->elements as $name => $element) {
         $filters = $element['filters'];
         if (isset($filters)) {
-          if (!is_array($filters)) $filters = array($filters);
-          foreach ($filters as $filter) {
+          foreach ((array) $filters as $filter) {
             $this->values[$name] = $this->filter($filter, $this->values[$name]);
           }
         }
@@ -280,8 +283,12 @@ class ValerieServer {
   */
   
   public function setResponse($name, $value = null, $namespace = null) {
-    if (!is_array($name)) $name = array($name => $value);
-    else $namespace = $value;
+    if (!is_array($name)) {
+      $name = array($name => $value);
+    }
+    else {
+      $namespace = $value;
+    }
     if ($this->ajax) {
       $container = &$this->response;
       if (isset($namespace)) {
@@ -318,6 +325,7 @@ class ValerieServer {
     if ($this->ajax) {
       echo json_encode($this->response);
     }
+    exit();
   }
   
   /*
@@ -384,8 +392,12 @@ class ValerieServer {
   */
   
   public function getNameLabel($text) {
-    if (is_array($text)) return array($text[0], $text[1]);
-    else return array($text, $text);
+    if (is_array($text)) {
+      return array($text[0], $text[1]);
+    }
+    else {
+      return array($text, $text);
+    }
   }
   
   /*
@@ -463,7 +475,8 @@ class ValerieServer {
       foreach(array_values($values) as $index => $value) {
         $replace[$index] = '{' . ($index + 1) . '}';
       }
-    } else {
+    }
+    else {
       $replace = '{1}';
     }
     return str_replace($replace, $values, $template);
@@ -497,19 +510,22 @@ class ValerieServer {
     }
 
     // return true if empty and not required
-    if ($this->isEmpty($value) && !$this->patterns[$rule][2]) return true;
+    if ($this->isEmpty($value) && !$this->patterns[$rule][2]) {
+      return true;
+    }
 
     $error = $this->patterns[$rule][1];
     
     // check whether it's a function or a regex pattern
-    if (function_exists($this->patterns[$rule][0])) {
-      $success = $this->patterns[$rule][0](array(
+    if (is_callable($this->patterns[$rule][0])) {
+      $success = call_user_func($this->patterns[$rule][0], array(
         "name" => $name,
         "value" => $value,
         "arguments" => $arguments,
         "error" => $error
       ), $this);
-    } else {
+    }
+    else {
       $success = preg_match($this->patterns[$rule][0], $value);
     }
     
@@ -521,7 +537,8 @@ class ValerieServer {
     if (!$success) {
       $this->errors[$name] = htmlspecialchars(strip_tags($error));
       return false;
-    } else return true;
+    }
+    else return true;
     
   }
   
@@ -553,17 +570,9 @@ class ValerieServer {
     }
   
     $fn = $this->filters[$filter];
-    if (is_array($values)) {
-      foreach($values as &$value) {
-        if (function_exists($fn)) {
-          $value = $fn($value, $arguments);
-        }
-      }
-    }
-    else {
-      if (function_exists($fn)) {
-        $values = $fn($values, $arguments);
-      }
+    $values = (array) $values;
+    foreach ($values as &$value) {
+      call_user_func($fn, $value, $arguments);
     }
     return $values;
   }

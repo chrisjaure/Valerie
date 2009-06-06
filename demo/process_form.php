@@ -39,5 +39,4 @@
   // This function outputs any json if ajax is used, or redirects back to form
   // page if it's a regular form submission
   $myValidator->back();
-  //var_dump($_SESSION[ValerieConfig::SESSION_NS]);
 ?>

@@ -1,5 +1,5 @@
 <?php
-// first include functions.php which is a bootstrap for everything else
+// first include bootstrap.php
 include('../source/bootstrap.php');
 
 // create a new ValerieForm instance
@@ -95,7 +95,10 @@ $form2->setDefinition(array(
     <?php
     // Render the second form
     $form2->render();
-    ?>     
+    ?>
+    
+    <h3>The last form</h3>
+    <?php Valerie::render(); ?>
   </div>
   </body>
 </html>

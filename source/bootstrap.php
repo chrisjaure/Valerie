@@ -19,9 +19,11 @@ require_once "libs/app.class.php";
 require_once $valerie_config_path;
 
 App::set('valerie:config:root', $valerie_root);
+$valerie_root = App::get('valerie:config:root');
 
 require_once "valerieserver.php";
 require_once "valerieform.php";
+require_once "valerie.php";
 
 // load defaults
 include_once "{$valerie_root}defaults/plugin/config.php";
@@ -58,6 +60,14 @@ if ($valerie_plugins = 'all') {
 foreach ((array) $valerie_plugins as $valerie_plugin) {    
   if (is_file($valerie_plugin_path . $valerie_plugin .'/config.php'))
     include_once $valerie_plugin_path . $valerie_plugin .'/config.php';
+}
+
+if (App::get('valerie:config:single_setup')) {
+  include_once $valerie_root . App::get('valerie:config:single_setup');
+  App::set("valerie:form:definition:attributes", array(
+    'method' => 'post',
+    'action' => App::get('valerie:config:source_uri') . 'processform.php'
+  ));
 }
 
 

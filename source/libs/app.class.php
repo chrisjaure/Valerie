@@ -63,20 +63,38 @@ class App {
     } 
   }
   
-  public static function get($name = null, $namespace = null) {
-    if ($name == null) return self::$store;
-    $name = explode(':', $name);
+  public static function get($name = null, $callback = null, $args = null) {
+    $store = self::$store;
     
-    if (isset($namespace)) {
-      $name = array_merge(explode(':', $namespace), $name);
+    if (isset($name)) {
+      $name = explode(':', $name);
+      foreach ($name as $ns) {
+        $store = $store[$ns];
+      }
     }
     
-    $store = self::$store;
-    foreach ($name as $ns) {
-      $store = $store[$ns];
+    if (isset($callback) && function_exists($callback)) {
+      if (is_array($store)) {
+        array_walk($store, $callback, $args);
+      }
+      else {
+        call_user_func($callback, $store, $args);
+      }
     }
     
     return $store;
+  }
+  
+  public static function fire($name, $args) {
+    $store = self::$store;
+    $name = explode(':', $name);
+    foreach ($name as $ns) {
+      $store = $store[$ns];
+    }
+    foreach ((array) $store as $fn) {
+      call_user_func($fn, $args);
+    }
+    
   }
   
   public static function lock($name) {

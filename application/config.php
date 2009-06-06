@@ -19,7 +19,8 @@ App::set('valerie:config', array(
   'app_path' => '../application/',
   'plugin_uri' => '../application/plugins/',
   'source_uri' => '../source/',
-  'plugins' => 'all'
+  'plugins' => 'all',
+  'single_setup' => '../demo/single_setup.php'
   
   // END SETTINGS --------------------------------------------------------------
 

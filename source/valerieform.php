@@ -53,12 +53,15 @@ class ValerieForm {
     }
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
-    $config = App::get($plugin, "valerie:plugins");
+    $config = App::get("valerie:plugins:$plugin");
     if (isset($config['uri'])) {
       $this->uri['plugin'] = $config['uri'];
     }
     $this->template = $config['templates'];
     $this->includes = $config['includes'];
+    if(!isset($this->template)) {
+      trigger_error("Form template could not be set using plugin '$plugin'", E_USER_ERROR);
+    }
   }
   
   public function __destruct() {
@@ -105,7 +108,9 @@ class ValerieForm {
   */
   
   public function setTemplate($form) {
-    if (is_array($form)) $this->template = array_merge($this->template, $form);
+    if (is_array($form)) {
+      $this->template = array_merge($this->template, $form);
+    }
   }
   
   /*
@@ -157,7 +162,9 @@ class ValerieForm {
   */
   
   public function setDefinition($definition) {
-    if (is_array($definition)) $this->definition = $definition;
+    if (is_array($definition)) {
+      $this->definition = $definition;
+    }
     else {
       $this->definition = $this->getArrayFromJSON($definition);
     }
@@ -207,10 +214,15 @@ class ValerieForm {
   */
   
   private function getArrayFromJSON($file) {
-    if (file_exists($file)) $path = $file;
-    elseif (file_exists(dirname($_SERVER['PHP_SELF'] . $file)))
+    if (file_exists($file)) {
+      $path = $file;
+    }
+    elseif (file_exists(dirname($_SERVER['PHP_SELF'] . $file))) {
       $path = dirname($_SERVER['PHP_SELF'] . $file);
-    elseif (file_exists($this->root . $file)) $path = $this->root . $file;
+    }
+    elseif (file_exists($this->root . $file)) {
+      $path = $this->root . $file;
+    }
     return json_decode(@file_get_contents($path), true);
   }
   
@@ -231,10 +243,12 @@ class ValerieForm {
   private function getOutput($data) {
     $output = '';
     foreach($data as $args) {
-      if ($this->template[$args['id']])
+      if ($this->template[$args['id']]) {
         $fn = $this->template[$args['id']];
-      else
+      }
+      else {
         $fn = $this->template[$args['type']];
+      }
       $input = $this->getValue($args['name']);
       $vals = $args + array(
         'error' => $this->getError($args),
@@ -247,7 +261,7 @@ class ValerieForm {
         $vals = $vals + array('content' => $this->getOutput($args['elements']));
       }
       ob_start();
-      if (function_exists($fn)) $fn($vals);
+      call_user_func($fn, $vals);
       $output .= ob_get_contents();
       ob_end_clean();
     }
@@ -269,7 +283,7 @@ class ValerieForm {
       "jQuery(function($){ $(\"#{$this->definition['attributes']['id']}\")" .
       ".valerie(); })</script>\n";
     
-    echo $this->template['form']($this->definition['attributes'] + array(
+    echo call_user_func($this->template['form'], $this->definition['attributes'] + array(
       'content' => $output,
       'message' => $this->getMessage()
     ));
@@ -389,7 +403,9 @@ class ValerieForm {
   */
   
   public function getValue($name) {
-    if (substr($name, -2) == '[]') $name = substr($name, 0, -2);
+    if (substr($name, -2) == '[]') {
+      $name = substr($name, 0, -2);
+    }
     $value = $this->getResponse('elements', 'form');
     return $value[$name]['value']; 
   }
@@ -430,14 +446,17 @@ class ValerieForm {
     $error = $this->getResponse('elements', 'form');
     $error = $error[$name]['message'];
     if ($error) {
-      if (function_exists($this->template['field_error'])) {
+      if (is_callable($this->template['field_error'])) {
         ob_start();
-        $this->template['field_error']($args + array('message' => $error));
+        call_user_func($this->template['field_error'], $args + array('message' => $error));
         $error = ob_get_contents();
         ob_end_clean();
       }
       return $error;
-    } else return null;
+    }
+    else {
+      return null;
+    }
   }
   
   /*
@@ -480,7 +499,7 @@ class ValerieForm {
     echo "<script type=\"text/javascript\" " .
       "src=\"{$this->uri['plugin']}/script.js\"></script>\n";
     
-    foreach ($this->includes as $type => $path) {
+    foreach ((array) $this->includes as $type => $path) {
       if (is_array($path)) {
         $conditional = $path[0];
         $path = $path[1];
