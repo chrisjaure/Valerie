@@ -42,8 +42,22 @@ class App {
         $new_val_is_array = is_array($value);
         $old_val_is_array = is_array($store);
         if ($new_val_is_array && $old_val_is_array) {
-          foreach($value as $new_key => $val) {
-            self::set($key . ':' . $new_key, $val);
+          $indexed = true;
+          foreach ($value as $new_key => $val) {
+            if (!is_int($new_key)) {
+              self::set($key . ':' . $new_key, $val);
+              $indexed = false;
+            }
+          }
+          foreach ($store as $old_key => $val) {
+            if (!is_int($old_key)) {
+              $indexed = false;
+            }
+          }
+          if ($indexed) {
+            if(!$locked) {
+              $store = $value;
+            }
           }
         }
         elseif (!$new_val_is_array && $old_val_is_array) {
@@ -113,7 +127,6 @@ class App {
   
   public static function detach($name, $item) {
     $value = (array) App::get($name);
-    App::set($name, null);
     $index = array_search($item, $value);
     unset($value[$index]);
     App::set($name, $value);
