@@ -1,6 +1,6 @@
 <?php
 //------------------------------------------------------------------------------
-//	Valerie v0.6
+//	Valerie
 //	(c) 2009 Chris Jaure
 //	license: MIT License
 //	website: http://code.google.com/p/valerie/
@@ -18,6 +18,8 @@ $valerie_root = realpath(dirname(__FILE__) . '/') . '/';
 
 require_once "libs/app.class.php";
 require_once $valerie_config_path;
+
+App::set('valerie:config:version', '0.7.1');
 
 App::set('valerie:config:root', $valerie_root);
 $valerie_root = App::get('valerie:config:root');

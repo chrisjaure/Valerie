@@ -1,6 +1,6 @@
 <?php
 //------------------------------------------------------------------------------
-//	Valerie v0.6
+//	Valerie
 //	(c) 2009 Chris Jaure
 //	license: MIT License
 //	website: http://code.google.com/p/valerie/

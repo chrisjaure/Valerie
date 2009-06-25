@@ -1,4 +1,13 @@
 <?php
+//------------------------------------------------------------------------------
+//	Valerie
+//	(c) 2009 Chris Jaure
+//	license: MIT License
+//	website: http://code.google.com/p/valerie/
+//
+//	defaults/plugin/template.php
+//------------------------------------------------------------------------------
+
 // form
 function default_form($args) {
   extract($args);

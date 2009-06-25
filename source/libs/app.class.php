@@ -1,6 +1,6 @@
 <?php
 //------------------------------------------------------------------------------
-//	Valerie v0.6
+//	Valerie
 //	(c) 2009 Chris Jaure
 //	license: MIT License
 //	website: http://code.google.com/p/valerie/
@@ -20,6 +20,31 @@ class App {
   private static $store = array();
   private static $locked = array();
   
+  
+  /*
+    Method: set
+    
+    Set a variable.
+    
+    Arguments:
+      
+      $name - string or array
+      $value - value to set
+      
+    Example:
+      
+      App::set('name:subname', 'value');
+      //or
+      App::set('name', array(
+        'subname' => 'value'
+      ));
+      //or
+      App::set(array(
+        'name' => array(
+          'subname' => 'value'
+        )
+      ));
+  */
   public static function set($name, $value = null) {
     
     if (!is_array($name)) {
@@ -77,6 +102,27 @@ class App {
     } 
   }
   
+  /*
+    Method: get
+    
+    Gets variables set with App::set().
+    
+    Arguments:
+      
+      $name - name of variable (optional)
+      $callback - function values are passed to (optional)
+      $args - arguments to pass to callback in addition to value (optional)
+      
+    Returns:
+      
+      value at $name or array of all values set if $name is not provided
+      
+    Example:
+    
+      App::get('name:subname:subname');
+      App::get();
+      App::get('name', 'fn_name');
+  */
   public static function get($name = null, $callback = null, $args = null) {
     $store = self::$store;
     
@@ -99,6 +145,21 @@ class App {
     return $store;
   }
   
+  /*
+    Method: fire
+    
+    Executes functions set by App::set or App::attach. This can be a single
+    function or an array of functions.
+    
+    Arguments:
+    
+      $name - name of function or array of functions
+      $args - arguments to be passed to the function
+      
+    Example:
+    
+      App::fire('hooks');
+  */
   public static function fire($name, $args) {
     $store = self::$store;
     $name = explode(':', $name);
@@ -112,6 +173,16 @@ class App {
     }
   }
   
+  /*
+    Method: attach
+    
+    Adds items to indexed array.
+    
+    Arguments:
+      
+      $name - variable to add item to
+      $item - value or array of values
+  */
   public static function attach($name, $item) {
     if (is_array($item)) {
       foreach($item as $key => $val) {
@@ -125,6 +196,16 @@ class App {
     }
   }
   
+  /*
+    Method: detach
+    
+    Removes item from indexed array.
+    
+    Arguments:
+      
+      $name - variable to remove item from
+      $item - value to remove
+  */
   public static function detach($name, $item) {
     $value = (array) App::get($name);
     $index = array_search($item, $value);
@@ -132,12 +213,34 @@ class App {
     App::set($name, $value);
   }
   
+  /*
+    Method: lock
+    
+    Prevents a variable (and it's parents and children) from being overwritten.
+    
+    Arguments:
+    
+      $name - variable to lock
+  */
   public static function lock($name) {
     $new_locked = self::$locked;
     $new_locked[] = $name;
     self::$locked = array_unique($new_locked);
   }
   
+  /*
+    Method: child_locked
+    
+    Recursively checks to see if a variables descendents are locked.
+    
+    Arguments:
+    
+      $name - variable name
+      
+    Returns:
+      
+      boolean
+  */
   private static function child_locked($name) {
     $vals = self::get($name);
     if (is_array($vals)) {

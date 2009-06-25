@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//	Valerie v0.6
+//	Valerie
 //	(c) 2009 Chris Jaure
 //	license: MIT License
 //	website: http://code.google.com/p/valerie/
@@ -61,10 +61,10 @@
       
       // attach new events
       $('#frm_id')
-        .bind('valerie.onValidate', function(e, message, form, response){ 
+        .bind('valerie.formValidated', function(e, message, form, response){ 
           //do stuff 
         })
-        .bind('valerie.onInvalidate', function(e, message, form, response){
+        .bind('valerie.formInvalidated', function(e, message, form, response){
           //do stuff
         });
         
