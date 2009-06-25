@@ -12,6 +12,7 @@
   Script: bootstrap.php
 */
 
+@session_start();
 $valerie_config_path = '../application/config.php';
 $valerie_root = realpath(dirname(__FILE__) . '/') . '/';
 

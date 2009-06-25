@@ -107,7 +107,7 @@ class App {
     }
     foreach ((array) $store as $fn) {
       if (is_callable($fn)) {
-        call_user_func($fn, $args);
+        call_user_func_array($fn, $args);
       }
     }
   }

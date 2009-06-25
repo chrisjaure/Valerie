@@ -42,8 +42,7 @@ App::attach('valerie:hooks', array(
 
 ));
 
-function myform_success($args) {
-  extract($args);
+function myform_success(&$form) {
   $form->setResponse('form:message', 'That is sort of cool, I guess...');
 }
 

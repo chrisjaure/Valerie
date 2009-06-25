@@ -11,6 +11,7 @@
 // $Valerie created in /source/functions.php in newValerieServer.
 App::set('valerie:filters', array(
   'striptags' => 'strip_tags',
+  'wordwrap' => 'wordwrap',
   'purify' => 'default_purify',
   'limit' => 'default_limit'
 ));
