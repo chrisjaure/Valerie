@@ -16,7 +16,7 @@
 
 class ValerieForm {
   private $template = array();
-  private $definition;
+  private $definition = array();
   private $output;
   private $replace;
   private $formats = array();
@@ -26,6 +26,7 @@ class ValerieForm {
   private $includes = array();
   private $uid;
   private $ns;
+  private $form_id;
   
   /*
     Constructor: __construct
@@ -163,13 +164,17 @@ class ValerieForm {
   
   public function setDefinition($definition) {
     if (is_array($definition)) {
-      $this->definition = $definition;
+      $this->definition = array_merge_recursive($this->definition, $definition);
     }
     else {
-      $this->definition = $this->getArrayFromJSON($definition);
+      $this->definition = array_merge_recursive(
+        $this->definition,
+        $this->getArrayFromJSON($definition)
+      );
     }
     $this->ns = App::get('valerie:config:session_ns') .
       $this->definition['attributes']['id'];
+    $this->form_id = $this->definition['attributes']['id'];
   }
   
   /*
@@ -242,6 +247,9 @@ class ValerieForm {
   
   private function getOutput($data) {
     $output = '';
+    if (!is_array($data)) {
+      trigger_error("Form definition is not structured correctly", E_USER_ERROR);
+    }
     foreach($data as $args) {
       if ($this->template[$args['id']]) {
         $fn = $this->template[$args['id']];
@@ -260,8 +268,20 @@ class ValerieForm {
       if (isset($args['elements'])) {
         $vals = $vals + array('content' => $this->getOutput($args['elements']));
       }
+      $id = ucfirst($args['id']);
+      $type = ucfirst($args['type']);
       ob_start();
+      
+      Valerie::fireHooks('beforePrintField', array(&$vals));
+      Valerie::fireHooks("beforePrint$id", array(&$vals));
+      Valerie::fireHooks("beforePrint$type", array(&$vals));
+      
       call_user_func($fn, $vals);
+      
+      Valerie::fireHooks('afterPrintField', array(&$vals));
+      Valerie::fireHooks("afterPrint$id", array(&$vals));
+      Valerie::fireHooks("afterPrint$type", array(&$vals));
+      
       $output .= ob_get_contents();
       ob_end_clean();
     }
@@ -275,8 +295,10 @@ class ValerieForm {
   */
   
   public function render() {
-    $output = '<input type="hidden" name="formid" value="'.$this->uid.'" />';
+    App::set('valerie:form_id', $this->definition['elements']['id']);
+    Valerie::fireHooks('beforeRender', array(&$this));
     
+    $output = '<input type="hidden" name="formid" value="'.$this->uid.'" />';
     $output .= $this->getOutput($this->definition['elements']);
     
     echo "<script type=\"text/javascript\">" .
@@ -287,6 +309,8 @@ class ValerieForm {
       'content' => $output,
       'message' => $this->getMessage()
     ));
+    
+    Valerie::fireHooks('afterRender', array(&$this, &$output));
   }
   
   /*
@@ -487,6 +511,7 @@ class ValerieForm {
   
   public function printAssets($global = true) {
     echo "\n\n<!-- Begin JibberBook {$this->plugin} Assets -->\n";
+    Valerie::fireHooks('beforePrintAssets');
     if ($global) {
       echo "<script type=\"text/javascript\" src=" .
         "\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\">" .
@@ -520,7 +545,7 @@ class ValerieForm {
         echo "<![endif]-->\n";
       }
     }
-    
+    Valerie::fireHooks('afterPrintAssets');
     echo "<!-- End JibberBook {$this->plugin} Assets -->\n\n";
   }
 }

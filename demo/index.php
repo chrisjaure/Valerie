@@ -99,6 +99,9 @@ $form2->setDefinition(array(
     
     <h3>The last form</h3>
     <?php Valerie::render(); ?>
+    
+    <h3>Another form</h3>
+    <?php Valerie::render('contact-form'); ?>
   </div>
   </body>
 </html>

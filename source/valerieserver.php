@@ -73,6 +73,8 @@ class ValerieServer {
     
     $this->filters = App::get('valerie:filters');
     $this->patterns = App::get('valerie:rules');
+    
+    App::set('valerie:form_id', $this->definition['attributes']['id']);
   }
   
   /*
@@ -147,6 +149,7 @@ class ValerieServer {
   */
   
   public function validate() {
+    Valerie::fireHooks('beforeValidate', array(&$this));
     
     if (!$this->ajax) unset($_SESSION[$this->ns]);
     
@@ -210,6 +213,8 @@ class ValerieServer {
 
     }
     
+    Valerie::fireHooks('afterValidate', array(&$this, &$this->values, (!isset($this->errors))));
+    
     if (!isset($this->errors)) {
     
       // filter
@@ -221,10 +226,13 @@ class ValerieServer {
           }
         }
       }
-      
+      Valerie::fireHooks('onValidated', array(&$this, &$this->values));
       return $this->values;
     }
-    else return false;
+    else {
+      Valerie::fireHooks('onInvalidated', array(&$this, &$this->values));
+      return false;
+    }
   }
   
   /*
@@ -335,7 +343,13 @@ class ValerieServer {
     disabled.
   */
   
-  public function back() {
+  public function back($message = null, $type = null) {
+    if ($message) {
+      $this->setResponse('form:message', $message);
+    }
+    if ($type) {
+      $this->setResponse('form:message_type', $type);
+    }
     if (!$this->ajax) {
       header("Location: {$this->referer}");
       exit();
@@ -354,6 +368,7 @@ class ValerieServer {
   */
   
   public function goto($url) {
+    Valerie::fireHooks('beforeRedirect', array(&$this));
     if ($this->ajax) {
       $this->setResponse('goto', $url);
     }
@@ -398,6 +413,16 @@ class ValerieServer {
     else {
       return array($text, $text);
     }
+  }
+  
+  /*
+    Method: getFormId
+    
+    Returns the form id
+  */
+  
+  public function getFormId() {
+    return $this->definition['attributes']['id'];
   }
   
   /*

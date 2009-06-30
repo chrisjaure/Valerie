@@ -65,12 +65,9 @@ foreach ((array) $valerie_plugins as $valerie_plugin) {
     include_once $valerie_plugin_path . $valerie_plugin .'/config.php';
 }
 
+// load the single setup config if set
 if (App::get('valerie:config:single_setup')) {
   include_once $valerie_root . App::get('valerie:config:single_setup');
-  App::set("valerie:form:definition:attributes", array(
-    'method' => 'post',
-    'action' => App::get('valerie:config:source_uri') . 'processform.php'
-  ));
 }
 
 

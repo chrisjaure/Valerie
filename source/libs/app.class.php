@@ -160,7 +160,7 @@ class App {
     
       App::fire('hooks');
   */
-  public static function fire($name, $args) {
+  public static function fire($name, $args = null) {
     $store = self::$store;
     $name = explode(':', $name);
     foreach ($name as $ns) {
