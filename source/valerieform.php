@@ -53,7 +53,7 @@ class ValerieForm {
     }
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
-    $config = App::get("plugins:$plugin");
+    $config = App::get("styles:$plugin");
     if (isset($config['uri'])) {
       $this->uri['plugin'] = $config['uri'];
     }
@@ -294,7 +294,7 @@ class ValerieForm {
   */
   
   public function render() {
-    Valerie::fireHooks('beforeRender', array(&$this));
+    Valerie::fireHooks('beforePrintForm', array(&$this));
     
     $output = '<input type="hidden" name="formid" value="'.$this->uid.'" />';
     $output .= $this->getOutput($this->definition['elements']);
@@ -308,7 +308,7 @@ class ValerieForm {
       'message' => $this->getMessage()
     ));
     
-    Valerie::fireHooks('afterRender', array(&$this, &$output));
+    Valerie::fireHooks('afterPrintForm', array(&$this, &$output));
   }
   
   /*

@@ -37,6 +37,6 @@ $plugin = array(
   
 );
 
-App::set('plugins:default', $plugin);
+App::set('styles:default', $plugin);
 
 ?>

@@ -149,7 +149,7 @@ class ValerieServer {
   */
   
   public function validate() {
-    Valerie::fireHooks('beforeValidate', array(&$this));
+    Valerie::fireHooks('beforeValidateForm', array(&$this));
     
     if (!$this->ajax) unset($_SESSION[$this->ns]);
     
@@ -213,7 +213,7 @@ class ValerieServer {
 
     }
     
-    Valerie::fireHooks('afterValidate', array(&$this, &$this->values, (!isset($this->errors))));
+    Valerie::fireHooks('afterValidateForm', array(&$this, &$this->values, (!isset($this->errors))));
     
     if (!isset($this->errors)) {
     
@@ -226,11 +226,11 @@ class ValerieServer {
           }
         }
       }
-      Valerie::fireHooks('onValidated', array(&$this, &$this->values));
+      Valerie::fireHooks('onFormValidated', array(&$this, &$this->values));
       return $this->values;
     }
     else {
-      Valerie::fireHooks('onInvalidated', array(&$this, &$this->values));
+      Valerie::fireHooks('onFormInvalidated', array(&$this, &$this->values));
       return false;
     }
   }

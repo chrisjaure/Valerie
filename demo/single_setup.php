@@ -1,10 +1,12 @@
 <?php
 
+$id = 'frm3';
+
 $config = array(
 
   'definition' => array(
     'attributes' => array(
-      'id' => 'frm3'
+      'id' => $id
     ),
     'elements' => array(
       array(
@@ -27,18 +29,18 @@ $config = array(
       )
     )
   ),
-  'renderer' => 'default',
+  'style' => 'default',
   'redirect_on_success' => false,
   'print_assets' => false
 );
 
 App::set('form', $config);
 
-App::attach('hooks:frm3', array(
+App::attach("hooks:$id", array(
 
-  'onSuccess' => 'myform_success',
-  'beforeRender' => 'myform_beforeRender',
-  'afterRender' => 'myform_afterRender'
+  'onFormValidated' => 'myform_success',
+  'beforePrintForm' => 'myform_beforeRender',
+  'afterPrintForm' => 'myform_afterRender'
 
 ));
 

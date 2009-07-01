@@ -41,11 +41,11 @@ class Valerie {
       'action' => App::get('config:source_uri') . 'processform.php'
     );
     
-    $renderer = $single_form_config['renderer'];
-    if (!isset($renderer)) {
-      $renderer = 'default';
+    $style = $single_form_config['style'];
+    if (!isset($style)) {
+      $style = 'default';
     }
-    $form = new ValerieForm($renderer);
+    $form = new ValerieForm($style);
     $form->setDefinition($single_form_config['definition']);
     if ($single_form_config['print_assets']) {
       $global = $single_form_config['global'];
