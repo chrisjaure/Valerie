@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 // $Valerie created in /source/functions.php in newValerieServer.
-App::set('valerie:rules', array(
+App::set('rules', array(
 
   'required' => array(
     '/^./',

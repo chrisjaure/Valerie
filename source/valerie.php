@@ -24,24 +24,24 @@ class Valerie {
 
   public static function render($name = null) {
     if (isset($name)) {
-      $single_form_config = App::get("valerie:forms:$name");
+      $single_form_config = App::get("forms:$name");
       if (!isset($single_form_config)) {
-        trigger_error("No form found at 'valerie:forms:$name'", E_USER_ERROR);
+        trigger_error("No form found at 'forms:$name'", E_USER_ERROR);
       }
     }
     else {
-      $single_form_config = App::get('valerie:form');
+      $single_form_config = App::get('form');
       if (!isset($single_form_config)) {
-        trigger_error("No form found at 'valerie:form'", E_USER_ERROR);
+        trigger_error("No form found at 'form'", E_USER_ERROR);
       }
     }
     
     $single_form_config['definition']['attributes'] += array(
       'method' => 'post',
-      'action' => App::get('valerie:config:source_uri') . 'processform.php'
+      'action' => App::get('config:source_uri') . 'processform.php'
     );
     
-    $renderer = $single_form_config['plugin'];
+    $renderer = $single_form_config['renderer'];
     if (!isset($renderer)) {
       $renderer = 'default';
     }
@@ -62,11 +62,11 @@ class Valerie {
   */
   
   public static function fireHooks($hook, $args = null) {
-    $renderer = App::get('valerie:config:plugin');
-    $id = App::get('valerie:form_id');
-    App::fire("valerie:hooks:$hook", $args);
-    App::fire("valerie:hooks:$renderer:$hook", $args);
-    App::fire("valerie:hooks:$id:$hook", $args);
+    $renderer = App::get('config:renderer');
+    $id = App::get('form_id');
+    App::fire("hooks:$hook", $args);
+    App::fire("hooks:$renderer:$hook", $args);
+    App::fire("hooks:$id:$hook", $args);
   }
 
 }

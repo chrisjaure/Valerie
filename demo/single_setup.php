@@ -27,14 +27,14 @@ $config = array(
       )
     )
   ),
-  'plugin' => 'default',
+  'renderer' => 'default',
   'redirect_on_success' => false,
   'print_assets' => false
 );
 
-App::set('valerie:form', $config);
+App::set('form', $config);
 
-App::attach('valerie:hooks:frm3', array(
+App::attach('hooks:frm3', array(
 
   'onSuccess' => 'myform_success',
   'beforeRender' => 'myform_beforeRender',

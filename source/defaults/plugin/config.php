@@ -37,6 +37,6 @@ $plugin = array(
   
 );
 
-App::set('valerie:plugins:default', $plugin);
+App::set('plugins:default', $plugin);
 
 ?>

@@ -54,27 +54,27 @@ class ValerieServer {
     
     $this->uid = $data['formid'];
     $this->definition = unserialize(
-      $_SESSION[App::get('valerie:config:session_ns')][$this->uid]
+      $_SESSION[App::get('config:session_ns')][$this->uid]
     );
     
     if (!is_array($this->definition)) {
       $error = 'Form definition could not be found at this location: $_SESSION['
-        . App::get('valerie:config:session_ns') . '][' . $this->uid . ']';
+        . App::get('config:session_ns') . '][' . $this->uid . ']';
       trigger_error($error, E_USER_ERROR);
     }
     
     require_once "localization/$lang";
     require_once "libs/utf8/utf8.php";
 
-    $this->ns = App::get('valerie:config:session_ns') .
+    $this->ns = App::get('config:session_ns') .
       $this->definition['attributes']['id'];
     $this->referer = $_SESSION[$this->ns]['referer'];
     $this->setValues($this->definition['elements'], $data);
     
-    $this->filters = App::get('valerie:filters');
-    $this->patterns = App::get('valerie:rules');
+    $this->filters = App::get('filters');
+    $this->patterns = App::get('rules');
     
-    App::set('valerie:form_id', $this->definition['attributes']['id']);
+    App::set('form_id', $this->definition['attributes']['id']);
   }
   
   /*
@@ -124,9 +124,9 @@ class ValerieServer {
   
   private function cleanValue($value) {
     $value = trim($value);
-    if (strtoupper(App::get('valerie:config:char_encoding')) != 'UTF-8') {
+    if (strtoupper(App::get('config:char_encoding')) != 'UTF-8') {
       $value = iconv(
-        App::get('valerie:config:char_encoding'),
+        App::get('config:char_encoding'),
         'UTF-8//TRANSLIT',
         $value
       );

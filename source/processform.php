@@ -8,9 +8,9 @@
 
   if ($data) {
   
-    if (App::get('valerie:form:redirect_on_success')) {
+    if (App::get('form:redirect_on_success')) {
     
-      $form->goto(App::get('valerie:form:redirect_on_success'));
+      $form->goto(App::get('form:redirect_on_success'));
       
     }
     

@@ -26,7 +26,6 @@ class ValerieForm {
   private $includes = array();
   private $uid;
   private $ns;
-  private $form_id;
   
   /*
     Constructor: __construct
@@ -44,17 +43,17 @@ class ValerieForm {
   
   public function __construct($plugin = 'default') {
     @session_start();
-    $this->root = App::get('valerie:config:root');
+    $this->root = App::get('config:root');
     $this->uri = array(
-      'source' => App::get('valerie:config:source_uri'),
-      'plugin' => App::get('valerie:config:plugin_uri') . $plugin
+      'source' => App::get('config:source_uri'),
+      'plugin' => App::get('config:plugin_uri') . $plugin
     );
     if ($plugin == 'default') {
       $this->uri['plugin'] = $this->uri['source'] . 'defaults/plugin';
     }
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
-    $config = App::get("valerie:plugins:$plugin");
+    $config = App::get("plugins:$plugin");
     if (isset($config['uri'])) {
       $this->uri['plugin'] = $config['uri'];
     }
@@ -69,7 +68,7 @@ class ValerieForm {
     if (isset($this->ns)) {
       unset($_SESSION[$this->ns]);
       $_SESSION[$this->ns]['referer'] = $_SERVER['PHP_SELF'];
-      $_SESSION[App::get('valerie:config:session_ns')][$this->uid] = serialize(
+      $_SESSION[App::get('config:session_ns')][$this->uid] = serialize(
         $this->definition
       );
     }
@@ -172,9 +171,9 @@ class ValerieForm {
         $this->getArrayFromJSON($definition)
       );
     }
-    $this->ns = App::get('valerie:config:session_ns') .
+    $this->ns = App::get('config:session_ns') .
       $this->definition['attributes']['id'];
-    $this->form_id = $this->definition['attributes']['id'];
+    App::set('form_id', $this->definition['attributes']['id']);
   }
   
   /*
@@ -295,7 +294,6 @@ class ValerieForm {
   */
   
   public function render() {
-    App::set('valerie:form_id', $this->definition['elements']['id']);
     Valerie::fireHooks('beforeRender', array(&$this));
     
     $output = '<input type="hidden" name="formid" value="'.$this->uid.'" />';

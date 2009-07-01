@@ -97,11 +97,17 @@ $form2->setDefinition(array(
     $form2->render();
     ?>
     
-    <h3>The last form</h3>
-    <?php Valerie::render(); ?>
+    <h3>The third form</h3>
+    <?php
+    // Render the single file setup form at 'valerie:config:single_setup'
+    Valerie::render();
+    ?>
     
-    <h3>Another form</h3>
-    <?php Valerie::render('contact-form'); ?>
+    <h3>The last form</h3>
+    <?php
+    // Render the form plugin at 'valerie:forms:contact-form'
+    Valerie::render('contact-form');
+    ?>
   </div>
   </body>
 </html>

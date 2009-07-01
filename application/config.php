@@ -8,8 +8,8 @@
 //	config.php
 //------------------------------------------------------------------------------
 
-App::lock('valerie:config');
-App::set('valerie:config', array(
+App::lock('config');
+App::set('config', array(
 
 
   // BEGIN SETTINGS ------------------------------------------------------------
@@ -27,8 +27,8 @@ App::set('valerie:config', array(
   
 ));
 
-$valerie_app_path = realpath(App::get('valerie:config:app_path')) . '/';
-App::set('valerie:config', array(
+$valerie_app_path = realpath(App::get('config:app_path')) . '/';
+App::set('config', array(
 
   // BEGIN PATH SETTINGS -------------------------------------------------------
 

@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 // $Valerie created in /source/functions.php in newValerieServer.
-App::set('valerie:filters', array(
+App::set('filters', array(
   'striptags' => 'strip_tags',
   'wordwrap' => 'wordwrap',
   'purify' => 'default_purify',
@@ -26,7 +26,7 @@ App::set('valerie:filters', array(
   You may need to set some options.
 */
 function default_purify($value, $args) {
-  require_once App::get('valerie:config:root')
+  require_once App::get('config:root')
     . 'libs/htmlpurifier/HTMLPurifier.standalone.php';
   
   $config = HTMLPurifier_Config::createDefault();
