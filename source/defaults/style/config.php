@@ -33,7 +33,9 @@ $plugin = array(
     'hidden' => 'default_hidden',
     'button' => 'default_button',
     'file' => 'default_file'
-  )
+  ),
+  
+  'uri' => App::get('config:source_uri') . 'defaults/style'
   
 );
 

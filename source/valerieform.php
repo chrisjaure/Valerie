@@ -51,7 +51,6 @@ class ValerieForm {
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
     $config = App::get("styles:$plugin");
-    var_dump($config);
     if (isset($config['uri'])) {
       $this->uri['plugin'] = $config['uri'];
     }
