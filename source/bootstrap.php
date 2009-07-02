@@ -29,7 +29,7 @@ require_once "valerieform.php";
 require_once "valerie.php";
 
 // load defaults
-include_once "{$valerie_root}defaults/plugin/config.php";
+include_once "{$valerie_root}defaults/style/config.php";
 include_once "{$valerie_root}defaults/filters.php";
 include_once "{$valerie_root}defaults/rules.php";
 

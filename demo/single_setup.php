@@ -49,10 +49,10 @@ function myform_success(&$form) {
 }
 
 function myform_beforeRender() {
-  echo '<p>I attached this beforeRender event!</p>';
+  echo '<p>I attached this beforePrintForm event!</p>';
 }
 
 function myform_afterRender() {
-  echo '<p>I attached this afterRender event, too! Pretty sweet, huh?';
+  echo '<p>I attached this afterPrintForm event, too! Pretty sweet, huh?';
 }
 ?>

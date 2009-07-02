@@ -48,19 +48,17 @@ class ValerieForm {
       'source' => App::get('config:source_uri'),
       'plugin' => App::get('config:plugin_uri') . $plugin
     );
-    if ($plugin == 'default') {
-      $this->uri['plugin'] = $this->uri['source'] . 'defaults/plugin';
-    }
     $this->uid = md5(rand().time());
     $this->plugin = $plugin;
     $config = App::get("styles:$plugin");
+    var_dump($config);
     if (isset($config['uri'])) {
       $this->uri['plugin'] = $config['uri'];
     }
     $this->template = $config['templates'];
     $this->includes = $config['includes'];
     if(!isset($this->template)) {
-      trigger_error("Form template could not be set using plugin '$plugin'", E_USER_ERROR);
+      trigger_error("Form template could not be set using style '$plugin'", E_USER_ERROR);
     }
   }
   
