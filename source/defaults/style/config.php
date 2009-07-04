@@ -5,7 +5,7 @@
 //	license: MIT License
 //	website: http://code.google.com/p/valerie/
 //
-//	defaults/plugin/config.php
+//	defaults/style/config.php
 //------------------------------------------------------------------------------
 
 include_once 'template.php';
