@@ -42,9 +42,7 @@ $config = array(
         )
       )
     )
-  ),
-  'redirect_on_success' => false,
-  'print_assets' => false
+  )
   
 );
 

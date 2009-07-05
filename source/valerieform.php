@@ -305,7 +305,7 @@ class ValerieForm {
       'message' => $this->getMessage()
     ));
     
-    Valerie::fireHooks('afterPrintForm', array(&$this, &$output));
+    Valerie::fireHooks('afterPrintForm', array(&$this));
   }
   
   /*
@@ -505,7 +505,7 @@ class ValerieForm {
   */
   
   public function printAssets($global = true) {
-    echo "\n\n<!-- Begin JibberBook {$this->plugin} Assets -->\n";
+    echo "\n\n<!-- Begin Valerie Assets -->\n";
     Valerie::fireHooks('beforePrintAssets');
     if ($global) {
       echo "<script type=\"text/javascript\" src=" .
@@ -513,7 +513,9 @@ class ValerieForm {
         "</script>\n";
       echo "<script type=\"text/javascript\" " .
         "src=\"{$this->uri['source']}valerieclient.js\"></script>\n";
+      App::set('source_assets_printed', true);
     }
+    echo "\n<!-- Begin {$this->plugin} Assets -->\n";
     echo "<link rel=\"stylesheet\" type=\"text/css\" ".
       "href=\"{$this->uri['plugin']}/style.css\" />\n";
     echo "<script type=\"text/javascript\" " .
@@ -541,7 +543,9 @@ class ValerieForm {
       }
     }
     Valerie::fireHooks('afterPrintAssets');
-    echo "<!-- End JibberBook {$this->plugin} Assets -->\n\n";
+    echo "\n<!-- End {$this->plugin} Assets -->\n";
+    echo "\n<!-- End Valerie Assets -->\n\n";
+    App::set("style_assets_printed:{$this->plugin}", true);
   }
 }
 ?>

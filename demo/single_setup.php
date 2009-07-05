@@ -30,8 +30,7 @@ $config = array(
     )
   ),
   'style' => 'default',
-  'redirect_on_success' => false,
-  'print_assets' => false
+  'redirect_on_success' => false
 );
 
 App::set('form', $config);

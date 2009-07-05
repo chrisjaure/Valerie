@@ -22,7 +22,7 @@ class Valerie {
     A shortcut to render the form defined with the config 'single_setup'
   */  
 
-  public static function render($name = null) {
+  public static function render($name = null, $style = null) {
     if (isset($name)) {
       $single_form_config = App::get("forms:$name");
       if (!isset($single_form_config)) {
@@ -47,11 +47,12 @@ class Valerie {
     }
     $form = new ValerieForm($style);
     $form->setDefinition($single_form_config['definition']);
-    if ($single_form_config['print_assets']) {
-      $global = $single_form_config['global'];
-      if (!isset($global)) $global = true;
+    
+    $global = App::get('source_assets_printed');
+    if (!App::get("style_assets_printed:$style")) {
       $form->printAssets($global);
     }
+    
     $form->render();
   }
   
@@ -62,10 +63,10 @@ class Valerie {
   */
   
   public static function fireHooks($hook, $args = null) {
-    $renderer = App::get('config:renderer');
+    $style = App::get('config:style');
     $id = App::get('form_id');
     App::fire("hooks:$hook", $args);
-    App::fire("hooks:$renderer:$hook", $args);
+    App::fire("hooks:$style:$hook", $args);
     App::fire("hooks:$id:$hook", $args);
   }
 
