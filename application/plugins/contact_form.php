@@ -11,7 +11,7 @@ $config = array(
     'elements' => array(
       array(
         'type' => 'fieldset',
-        'legend' => __("Contact Us!"),
+        'label' => __("Contact Us!"),
         'elements' => array(
           array(
             'type' => 'text',
@@ -37,7 +37,7 @@ $config = array(
           ),
           array(
             'type' => 'submit',
-            'value' => 'Send it!'
+            'label' => 'Send it!'
           )
         )
       )

@@ -11,7 +11,7 @@ $config = array(
     'elements' => array(
       array(
         'type' => 'fieldset',
-        'legend' => 'This is the last form. It has a single file setup.',
+        'label' => 'This is the last form. It has a single file setup.',
         'elements' => array(
           array(
             'type' => 'text',
@@ -23,7 +23,7 @@ $config = array(
           ),
           array(
             'type' => 'submit',
-            'value' => 'This is cool!'
+            'label' => 'This is cool!'
           )
         )
       )

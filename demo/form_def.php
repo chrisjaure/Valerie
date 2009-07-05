@@ -39,7 +39,7 @@
     },
     {
       "type": "fieldset",
-      "legend": "This is a fieldset",
+      "label": "This is a fieldset",
       "elements": [
         {
           "type": "text",
@@ -149,7 +149,7 @@
       ]
     },
     {
-      "value": "Submit button!",
+      "label": "Submit button!",
       "type": "submit"
     }
   ]

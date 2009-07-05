@@ -14,8 +14,8 @@ function default_form($args) {
   ?>
   
   <form
-    id="<?php echo $id; ?>"
-    class="valerie-form-default"
+    <?php if (isset($id)) echo "id=\"$id\""; ?>
+    class="valerie-form-default <?php echo $class; ?>"
     method="<?php echo $method; ?>"
     action="<?php echo $action; ?>"
   >
@@ -58,10 +58,10 @@ function default_checkbox($args) {
   <label for="<?php echo $id; ?>">
     <input
       type="checkbox"
-      id="<?php echo $id; ?>"
+      <?php if (isset($id)) echo "id=\"$id\""; ?>
       name="<?php echo $name; ?>"
       value="<?php echo $value; ?>"
-      class="checkbox"
+      class="checkbox <?php echo $class; ?>"
       <?php if ($selected) echo 'checked'; ?>
     /> 
     <?php echo $label; ?>
@@ -79,10 +79,10 @@ function default_radio($args) {
   <label for="<?php echo $id; ?>">
     <input
       type="radio"
-      id="<?php echo $id; ?>"
+      <?php if (isset($id)) echo "id=\"$id\""; ?>
       name="<?php echo $name; ?>"
       value="<?php echo $value; ?>"
-      class="radio"
+      class="radio <?php echo $class; ?>"
       <?php if ($selected) echo 'checked'; ?>
     /> 
     <?php echo $label; ?>
@@ -97,8 +97,8 @@ function default_checkgroup($args) {
   extract($args);
   ?>
   
-  <fieldset <?php if (isset($error)) echo 'class="valerie-alert"'; ?>>
-    <legend id="<?php echo $id; ?>">
+  <fieldset class="<?php if (isset($error)) echo 'valerie-alert'; ?> <?php echo $class; ?>">
+    <legend <?php if (isset($id)) echo "id=\"$id\""; ?>>
       <?php echo $label; ?>
       <?php echo $error; ?>
     </legend>
@@ -106,10 +106,10 @@ function default_checkgroup($args) {
       <label for="<?php echo $checkbox['id']; ?>">
         <input
           type="checkbox"
-          id="<?php echo $checkbox['id']; ?>"
+          <?php if (isset($checkbox['id'])) echo "id=\"$checkbox[id]\""; ?>
           name="<?php echo $name; ?>"
           value="<?php echo $checkbox['value']; ?>"
-          class="checkbox"
+          class="checkbox <?php echo $checkbox['class']; ?>"
           <?php if (is_array($input) && in_array($checkbox['value'], $input)) echo 'checked'; ?>
         /> 
         <?php echo $checkbox['label']; ?>
@@ -125,8 +125,8 @@ function default_radiogroup($args) {
   extract($args);
   ?>
   
-  <fieldset <?php if (isset($error)) echo 'class="valerie-alert"'?>>
-    <legend id="<?php echo $id; ?>">
+  <fieldset class="<?php if (isset($error)) echo 'valerie-alert'; ?>  <?php echo $class; ?>">
+    <legend <?php if (isset($id)) echo "id=\"$id\""; ?>>
       <?php echo $label; ?>
       <?php echo $error; ?>
     </legend>
@@ -134,10 +134,10 @@ function default_radiogroup($args) {
       <label for="<?php echo $radio['id']; ?>">
         <input
           type="radio"
-          id="<?php echo $radio['id']; ?>"
+          <?php if (isset($radio['id'])) echo "id=\"$radio[id]\""; ?>
           name="<?php echo $name; ?>"
           value="<?php echo $radio['value']; ?>"
-          class="radio"
+          class="radio <?php echo $radio['class']; ?>"
           <?php if ($radio['value'] == $input) echo 'checked'; ?>
         /> 
         <?php echo $radio['label']; ?>
@@ -158,10 +158,10 @@ function default_text($args) {
     <?php echo $error; ?>
     <input
       type="text"
-      id="<?php echo $id; ?>"
+      <?php if (isset($id)) echo "id=\"$id\""; ?>
       name="<?php echo $name; ?>"
       value="<?php echo $input; ?>"
-      class="text <?php if (isset($error)) echo 'valerie-alert'; ?>"
+      class="text <?php if (isset($error)) echo 'valerie-alert'; ?> <?php echo $class; ?>"
     />
   </label>
   
@@ -178,10 +178,10 @@ function default_password($args) {
     <?php echo $error; ?>
     <input
       type="password"
-      id="<?php echo $id; ?>"
+      <?php if (isset($id)) echo "id=\"$id\""; ?>
       name="<?php echo $name; ?>"
       value="<?php echo $input; ?>"
-      class="password <?php if (isset($error)) echo 'valerie-alert'; ?>"
+      class="password <?php if (isset($error)) echo 'valerie-alert'; ?> <?php echo $class; ?>"
     />
   </label>
 
@@ -197,9 +197,9 @@ function default_textarea($args) {
     <?php echo $label; ?>
     <?php echo $error; ?>
     <textarea
-      id="<?php echo $id; ?>"
+      <?php if (isset($id)) echo "id=\"$id\""; ?>
       name="<?php echo $name; ?>"
-      <?php if (isset($error)) echo 'class="valerie-alert"'; ?>
+      class="<?php if (isset($error)) echo 'valerie-alert'; ?> <?php echo $class?>"
     ><?php echo $input; ?></textarea>
   </label>
   
@@ -213,9 +213,9 @@ function default_select($args) {
   
   <label for="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?>
     <select
-      id="<?php echo $id; ?>"
+      <?php if (isset($id)) echo "id=\"$id\""; ?>
       name="<?php echo $name; ?>"
-      <?php if (isset($error)) echo 'class="valerie-alert"'; ?>
+      class="<?php if (isset($error)) echo 'valerie-alert'; ?> <?php echo $class; ?>"
       <?php if (isset($multiple)) echo "multiple=\"$multiple\""; ?>
       <?php if (isset($size)) echo "size=\"$size\""; ?>
     >
@@ -240,10 +240,10 @@ function default_hidden($args) {
   
   <input
     type="hidden"
-    id="<?php echo $id; ?>"
+    <?php if (isset($id)) echo "id=\"$id\""; ?>
     name="<?php echo $name; ?>"
     value="<?php echo $value; ?>"
-    class="hidden"
+    class="hidden <?php echo $class; ?>"
   />
   
   <?php
@@ -257,9 +257,9 @@ function default_file($args) {
   <label for="<?php echo $id; ?>"><?php echo $label; ?><?php echo $error; ?>
     <input
       type="file"
-      id="<?php echo $id; ?>"
+      <?php if (isset($id)) echo "id=\"$id\""; ?>
       name="<?php echo $name; ?>"
-      class="file"
+      class="file <?php echo $class; ?>"
     />
   </label>
   
@@ -273,8 +273,10 @@ function default_button($args) {
   
   <button
     type="<?php echo $button_type; ?>"
+    <?php if (isset($id)) echo "id=\"$id\""; ?>
     name="<?php echo $name; ?>"
     value="<?php echo $value; ?>"
+    class="<?php echo $class; ?>"
   >
     <?php echo $label; ?>
   </button>
@@ -287,7 +289,12 @@ function default_submit($args) {
   extract($args);
   ?>
   
-  <input type="submit" value="<?php echo $value; ?>" class="submit" />
+  <input
+    <?php if (isset($id)) echo "id=\"$id\""; ?>
+    type="submit"
+    value="<?php echo $label; ?>"
+    class="submit <?php echo $class; ?>"
+  />
   
   <?php
 }
@@ -297,11 +304,26 @@ function default_fieldset($args) {
   extract($args);
   ?>
   
-  <fieldset>
-    <legend><?php echo $legend; ?></legend>
+  <fieldset <?php if (isset($id)) echo "id=\"$id\""; ?> class="<?php echo $class; ?>">
+    <legend><?php echo $label; ?></legend>
     <?php echo $content; ?>
   </fieldset>
   
+  <?php
+}
+
+// link
+function default_link($args) {
+  extract($args);
+  ?>
+  
+  <a
+    <?php if (isset($id)) echo "id=\"$id\""; ?>
+    href="<?php echo $href; ?>"
+    class="<?php echo $class; ?>"
+  >
+    <?php echo $label; ?>
+  </a>
   <?php
 }
 ?>
