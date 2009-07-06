@@ -65,11 +65,7 @@ function detect_spam_field($args) {
 function detect_spam_style() {
   ?>
   
-  <style>
-    form .spamtrap {
-      display:none;
-    }
-  </style>
+  <link rel="stylesheet" href="<?php echo App::get('config:plugin_uri'); ?>detect_spam/style.css" />
   
   <?php
 }

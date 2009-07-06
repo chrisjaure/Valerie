@@ -141,5 +141,4 @@ function __($str) {
 function _e($str) {
     echo __($str);
 }
-
 ?>

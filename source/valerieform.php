@@ -291,21 +291,26 @@ class ValerieForm {
   */
   
   public function render() {
-    Valerie::fireHooks('beforePrintForm', array(&$this));
-    
     $output = '<input type="hidden" name="formid" value="'.$this->uid.'" />';
     $output .= $this->getOutput($this->definition['elements']);
+    
+    ob_start();
     
     echo "<script type=\"text/javascript\">" .
       "jQuery(function($){ $(\"#{$this->definition['attributes']['id']}\")" .
       ".valerie(); })</script>\n";
     
-    echo call_user_func($this->template['form'], $this->definition['attributes'] + array(
+    call_user_func($this->template['form'], $this->definition['attributes'] + array(
       'content' => $output,
       'message' => $this->getMessage()
     ));
     
-    Valerie::fireHooks('afterPrintForm', array(&$this));
+    $output = ob_get_contents();
+    ob_end_clean();
+    
+    Valerie::fireHooks('beforePrintForm', array(&$this, &$output));
+    echo $output;
+    Valerie::fireHooks('afterPrintForm', array(&$this, &$output));
   }
   
   /*
@@ -542,8 +547,8 @@ class ValerieForm {
         echo "<![endif]-->\n";
       }
     }
-    Valerie::fireHooks('afterPrintAssets');
     echo "\n<!-- End {$this->plugin} Assets -->\n";
+    Valerie::fireHooks('afterPrintAssets');
     echo "\n<!-- End Valerie Assets -->\n\n";
     App::set("style_assets_printed:{$this->plugin}", true);
   }
