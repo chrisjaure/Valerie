@@ -1,10 +1,12 @@
 <?php
 
-App::set('hooks', array(
+App::set('plugins:detect_spam:hooks', array(
   'afterValidateForm' => 'detect_spam',
-  'beforePrintForm' => 'detect_spam_addField',
+  'beforeGenerateForm' => 'detect_spam_addField',
   'afterPrintAssets' => 'detect_spam_style'
 ));
+
+App::attach('hooks:beforePrintAssets', 'detect_spam_style');
 
 function detect_spam(&$form, &$data, $valid) {
   if ($valid) {
@@ -65,11 +67,11 @@ function detect_spam_field($args) {
 function detect_spam_style() {
   ?>
   
-  <link rel="stylesheet" href="<?php echo App::get('config:plugin_uri'); ?>detect_spam/style.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo App::get('config:plugin_uri'); ?>detect_spam/style.css" />
   
   <?php
 }
 
-App::set('config:discard_spam', false);
+App::set('config:discard_spam', true);
 
 ?>

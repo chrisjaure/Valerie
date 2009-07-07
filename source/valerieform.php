@@ -171,6 +171,7 @@ class ValerieForm {
     $this->ns = App::get('config:session_ns') .
       $this->definition['attributes']['id'];
     App::set('form_id', $this->definition['attributes']['id']);
+    Valerie::loadFormPlugins(App::get('form_id'));
   }
   
   /*
@@ -291,6 +292,8 @@ class ValerieForm {
   */
   
   public function render() {
+    Valerie::fireHooks('beforeGenerateForm', array(&$this));
+    
     $output = '<input type="hidden" name="formid" value="'.$this->uid.'" />';
     $output .= $this->getOutput($this->definition['elements']);
     
@@ -509,48 +512,55 @@ class ValerieForm {
       - $global - bool, print all required files or only those for the plugin
   */
   
-  public function printAssets($global = true) {
-    echo "\n\n<!-- Begin Valerie Assets -->\n";
+  public function printAssets() {
+    $source_printed = App::get('source_assets_printed');
+    $style_printed = App::get("style_assets_printed:{$this->plugin}");
+    
     Valerie::fireHooks('beforePrintAssets');
-    if ($global) {
+    
+    if (!$source_printed) {
+      echo "\n\n<!-- Begin Valerie Assets -->\n";
       echo "<script type=\"text/javascript\" src=" .
         "\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\">" .
         "</script>\n";
       echo "<script type=\"text/javascript\" " .
         "src=\"{$this->uri['source']}valerieclient.js\"></script>\n";
+      echo "<!-- End Valerie Assets -->\n\n";
       App::set('source_assets_printed', true);
     }
-    echo "\n<!-- Begin {$this->plugin} Assets -->\n";
-    echo "<link rel=\"stylesheet\" type=\"text/css\" ".
-      "href=\"{$this->uri['plugin']}/style.css\" />\n";
-    echo "<script type=\"text/javascript\" " .
-      "src=\"{$this->uri['plugin']}/script.js\"></script>\n";
     
-    foreach ((array) $this->includes as $type => $path) {
-      if (is_array($path)) {
-        $conditional = $path[0];
-        $path = $path[1];
-        echo "<!--[if $conditional]>\n";
+    if (!$style_printed) {
+      echo "\n<!-- Begin {$this->plugin} Assets -->\n";
+      echo "<link rel=\"stylesheet\" type=\"text/css\" ".
+        "href=\"{$this->uri['plugin']}/style.css\" />\n";
+      echo "<script type=\"text/javascript\" " .
+        "src=\"{$this->uri['plugin']}/script.js\"></script>\n";
+      
+      foreach ((array) $this->includes as $type => $path) {
+        if (is_array($path)) {
+          $conditional = $path[0];
+          $path = $path[1];
+          echo "<!--[if $conditional]>\n";
+        }
+        $path = strip_tags($path);
+        switch ($type) {
+          case 'css':
+            echo "<link rel=\"stylesheet\" type=\"text/css\" ".
+              "href=\"{$this->uri['plugin']}/$path\" />\n";
+            break;
+          case 'js':
+            echo "<script type=\"text/javascript\" ".
+              "src=\"{$this->uri['plugin']}/$path\"></script>\n";
+            break;
+        }
+        if (isset($conditional)) {
+          echo "<![endif]-->\n";
+        }
       }
-      $path = strip_tags($path);
-      switch ($type) {
-        case 'css':
-          echo "<link rel=\"stylesheet\" type=\"text/css\" ".
-            "href=\"{$this->uri['plugin']}/$path\" />\n";
-          break;
-        case 'js':
-          echo "<script type=\"text/javascript\" ".
-            "src=\"{$this->uri['plugin']}/$path\"></script>\n";
-          break;
-      }
-      if (isset($conditional)) {
-        echo "<![endif]-->\n";
-      }
+      echo "<!-- End {$this->plugin} Assets -->\n";
+      App::set("style_assets_printed:{$this->plugin}", true);
     }
-    echo "\n<!-- End {$this->plugin} Assets -->\n";
     Valerie::fireHooks('afterPrintAssets');
-    echo "\n<!-- End Valerie Assets -->\n\n";
-    App::set("style_assets_printed:{$this->plugin}", true);
   }
 }
 ?>

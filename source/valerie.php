@@ -48,10 +48,7 @@ class Valerie {
     $form = new ValerieForm($style);
     $form->setDefinition($single_form_config['definition']);
     
-    $global = App::get('source_assets_printed');
-    if (!App::get("style_assets_printed:$style")) {
-      $form->printAssets($global);
-    }
+    $form->printAssets();
     
     $form->render();
   }
@@ -68,6 +65,33 @@ class Valerie {
     App::fire("hooks:$hook", $args);
     App::fire("hooks:$style:$hook", $args);
     App::fire("hooks:$id:$hook", $args);
+  }
+  
+  /*
+    Method: loadFormPlugins
+    
+  */
+  
+  public static function loadFormPlugins($form) {
+    $plugin_path = App::get('config:plugin_path');
+    $plugins = App::get("config:plugins:$form");
+    if (isset($plugins)) {
+      foreach ((array) $plugins as $plugin) {
+        if (is_file($plugin_path . $plugin .'/config.php')) {
+          include_once $plugin_path . $plugin .'/config.php';
+        }
+        if (is_file($plugin_path . $plugin)) {
+          include_once $plugin_path . $plugin;
+        }
+      }
+    }
+    $plugin_hooks = App::get("plugins:$plugin:hooks");
+
+    if (is_array($plugin_hooks)) {
+      foreach ($plugin_hooks as $hook => $fn) {
+        App::attach("hooks:$form:$hook", $fn);
+      }
+    }
   }
 
 }

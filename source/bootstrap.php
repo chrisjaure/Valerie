@@ -59,18 +59,29 @@ valerie_load_dir_files(array($valerie_paths));
 $valerie_plugin_path = App::get('config:plugin_path');
 $valerie_plugins = App::get('config:plugins');
 
-if ($valerie_plugins = 'all') {
+if ($valerie_plugins == 'all') {
   if (is_dir($valerie_plugin_path)) {
     $valerie_plugins = scandir($valerie_plugin_path);
   }
 }
 
-foreach ((array) $valerie_plugins as $valerie_plugin) {    
-  if (is_file($valerie_plugin_path . $valerie_plugin .'/config.php')) {
-    include_once $valerie_plugin_path . $valerie_plugin .'/config.php';
-  }
-  if (is_file($valerie_plugin_path . $valerie_plugin)) {
-    include_once $valerie_plugin_path . $valerie_plugin;
+foreach ((array) $valerie_plugins as $form_id => $valerie_plugin) {
+  if (is_int($form_id)) {
+    if (is_file($valerie_plugin_path . $valerie_plugin .'/config.php')) {
+      include_once $valerie_plugin_path . $valerie_plugin .'/config.php';
+    }
+    if (is_file($valerie_plugin_path . $valerie_plugin . '.php')) {
+      include_once $valerie_plugin_path . $valerie_plugin . '.php';
+    }
+    
+    // attach hooks
+    $valerie_plugin_hooks = App::get("plugins:$valerie_plugin:hooks");
+
+    if (is_array($valerie_plugin_hooks)) {
+      foreach ($valerie_plugin_hooks as $hook => $fn) {
+        App::attach("hooks:$hook", $fn);
+      }
+    }
   }
 }
 
