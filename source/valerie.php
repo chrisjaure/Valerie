@@ -80,18 +80,20 @@ class Valerie {
         if (is_file($plugin_path . $plugin .'/config.php')) {
           include_once $plugin_path . $plugin .'/config.php';
         }
-        if (is_file($plugin_path . $plugin)) {
-          include_once $plugin_path . $plugin;
+        if (is_file($plugin_path . $plugin . '.php')) {
+          include_once $plugin_path . $plugin . '.php';
+        }
+        
+        $plugin_hooks = App::get("plugins:$plugin:hooks");
+
+        if (is_array($plugin_hooks)) {
+          foreach ($plugin_hooks as $hook => $fn) {
+            App::attach("hooks:$form:$hook", $fn);
+          }
         }
       }
     }
-    $plugin_hooks = App::get("plugins:$plugin:hooks");
-
-    if (is_array($plugin_hooks)) {
-      foreach ($plugin_hooks as $hook => $fn) {
-        App::attach("hooks:$form:$hook", $fn);
-      }
-    }
+    
   }
 
 }

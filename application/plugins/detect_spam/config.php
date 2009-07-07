@@ -6,8 +6,6 @@ App::set('plugins:detect_spam:hooks', array(
   'afterPrintAssets' => 'detect_spam_style'
 ));
 
-App::attach('hooks:beforePrintAssets', 'detect_spam_style');
-
 function detect_spam(&$form, &$data, $valid) {
   if ($valid) {
     $spam = false;

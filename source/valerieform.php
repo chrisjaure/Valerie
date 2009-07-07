@@ -26,6 +26,7 @@ class ValerieForm {
   private $includes = array();
   private $uid;
   private $ns;
+  private $plugins_loaded = false;
   
   /*
     Constructor: __construct
@@ -171,7 +172,10 @@ class ValerieForm {
     $this->ns = App::get('config:session_ns') .
       $this->definition['attributes']['id'];
     App::set('form_id', $this->definition['attributes']['id']);
-    Valerie::loadFormPlugins(App::get('form_id'));
+    if (!$this->plugins_loaded) {
+      Valerie::loadFormPlugins(App::get('form_id'));
+      $this->plugins_loaded = true;
+    }
   }
   
   /*

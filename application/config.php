@@ -20,7 +20,8 @@ App::set('config', array(
   'source_uri' => '../source/',
   'plugins' => array(
     'contact_form',
-    'contact-form' => 'detect_spam'
+    'contact-form' => array('detect_spam', 'modal'),
+    'frm3' => 'modal'
   ),
   'single_setup' => '../demo/single_setup.php'
   
