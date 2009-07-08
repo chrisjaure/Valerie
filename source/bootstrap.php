@@ -20,20 +20,25 @@ $valerie_config_path = '../application/config.php';
 $valerie_root = realpath(dirname(__FILE__) . '/') . '/';
 
 require_once "libs/app.class.php";
+App::set('config:version', '0.8');
+
 require_once $valerie_config_path;
 
 App::lock('config');
 $valerie_app_path = realpath(App::get('config:app_path')) . '/';
+$valerie_app_uri = App::get('config:app_uri');
 
 // set some variables after config is loaded so they can be set first in the
 // config file.
 App::set('config', array(
-  'version' => '0.7.1',
   'style_path' => $valerie_app_path . 'styles/',
   'plugin_path' => $valerie_app_path . 'plugins/',
   'filter_path' => $valerie_app_path . 'filters/',
   'rule_path' => $valerie_app_path . 'rules/',
   'form_path' => $valerie_app_path . 'forms/',
+  'style_uri' => $valerie_app_uri . 'styles/',
+  'plugin_uri' => $valerie_app_uri . 'plugins/',
+  'form_uri' => $valerie_app_uri . 'forms/',
   'root' => $valerie_root
 ));
 

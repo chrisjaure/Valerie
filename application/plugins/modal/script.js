@@ -26,8 +26,6 @@ jQuery(function($){
     if (top < 10) top = 10;
     if (left < 10) left = 10;
 
-    console.log(top, left);
-
     frm.css({
       left: left,
       top: top

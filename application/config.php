@@ -16,7 +16,7 @@ App::set('config', array(
   'char_encoding' => 'utf-8',
   'session_ns' => 'valerie',
   'app_path' => '../application/',
-  'plugin_uri' => '../application/plugins/',
+  'app_uri' => '../application/',
   'source_uri' => '../source/',
   'plugins' => array(
     'contact-form' => array('detect_spam', 'modal'),
