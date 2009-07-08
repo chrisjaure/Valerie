@@ -25,17 +25,16 @@ class Valerie {
   public static function render($name = null, $style = null) {
     if (isset($name)) {
       $single_form_config = App::get("forms:$name");
-      if (!isset($single_form_config)) {
+      if (!isset($single_form_config['definition'])) {
         trigger_error("No form found at 'forms:$name'", E_USER_ERROR);
       }
     }
     else {
       $single_form_config = App::get('form');
-      if (!isset($single_form_config)) {
+      if (!isset($single_form_config['definition'])) {
         trigger_error("No form found at 'form'", E_USER_ERROR);
       }
     }
-    
     $single_form_config['definition']['attributes'] += array(
       'method' => 'post',
       'action' => App::get('config:source_uri') . 'processform.php'

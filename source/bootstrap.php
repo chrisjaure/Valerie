@@ -33,6 +33,7 @@ App::set('config', array(
   'plugin_path' => $valerie_app_path . 'plugins/',
   'filter_path' => $valerie_app_path . 'filters/',
   'rule_path' => $valerie_app_path . 'rules/',
+  'form_path' => $valerie_app_path . 'forms/',
   'root' => $valerie_root
 ));
 
@@ -47,13 +48,14 @@ include_once "{$valerie_root}defaults/style/config.php";
 include_once "{$valerie_root}defaults/filters.php";
 include_once "{$valerie_root}defaults/rules.php";
 
-// load the styles, rules, and filters
+// load the styles, rules, filters, and forms
 $valerie_paths = array(
   App::get('config:style_path'),
   App::get('config:rule_path'),
-  App::get('config:filter_path')
+  App::get('config:filter_path'),
+  App::get('config:form_path')
 );
-valerie_load_dir_files(array($valerie_paths));
+valerie_load_dir_files($valerie_paths);
 
 // load the plugins
 $valerie_plugin_path = App::get('config:plugin_path');

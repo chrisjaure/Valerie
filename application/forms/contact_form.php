@@ -1,5 +1,4 @@
 <?php
-
 $id = 'contact-form';
 
 $config = array(

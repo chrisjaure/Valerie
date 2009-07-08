@@ -19,7 +19,6 @@ App::set('config', array(
   'plugin_uri' => '../application/plugins/',
   'source_uri' => '../source/',
   'plugins' => array(
-    'contact_form',
     'contact-form' => array('detect_spam', 'modal'),
     'frm' => 'modal'
   ),
@@ -29,5 +28,8 @@ App::set('config', array(
 
   
 ));
+
+App::set('forms:contact-form:text:modal', 'Contact Me!');
+App::set('forms:frm:text:modal', 'Open first form.');
 
 ?>

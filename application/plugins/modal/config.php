@@ -31,6 +31,8 @@ function modal_cancel() {
 }
 
 function modal_wrapper_start() {
+  $id = App::get('form_id');
+  $link = App::get("forms:$id:text:modal");
   ?>
   <script type="text/javascript">
   jQuery(function($){
@@ -39,7 +41,7 @@ function modal_wrapper_start() {
     });
   });
   </script>
-  <a href="#" class="modal-show">Form</a>
+  <a href="#" class="modal-show"><?php echo $link; ?></a>
   <div class="modal-wrapper">
   
   <?php
