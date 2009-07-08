@@ -26,7 +26,6 @@ class ValerieForm {
   private $includes = array();
   private $uid;
   private $ns;
-  private $plugins_loaded = false;
   
   /*
     Constructor: __construct
@@ -42,7 +41,7 @@ class ValerieForm {
       - instance of ValerieForm
   */
   
-  public function __construct($plugin = 'default') {
+  public function __construct($definition, $plugin = 'default') {
     @session_start();
     $this->root = App::get('config:root');
     $this->uri = array(
@@ -57,9 +56,19 @@ class ValerieForm {
     }
     $this->template = $config['templates'];
     $this->includes = $config['includes'];
-    if(!isset($this->template)) {
+    $this->setDefinition($definition);
+    if (!isset($this->template)) {
       trigger_error("Form template could not be set using style '$plugin'", E_USER_ERROR);
     }
+    if (!isset($this->definition)) {
+      trigger_error("Form definition could not be set");
+    }
+    
+    $this->ns = App::get('config:session_ns') .
+      $this->definition['attributes']['id'];
+    App::set('form_id', $this->definition['attributes']['id']);
+    Valerie::loadFormPlugins(App::get('form_id'));
+    
   }
   
   public function __destruct() {
@@ -168,13 +177,6 @@ class ValerieForm {
         $this->definition,
         $this->getArrayFromJSON($definition)
       );
-    }
-    $this->ns = App::get('config:session_ns') .
-      $this->definition['attributes']['id'];
-    App::set('form_id', $this->definition['attributes']['id']);
-    if (!$this->plugins_loaded) {
-      Valerie::loadFormPlugins(App::get('form_id'));
-      $this->plugins_loaded = true;
     }
   }
   
@@ -296,6 +298,7 @@ class ValerieForm {
   */
   
   public function render() {
+    App::set('form_id', $this->definition['attributes']['id']);
     Valerie::fireHooks('beforeGenerateForm', array(&$this));
     
     $output = '<input type="hidden" name="formid" value="'.$this->uid.'" />';
@@ -517,6 +520,7 @@ class ValerieForm {
   */
   
   public function printAssets() {
+    App::set('form_id', $this->definition['attributes']['id']);
     $source_printed = App::get('source_assets_printed');
     $style_printed = App::get("style_assets_printed:{$this->plugin}");
     

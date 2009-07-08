@@ -3,16 +3,10 @@
 include('../source/bootstrap.php');
 
 // create a new ValerieForm instance
-$form = new ValerieForm();
-
-// set form definition
-$form->setDefinition('form_def.php');
+$form = new ValerieForm('form_def.php');
 
 // create a second form
-$form2 = new ValerieForm();
-
-// set definition from array
-$form2->setDefinition(array(
+$form2 = new ValerieForm(array(
   'attributes' => array(
     'id' => 'frm2',
     'method' => 'post',
@@ -39,7 +33,6 @@ $form2->setDefinition(array(
     )
   )
 ));
-
 
 ?>
 <!DOCTYPE html>

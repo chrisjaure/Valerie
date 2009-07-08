@@ -21,7 +21,7 @@ App::set('config', array(
   'plugins' => array(
     'contact_form',
     'contact-form' => array('detect_spam', 'modal'),
-    'frm3' => 'modal'
+    'frm' => 'modal'
   ),
   'single_setup' => '../demo/single_setup.php'
   

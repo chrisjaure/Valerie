@@ -45,8 +45,7 @@ class Valerie {
     if (!isset($style)) {
       $style = 'default';
     }
-    $form = new ValerieForm($style);
-    $form->setDefinition($single_form_config['definition']);
+    $form = new ValerieForm($single_form_config['definition'], $style);
     
     $form->printAssets();
     
