@@ -63,12 +63,9 @@ function contact_form_send(&$form, $data) {
   }
 }
 
-function contact_form_check() {
+function contact_form_check($form, &$output) {
   if (!App::get('config:email')) {
-    trigger_error("No email address set at 'config:email'", E_USER_ERROR);
+    $output = '<p><b>Error</b>: Please set an email address at "config:email" before using this form.</p>';
   }
 }
-
-App::set('config:email', 'chrisjaure@gmail.com');
-
 ?>
