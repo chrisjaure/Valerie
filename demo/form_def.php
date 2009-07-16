@@ -2,7 +2,8 @@
   "attributes": {
     "id": "frm",
     "method": "post",
-    "action": "process_form.php"
+    "action": "process_form.php",
+    "layout": "horizontal"
   },
   "elements": [
     {
@@ -14,7 +15,8 @@
         "required",
         "alpha"
       ],
-      "filters": "striptags"
+      "filters": "striptags",
+      "hint": "This is a hint. Hint, hint. It's a rather long hint. I just want to see what happens when it wraps."
     },
     {
       "type": "text",
@@ -59,7 +61,8 @@
           "validation": [
             {"minlength": 20}
           ],
-          "filters": "purify"
+          "filters": "purify",
+          "hint": "Don't make it too short, either."
         },
         {
           "type": "radiogroup",
@@ -87,7 +90,9 @@
       "id": "chk3",
       "name": "newsletter",
       "value": "yes",
-      "label": "Sign up for newsletter?"
+      "label": "Sign up for newsletter?",
+      "validation": "required",
+      "hint": "Do you want it?"
     },
     {
       "type": "checkgroup",
@@ -98,6 +103,7 @@
         {"selectrange": [2, 3]},
         {"requiredif": "newsletter"}
       ],
+      "hint": "Select two or three items",
       "checkboxes": [
         {
           "id": "g2-1",
@@ -129,6 +135,7 @@
       "validation": [
         {"not": "default"}
       ],
+      "hint": "Select a value",
       "options": [
         {
           "label": "select something...",

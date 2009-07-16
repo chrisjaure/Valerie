@@ -12,6 +12,10 @@
   Script: bootstrap.php
 */
 
+$time = microtime();
+$time = explode(' ', $time);
+$valerie_start_time = $time[1] + $time[0];
+
 @session_start();
 
 // path to configuration file
@@ -48,6 +52,8 @@ require_once "valerieserver.php";
 require_once "valerieform.php";
 require_once "valerie.php";
 
+Valerie::startProfiler($valerie_start_time);
+
 // load defaults
 include_once "{$valerie_root}defaults/style/config.php";
 include_once "{$valerie_root}defaults/filters.php";
@@ -80,6 +86,9 @@ foreach ((array) $valerie_plugins as $form_id => $valerie_plugin) {
     if (is_file($valerie_plugin_path . $valerie_plugin . '.php')) {
       include_once $valerie_plugin_path . $valerie_plugin . '.php';
     }
+    if (is_file($valerie_plugin_path . $valerie_plugin)) {
+      include_once $valerie_plugin_path . $valerie_plugin;
+    }
     
     // attach hooks
     $valerie_plugin_hooks = App::get("plugins:$valerie_plugin:hooks");
@@ -89,6 +98,9 @@ foreach ((array) $valerie_plugins as $form_id => $valerie_plugin) {
         App::attach("hooks:$hook", $fn);
       }
     }
+  }
+  else {
+    Valerie::loadFormPlugins($form_id);
   }
 }
 
@@ -113,6 +125,9 @@ function valerie_load_dir_files($dirs) {
       foreach(scandir($dir) as $file) {
         if (is_file($dir . $file)) {
           include_once $dir . $file;
+        }
+        if (is_file($dir . $file .'/config.php')) {
+          include_once $dir . $file .'/config.php';
         }
       }
     }

@@ -1,9 +1,12 @@
 <?php
-
-App::set('plugins:detect_spam:hooks', array(
-  'afterValidateForm' => 'detect_spam',
-  'beforeGenerateForm' => 'detect_spam_addField',
-  'afterPrintAssets' => 'detect_spam_style'
+App::set('plugins:detect_spam', array(
+  'hooks' => array(
+    'afterValidateForm' => 'detect_spam',
+    'beforeGenerateForm' => 'detect_spam_addField'
+  ),
+  'assets' => array(
+    'css' => 'style.css'
+  )
 ));
 
 function detect_spam(&$form, &$data, $valid) {
@@ -58,14 +61,6 @@ function detect_spam_field($args) {
   <label class="spamtrap"><?php echo $label; ?>
     <input type="text" class="text" name="<?php echo $name; ?>" id="<?php echo $id; ?>" />
   </label>
-  
-  <?php
-}
-
-function detect_spam_style() {
-  ?>
-  
-  <link rel="stylesheet" type="text/css" href="<?php echo App::get('config:plugin_uri'); ?>detect_spam/style.css" />
   
   <?php
 }

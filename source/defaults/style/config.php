@@ -12,8 +12,12 @@ include_once 'template.php';
 
 $plugin = array(
 
-  'includes' => array(
-    'css' => array('IE', 'ie_style.css')
+  'assets' => array(
+    'css' => array(
+      'style.css',
+      'IE|ie_style.css'
+    ),
+    'js' => 'script.js'
   ),
   
   'templates' => array(

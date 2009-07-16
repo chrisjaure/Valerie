@@ -3,7 +3,7 @@
 include('../source/bootstrap.php');
 
 // create a new ValerieForm instance
-$form = new ValerieForm('form_def.php');
+$form = new ValerieForm('form_def.php', 'extended');
 
 // create a second form
 $form2 = new ValerieForm(array(
@@ -43,7 +43,7 @@ $form2 = new ValerieForm(array(
     
     <?php
       // print assets required for Valerie
-      $form->printAssets();
+      Valerie::loadAssets();
     ?>
     
     <link rel="stylesheet" type="text/css" href="files/style.css" />
@@ -103,3 +103,4 @@ $form2 = new ValerieForm(array(
   </div>
   </body>
 </html>
+<?php Valerie::stopProfiler(); ?>

@@ -19,10 +19,16 @@ App::set('config', array(
   'app_uri' => '../application/',
   'source_uri' => '../source/',
   'plugins' => array(
-    'contact-form' => array('detect_spam', 'modal'),
-    'frm2' => 'modal'
+    'contact-form' => array('detect_spam', 'modal')
   ),
-  'single_setup' => '../demo/single_setup.php'
+  'styles' => array(
+    'default',
+    'extended'
+  ),
+  'single_setup' => '../demo/single_setup.php',
+  
+  'email' => 'test',
+  'debug' => true
   
   // END SETTINGS --------------------------------------------------------------
 

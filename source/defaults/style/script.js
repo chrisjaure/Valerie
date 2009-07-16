@@ -2,7 +2,7 @@
 
 (function($){
 
-  $.fn.valerie.events = {
+  $.fn.valerie.events.default = {
     initialized: function(e, form) {
       var el = $('<div class="valerie-form-message"/>').prependTo(form).hide();
       var submitBtn = form.find('input[type=submit], button');

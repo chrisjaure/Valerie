@@ -75,7 +75,7 @@
 (function($){
   $.fn.valerie = function(o) {
   
-    var events = $.extend({}, $.fn.valerie.events, o);
+    var events = o;
   
     return this.each(function(){
       var form = $(this);

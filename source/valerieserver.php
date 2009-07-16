@@ -75,7 +75,6 @@ class ValerieServer {
     $this->patterns = App::get('rules');
     
     App::set('form_id', $this->definition['attributes']['id']);
-    Valerie::loadFormPlugins(App::get('form_id'));
   }
   
   /*
